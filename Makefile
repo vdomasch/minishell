@@ -7,15 +7,16 @@ OBJS_DIR			=	.objs
 HEADER_DIR			=	includes
 
 FILES				=	test.c				\
-					
+						prompt.c			\
+						libft.c
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)
 
 HEADERS				=	$(HEADER_DIR)/$(NAME).h
 
-CC					=	cc -lreadline
+CC					=	cc
 
-FLAGS				=	-Wall -Werror -Wextra
+FLAGS				=	-Wall -Werror -Wextra -I$(HEADER_DIR)
 
 RL_FLAGS			=	-lreadline
 

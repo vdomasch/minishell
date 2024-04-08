@@ -6,11 +6,11 @@
 /*   By: vdomasch <vdomasch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:53:31 by vdomasch          #+#    #+#             */
-/*   Updated: 2024/04/05 15:53:32 by vdomasch         ###   ########.fr       */
+/*   Updated: 2024/04/08 13:12:34 by vdomasch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "minishell.h"
 
 void	ft_isterminal(void)
 {
@@ -42,10 +42,11 @@ void	ft_readline(void)
 	pwd = ft_getcwd();
 	if (pwd == NULL)
 		return ;
-	printf("%s$ ", pwd);
+	printf("%s$", pwd);
 	free(pwd);
-    rl = readline("");
-	if (rl[0] == 'e' && rl[1] == 'x' && rl[2] == 'i' && rl[3] == 't' && rl[4] == '\0')
+    rl = readline(" ");
+	//if (rl[0] == 'e' && rl[1] == 'x' && rl[2] == 'i' && rl[3] == 't' && rl[4] == '\0')
+	if (!ft_strncmp(ft_strtrim(rl, "\n\r\t\v\f "), "exit", 5))
 	{
 		free(rl);
 		return ;
