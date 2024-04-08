@@ -21,7 +21,6 @@
 # include <fcntl.h>
 # include <signal.h>
 
-
 void	ft_isterminal(void);
 char	*ft_getcwd(void);
 void	ft_readline(void);
@@ -29,6 +28,4 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strtrim(char const *s1, char const *set);
 size_t	ft_strlen(const char *s);
 
-
 #endif
-

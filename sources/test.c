@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include <string.h>
 
-int main(void)
+int	main(void)
 {
 	//struct sigaction	act;
 	//sigset_t			mask;
@@ -22,5 +22,5 @@ int main(void)
 	//act.sa_mask = mask;
 	ft_readline();
 	ft_isterminal();
-    return (0);
+	return (0);
 }

@@ -17,16 +17,15 @@ void	ft_isterminal(void)
 	int	fd;
 
 	fd = 0;
-	printf("isatty = %d\n", isatty(fd));	
+	printf("isatty = %d\n", isatty(fd));
 	printf("ttyname = %s\n", ttyname(fd));
-
 }
 
 char	*ft_getcwd(void)
 {
-	char *pwd;
-    
-    pwd = getcwd(NULL, 0);
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
 		printf("Error pwd!\n");
@@ -37,14 +36,14 @@ char	*ft_getcwd(void)
 void	ft_readline(void)
 {
 	char	*pwd;
-    char	*rl;
+	char	*rl;
 
 	pwd = ft_getcwd();
 	if (pwd == NULL)
 		return ;
-	printf("%s$", pwd);
+	printf("%s$", pwd + 6);
 	free(pwd);
-    rl = readline(" ");
+	rl = readline(" ");
 	//if (rl[0] == 'e' && rl[1] == 'x' && rl[2] == 'i' && rl[3] == 't' && rl[4] == '\0')
 	if (!ft_strncmp(ft_strtrim(rl, "\n\r\t\v\f "), "exit", 5))
 	{
@@ -57,9 +56,7 @@ void	ft_readline(void)
 		printf("%s\n", pwd);
 		free(pwd);
 	}
-	else if (!rl[0])
-		printf("\n");
-	else
+	else if (rl[0])
 	{
 		printf("minishell: command not found: %s\n", rl);
 	}
