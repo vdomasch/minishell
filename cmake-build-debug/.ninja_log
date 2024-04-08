@@ -1,0 +1,6 @@
+# ninja log v5
+0	33	1712581922728551273	CMakeFiles/minishell.dir/sources/main.c.o	2666d641c4b5187
+1	36	1712581922732551258	CMakeFiles/minishell.dir/sources/libft.c.o	7b60a028a2626345
+1	35	1712581922732551258	CMakeFiles/minishell.dir/sources/prompt.c.o	2f51f17eca12b66a
+1	15	1712581938596489333	build.ninja	bf4c15264a9bf680
+1	20	1712581938620489239	minishell	2c42152a68be1d67
