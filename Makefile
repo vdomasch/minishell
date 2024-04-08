@@ -6,7 +6,7 @@ OBJS_DIR			=	.objs
 
 HEADER_DIR			=	includes
 
-FILES				=	test.c				\
+FILES				=	main.c				\
 						prompt.c			\
 						libft.c
 
