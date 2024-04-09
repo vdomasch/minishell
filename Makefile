@@ -8,7 +8,8 @@ HEADER_DIR			=	includes
 
 FILES				=	main.c				\
 						prompt.c			\
-						libft.c
+						libft.c				\
+						process_message.c
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)
 

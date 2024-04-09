@@ -26,9 +26,10 @@ char	*ft_getcwd(void)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	if (pwd == NULL)
+    if (pwd == NULL)
 	{
 		printf("Error pwd!\n");
+        return (NULL);
 	}
 	return (pwd);
 }
@@ -44,7 +45,7 @@ void	ft_readline(void)
 	printf("%s$", pwd + 6);
 	free(pwd);
 	rl = readline(" ");
-	//if (rl[0] == 'e' && rl[1] == 'x' && rl[2] == 'i' && rl[3] == 't' && rl[4] == '\0')
+    ft_process_message(rl);
 	if (!ft_strncmp(ft_strtrim(rl, "\n\r\t\v\f "), "exit", 5))
 	{
 		free(rl);
