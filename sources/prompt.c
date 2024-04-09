@@ -34,29 +34,52 @@ char	*ft_getcwd(void)
 	return (pwd);
 }
 
+int    ft_last_pwd(void)
+{
+    char    *save;
+    char    *result;
+    char    *tmp;
+    int     i;
+
+    i = 0;
+    save = ft_getcwd();
+    if (save == NULL)
+        return (0);
+    tmp = ft_strrchr(save, '/');
+    result = malloc(sizeof(char) * ft_strlen(tmp) + 1);
+    if (result == NULL)
+        return (0);
+    while (tmp[i])
+    {
+        result[i] = tmp[i];
+        i++;
+    }
+    result[i] = tmp[i];
+    printf("%s$", result);
+    free(save);
+    free(result);
+    return (1);
+}
+
 void	ft_readline(void)
 {
-	char	*pwd;
 	char	*rl;
 
-	pwd = ft_getcwd();
-	if (pwd == NULL)
-		return ;
-	printf("%s$", pwd + 6);
-	free(pwd);
-	rl = readline(" ");
+    if (ft_last_pwd() == 0)
+        return ;
+    rl = readline(" ");
     ft_process_message(rl);
-	if (!ft_strncmp(ft_strtrim(rl, "\n\r\t\v\f "), "exit", 5))
+	if (!ft_strncmp(rl, "exit", 5))
 	{
 		free(rl);
 		return ;
 	}
-	else if (rl[0] == 'p' && rl[1] == 'w' && rl[2] == 'd' && rl[3] == '\0')
+	/*else if (rl[0] == 'p' && rl[1] == 'w' && rl[2] == 'd' && rl[3] == '\0')
 	{
 		pwd = ft_getcwd();
 		printf("%s\n", pwd);
 		free(pwd);
-	}
+	}*/
 	else if (rl[0])
 	{
 		printf("minishell: command not found: %s\n", rl);

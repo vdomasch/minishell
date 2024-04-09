@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "../libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
@@ -24,10 +25,10 @@
 void	ft_isterminal(void);
 char	*ft_getcwd(void);
 void	ft_readline(void);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strtrim(char const *s1, char const *set);
-size_t	ft_strlen(const char *s);
+//int		ft_strncmp(const char *s1, const char *s2, size_t n);
+//char	*ft_strtrim(char const *s1, char const *set);
+//size_t	ft_strlen(const char *s);
 void ft_process_message(char *message);
-char	**ft_split(const char *s, char c);
+//char	**ft_split(const char *s, char c);
 
 #endif

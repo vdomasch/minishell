@@ -14,5 +14,6 @@
 
 void ft_process_message(char *message)
 {
-    ft_split(message, ' ');
+    //ft_split(message, ' ');
+    printf("\n pouet!%s!\n", message);
 }

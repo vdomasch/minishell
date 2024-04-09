@@ -6,7 +6,6 @@ set(CMAKE_C_STANDARD 90)
 add_executable(minishell sources/main.c
         includes/minishell.h
         sources/prompt.c
-        sources/libft.c
         sources/process_message.c)
 
 target_link_libraries(minishell readline)

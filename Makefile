@@ -10,7 +10,6 @@ DLIB				=	libft
 
 FILES				=	main.c				\
 						prompt.c			\
-						libft.c				\
 						process_message.c
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)
@@ -19,7 +18,7 @@ HEADERS				=	$(HEADER_DIR)/$(NAME).h
 
 CC					=	cc
 
-FLAGS				=	-Wall -Werror -Wextra -I$(HEADER_DIR)
+FLAGS				=	-Wall -Werror -Wextra
 
 RL_FLAGS			=	-lreadline
 
@@ -28,8 +27,8 @@ all:				libft $(OBJS_DIR) $(NAME)
 $(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c $(HEADERS)
 						$(CC) $(FLAGS) -c $< -o $@
 
-$(NAME):			$(OBJS_DIR) $(OBJS) $(HEADERS)
-						$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(RL_FLAGS)
+$(NAME):			$(OBJS_DIR) $(OBJS) $(HEADERS) $(DLIB)/libft.a
+						$(CC) $(FLAGS) $(OBJS) $(DLIB)/libft.a -o $(NAME) $(RL_FLAGS)
 
 $(OBJS_DIR):
 						mkdir -p $(OBJS_DIR)
