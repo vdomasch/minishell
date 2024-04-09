@@ -15,5 +15,4 @@
 void ft_process_message(char *message)
 {
 
-    ft_split(message);
 }
