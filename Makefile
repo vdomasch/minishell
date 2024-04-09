@@ -39,12 +39,14 @@ libft:
 
 clean:
 						rm -rf $(OBJS_DIR)
+						$(MAKE) clean -C $(DLIB)
 
 fclean:
 						$(MAKE) clean
 						rm -rf $(NAME)
+						$(MAKE) fclean -C $(DLIB)
 
 re:
 						$(MAKE) fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re libft
