@@ -27,11 +27,5 @@ int process_message(char *message)
 		printf("%s: command not found\n", message);
 		//return (2);
 	}
-	str = split(message, "| ");
-	while (str[i])
-	{
-		printf("%s\n", str[i]);
-		i++;
-	}
 	return (0);
 }
