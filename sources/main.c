@@ -22,7 +22,7 @@ int main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	(void)env;
+	signal_set();
     ft_readline();
-    ft_isterminal();
     return (0);
 }

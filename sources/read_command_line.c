@@ -12,78 +12,67 @@
 
 #include "../includes/minishell.h"
 
-void	ft_isterminal(void)
-{
-	int	fd;
-
-	fd = 0;
-	printf("isatty = %d\n", isatty(fd));
-	printf("ttyname = %s\n", ttyname(fd));
-}
-
 char	*ft_getcwd(void)
 {
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-    if (pwd == NULL)
+	if (pwd == NULL)
 	{
 		printf("Error pwd!\n");
-        return (NULL);
+		return (NULL);
 	}
 	return (pwd);
 }
 
-int    ft_last_pwd(void)
+char	*ft_last_pwd(void)
 {
-    char    *save;
-    char    *result;
-    char    *tmp;
-    int     i;
+	char	*save;
+	char	*result;
+	char	*tmp;
+	int		i;
 
-    i = 0;
-    save = ft_getcwd();
-    if (save == NULL)
-        return (0);
-    tmp = ft_strrchr(save, '/');
-    result = malloc(sizeof(char) * ft_strlen(tmp) + 1);
-    if (result == NULL)
-        return (0);
-    while (tmp[i])
-    {
-        result[i] = tmp[i];
-        i++;
-    }
-    result[i] = tmp[i];
-    printf("%s$", result);
-    free(save);
-    free(result);
-    return (1);
+	i = 0;
+	save = ft_getcwd();
+	if (save == NULL)
+		return (NULL);
+	tmp = ft_strrchr(save, '/') + 1;
+	result = malloc(sizeof(char) * ft_strlen(tmp) + 3);
+	if (result == NULL)
+		return (NULL);
+	while (tmp[i])
+	{
+		result[i] = tmp[i];
+		i++;
+	}
+	result[i + 2] = tmp[i];
+	result[i + 1] = ' ';
+	result[i] = '$';
+	free(save);
+	return (result);
 }
 
 void	ft_readline(void)
 {
 	char	*rl;
+	char	*pwd;
 
-    if (ft_last_pwd() == 0)
-        return ;
-    rl = readline(" ");
-    ft_process_message(rl);
-	if (!ft_strncmp(rl, "exit", 5))
+	while (42)
 	{
-		free(rl);
-		return ;
-	}
-	/*else if (rl[0] == 'p' && rl[1] == 'w' && rl[2] == 'd' && rl[3] == '\0')
-	{
-		pwd = ft_getcwd();
-		printf("%s\n", pwd);
+		pwd = ft_last_pwd();
+		if (!pwd)
+			printf("Error cwd!\n$");
+		rl = readline(pwd);
 		free(pwd);
-	}*/
-	else if (rl[0])
-	{
-		printf("minishell: command not found: %s\n", rl);
+		if (rl == NULL)
+		{
+			printf("exit\n");
+			exit(0);
+		}
+		if (rl[0] != 0)
+			add_history(rl);
+		if (process_message(rl) == 1)
+			return (free(rl));
+		free(rl);
 	}
-	free(rl);
-	ft_readline();
 }

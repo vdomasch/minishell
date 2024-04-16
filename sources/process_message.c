@@ -12,8 +12,26 @@
 
 #include "../includes/minishell.h"
 
-void ft_process_message(char *message)
+int process_message(char *message)
 {
-    //ft_split(message, ' ');
-    printf("\n pouet!%s!\n", message);
+	char **str;
+	int i = 0;
+
+	if (!ft_strncmp(message, "exit", 5))
+	{
+		printf("%s\n", message);
+		return (1);
+	}
+	else if (message[0])
+	{
+		printf("%s: command not found\n", message);
+		//return (2);
+	}
+	str = split(message, "| ");
+	while (str[i])
+	{
+		printf("%s\n", str[i]);
+		i++;
+	}
+	return (0);
 }

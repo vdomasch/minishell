@@ -8,9 +8,10 @@ HEADER_DIR			=	includes
 
 DLIB				=	libft
 
-FILES				=	main.c				\
-						prompt.c			\
-						process_message.c
+FILES				=	main.c						\
+						read_command_line.c			\
+						process_message.c			\
+						signals.c
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)
 

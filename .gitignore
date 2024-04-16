@@ -1,1 +1,6 @@
 cmake-build-debug
+minishell
+.idea
+.objs/
+libft/libft.a
+libft/objs/

@@ -1,0 +1,14 @@
+{
+    <readline->still_reachable>
+    Memcheck:Leak
+    ...
+    fun:readline
+    ...
+}
+{
+    <add_history->still_reachable>
+    Memcheck:Leak
+    ...
+    fun:add_history
+    ...
+}
