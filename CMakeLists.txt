@@ -12,6 +12,7 @@ add_executable(minishell
         libft/srcs/ft_isascii.c
         libft/srcs/ft_isdigit.c
         libft/srcs/ft_isprint.c
+        libft/srcs/ft_isspace.c
         libft/srcs/ft_itoa.c
         libft/srcs/ft_lstadd_back_bonus.c
         libft/srcs/ft_lstadd_front_bonus.c
