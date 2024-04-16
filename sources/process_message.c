@@ -25,7 +25,7 @@ int process_message(char *message)
 	else if (message[0])
 	{
 		printf("%s: command not found\n", message);
-		//return (2);
+		return (2);
 	}
 	return (0);
 }
