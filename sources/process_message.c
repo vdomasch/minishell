@@ -14,9 +14,6 @@
 
 int process_message(char *message)
 {
-	char **str;
-	int i = 0;
-
 	if (!ft_strncmp(message, "exit", 5))
 	{
 		printf("%s\n", message);

@@ -14,11 +14,6 @@
 
 int main(int argc, char **argv, char **env)
 {
-    //struct sigaction	act;
-    //sigset_t			mask;
-
-    //sigemptyset(&mask);
-    //act.sa_mask = mask;
 	(void)argc;
 	(void)argv;
 	(void)env;
