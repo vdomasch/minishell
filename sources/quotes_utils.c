@@ -47,7 +47,7 @@ bool	is_invalid_char_in_quote(const char *str)
 	return (false);
 }
 
-bool	is_quote_closed(const char *str)
+bool	are_quotes_closed(const char *str)
 {
 	int	i;
 	int	quotes;

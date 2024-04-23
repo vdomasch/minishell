@@ -48,7 +48,7 @@ char	**split_args(const char *s, char *set);
 size_t	count_pipes(const char *str);
 bool	is_in_quotes(const char *str, int j);
 bool	is_invalid_char_in_quote(const char *str);
-bool	is_quote_closed(const char *str);
+bool	are_quotes_closed(const char *str);
 bool	is_empty_pipe(const char *str);
 bool	is_ended_by_pipe(const char *str);
 bool	is_starting_by_pipe(const char *str);

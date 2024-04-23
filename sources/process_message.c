@@ -46,7 +46,7 @@ bool	create_cmd_list(t_data *data)
 
 bool	is_command_valid(const char *message)
 {
-	if (is_quote_closed(message) == 1)
+	if (are_quotes_closed(message) == 1)
 		printf("\nError, quote isn't closed!\n");
 	else if (is_invalid_char_in_quote(message) == 1)
 		printf("\nError, special character not in quote!\n");
