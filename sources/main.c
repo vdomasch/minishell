@@ -14,10 +14,16 @@
 
 int main(int argc, char **argv, char **env)
 {
+	t_data	data;
+	t_command command_list;
 	(void)argc;
 	(void)argv;
 	(void)env;
+
+	ft_memset(&data, 0, sizeof(t_data));
+	ft_memset(&data.cmd_list, 0, sizeof(t_command));
+	data.cmd_list = &command_list;
 	signal_set();
-    ft_readline();
+    ft_readline(&data);
     return (0);
 }

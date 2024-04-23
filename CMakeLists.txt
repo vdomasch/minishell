@@ -56,6 +56,10 @@ add_executable(minishell
         includes/minishell.h
         sources/read_command_line.c
         sources/process_message.c
-        sources/signals.c)
+        sources/signals.c
+        sources/quotes_utils.c
+        sources/pipes_utils.c
+        sources/command_utils.c
+        sources/split_arguments.c)
 
 target_link_libraries(minishell readline)

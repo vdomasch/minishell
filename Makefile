@@ -11,7 +11,11 @@ DLIB				=	libft
 FILES				=	main.c						\
 						read_command_line.c			\
 						process_message.c			\
-						signals.c
+						signals.c					\
+						quotes_utils.c				\
+						pipes_utils.c				\
+						command_utils.c				\
+						split_arguments.c
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)
 

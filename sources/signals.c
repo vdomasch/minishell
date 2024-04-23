@@ -26,6 +26,7 @@ static void	signal_handler(int sig, siginfo_t *info, void *context)
 	}
 	if (sig == SIGQUIT)
 	{
+		exit(0);
 		//does nothing
 	}
 }

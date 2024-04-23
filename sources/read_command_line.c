@@ -52,7 +52,21 @@ char	*ft_last_pwd(void)
 	return (result);
 }
 
-void	ft_readline(void)
+bool	str_is_ascii(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isascii(str[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+void	ft_readline(t_data *data)
 {
 	char	*rl;
 	char	*pwd;
@@ -61,18 +75,22 @@ void	ft_readline(void)
 	{
 		pwd = ft_last_pwd();
 		if (!pwd)
-			printf("Error cwd!\n$");
-		rl = readline(pwd);
-		free(pwd);
+			rl = readline("$> ");
+		else
+			rl = readline(pwd);
+		if (pwd)
+			free(pwd);
 		if (rl == NULL)
 		{
 			printf("exit\n");
-			exit(0);
+			return ;
 		}
-		if (rl[0] != 0)
+		if (rl[0] != 0 && str_is_ascii(rl))
+		{
 			add_history(rl);
-		if (process_message(rl) == 1)
-			return (free(rl));
+			if (process_message(data, rl) == 1)
+				return (free(rl));
+		}
 		free(rl);
 	}
 }
