@@ -13,9 +13,13 @@ FILES				=	main.c						\
 						process_message.c			\
 						signals.c					\
 						quotes_utils.c				\
-						pipes_utils.c				\
+						pipes_checks.c				\
 						command_utils.c				\
-						split_arguments.c
+						split_arguments.c			\
+						env_list.c					\
+						exec.c						\
+						pipes.c						\
+						process_env.c
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)
 

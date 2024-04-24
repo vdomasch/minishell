@@ -16,7 +16,8 @@ void	print_all(t_command *cmd)
 {
 	while (cmd)
 	{
-		printf("prev %p | actual %p ; !%s!| next %p\n", cmd->prev, cmd, cmd->cmd, cmd->next);
+		printf("prev %p | actual %p ; !%s!| next %p\n",
+			cmd->prev, cmd, cmd->cmd, cmd->next);
 		cmd = cmd->next;
 	}
 }
