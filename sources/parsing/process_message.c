@@ -10,39 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-char	*ft_free_strtrim(char *s1, const char *s2)
-{
-	char *result;
-
-	if (!s1 || !s2)
-		return (NULL);
-	result = ft_strtrim(s1, s2);
-	free(s1);
-	return (result);
-}
-
-bool	create_cmd_list(t_data *data)
-{
-	t_command	*command;
-	size_t 		i;
-
-	i = 0;
-	command = data->cmd_list;
-	while (i < data->nb_pipes)
-	{
-		cmd_new(command);
-		if (command->next == NULL)
-		{
-			free_cmd_list(command);
-			return (false);
-		}
-		command = command->next;
-		i++;
-	}
-	return (true);
-}
+#include "../../includes/minishell.h"
 
 bool	is_command_valid(const char *message)
 {
@@ -61,17 +29,14 @@ bool	is_command_valid(const char *message)
 	return (false);
 }
 
-char	*cut_commands(const char *message)
+char	*cut_commands(const char *message, int letter, int j)
 {
 	static int	i = 0;
-	int			j;
 	char		*cmd;
-	int 		letter;
 
 	if (message[i] == '|')
 		i++;
 	j = i;
-	letter = 0;
 	while (message[i])
 	{
 		if (message[i] == '|' && !is_in_quotes(message, i))
@@ -92,46 +57,6 @@ char	*cut_commands(const char *message)
 	return (cmd);
 }
 
-int 	size_without_redirection(char *cmd, int *i, int res)
-{
-	while (cmd[*i])
-	{
-		if (cmd[*i] == '>' || cmd[*i] == '<')
-			break;
-		*i += 1;
-	}
-	if (!cmd[*i])
-		return (0);
-	res = *i;
-	*i += 1;
-	if (cmd[*i] == '>' || cmd[*i] == '<')
-		*i += 1;
-	while (cmd[*i] && ft_isspace(cmd[*i]))
-		*i += 1;
-	while (cmd[*i])
-	{
-		if (ft_isspace(cmd[*i]) && !is_in_quotes(cmd, *i))
-			break ;
-		*i += 1;
-	}
-	res = *i - res;
-	return (res);
-}
-
-char	*clean_command(char *cmd)
-{
-	char	*result;
-	int 	len;
-	int		i;
-
-	i = 0;
-	len = 0;
-	while (cmd[i])
-		len += size_without_redirection(cmd, &i, len);
-	result = cmd;
-	return (result);
-}
-
 bool	split_command(t_command *command)
 {
 	char	*cmd_clean;
@@ -144,34 +69,35 @@ bool	split_command(t_command *command)
 			free_cmd_list(command);
 			return (false);
 		}
-		/*command->v_cmd = split_arguments(cmd_clean, " \n\r\t\v\f");
+		command->v_cmd = split_arguments(cmd_clean, " \n\r\t\v\f");
 		if (!command->v_cmd)
 		{
 			free_cmd_list(command);
 			return (false);
-		}*/
-
-
-
-
+		}
 		command = command->next;
+		free(cmd_clean);
 	}
 	return (true);
 }
 
-bool	standardize_command(t_data *data, const char *message)
+bool	standardize_command(t_data *data, char *message)
 {
-	t_command *command;
+	t_command	*command;
 
 	command = data->cmd_list;
-	if (!is_command_valid(message))
+	data->message = replace_variables(data, message, data->env_list);
+	if (!data->message)
 		return (false);
-	data->nb_pipes = count_pipes(message);
+	if (!is_command_valid(data->message))
+		return (false);
+	data->nb_pipes = count_pipes(data->message);
 	if (!create_cmd_list(data))
 		return (false);
 	while (command)
 	{
-		command->cmd = ft_free_strtrim(cut_commands(message), " \n\r\t\v\f");
+		command->cmd = ft_free_strtrim(cut_commands(data->message, 0, 0),
+				" \n\r\t\v\f");
 		if (!command->cmd)
 			return (false);
 		command = command->next;
@@ -181,8 +107,9 @@ bool	standardize_command(t_data *data, const char *message)
 	return (true);
 }
 
-int process_message(t_data *data, const char *message)
+int	process_message(t_data *data, char *message)
 {
+	data->message = message;
 	ft_memset(data->cmd_list, 0, sizeof(t_command));
 	if (!standardize_command(data, message))
 		return (4);
@@ -190,12 +117,16 @@ int process_message(t_data *data, const char *message)
 	if (!ft_strncmp(message, "exit", 5))
 	{
 		printf("%s\n", message);
+		free_env(data->env_list, data->v_path);
+		free(data->message);
 		exit (0);
 	}
 	else if (message[0])
 	{
-		printf("%s: command not found\n", message);
+		printf("%s: command not found\n", data->message);
+		free(data->message);
 		return (2);
 	}
+	free(data->message);
 	return (0);
 }

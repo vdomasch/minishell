@@ -41,7 +41,7 @@ static unsigned int	ft_strtrim_start(char const *s, char const *set)
 	return (count);
 }
 
-static unsigned int	ft_strtrim_end(char const *s, char const *set)
+static unsigned int	ft_strtrim_end(char const *s, char const *set, size_t len)
 {
 	size_t	i;
 	size_t	count;
@@ -49,12 +49,12 @@ static unsigned int	ft_strtrim_end(char const *s, char const *set)
 
 	count = 0;
 	outside = 1;
-	while (*s && outside)
+	while (len >= 0 && outside && s[len])
 	{
 		i = 0;
 		while (set[i])
 		{
-			if (set[i] == *s)
+			if (set[i] == s[len])
 			{
 				count++;
 				break ;
@@ -63,7 +63,7 @@ static unsigned int	ft_strtrim_end(char const *s, char const *set)
 			if (!set[i])
 				outside = 0;
 		}
-		s--;
+		len--;
 	}
 	return (count);
 }
@@ -78,7 +78,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 
 	len = ft_strlen(s1);
 	start_count = ft_strtrim_start(s1, set);
-	end_count = ft_strtrim_end(s1 + len - 1, set);
+	end_count = ft_strtrim_end(s1, set, len);
 	s1 = s1 + start_count;
 	len = len - (start_count + end_count);
 	i = len;

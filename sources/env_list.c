@@ -12,6 +12,16 @@
 
 #include "../includes/minishell.h"
 
+t_env	*env_first(t_env *env)
+{
+	if (env)
+	{
+		while (env->prev)
+			env = env->prev;
+	}
+	return (env);
+}
+
 t_env	*env_lstnew(t_env *prev)
 {
 	t_env	*env;
@@ -19,7 +29,7 @@ t_env	*env_lstnew(t_env *prev)
 	env = (t_env *)malloc(sizeof(t_env));
 	if (env == NULL)
 		return (NULL);
-	env->variable = NULL;
+	env->var = NULL;
 	env->value = NULL;
 	env->prev = prev;
 	env->next = NULL;

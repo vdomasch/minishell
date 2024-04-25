@@ -12,9 +12,6 @@
 
 #include "../includes/minishell.h"
 
-char	**process_env(t_data data, char **env);
-int		exec(t_data *data);
-
 static void open_pipes(unsigned int nb_pipes, int *pipe_fds)
 {
 	unsigned int i;

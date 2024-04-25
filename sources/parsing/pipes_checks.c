@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 size_t	count_pipes(const char *str)
 {
@@ -94,5 +94,7 @@ bool	is_starting_by_pipe(const char *str)
 			return (false);
 		i++;
 	}
+	if (!str[i])
+		return (false);
 	return (true);
 }

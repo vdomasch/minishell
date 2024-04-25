@@ -52,20 +52,6 @@ char	*ft_last_pwd(void)
 	return (result);
 }
 
-bool	str_is_ascii(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isascii(str[i]))
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
 void	ft_readline(t_data *data)
 {
 	char	*rl;
@@ -88,7 +74,7 @@ void	ft_readline(t_data *data)
 		if (rl[0] != 0 && str_is_ascii(rl))
 		{
 			add_history(rl);
-			if (process_message(data, rl) == 1)
+			if (!str_is_space(rl) && process_message(data, rl) == 1)
 				return (free(rl));
 		}
 		free(rl);

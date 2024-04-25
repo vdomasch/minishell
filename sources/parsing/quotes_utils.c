@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-bool	is_in_quotes(const char *str, int j)
+int	is_in_quotes(const char *str, int j)
 {
 	int	i;
 	int	quotes;
@@ -28,9 +28,11 @@ bool	is_in_quotes(const char *str, int j)
 			quotes--;
 		i++;
 	}
-	if (quotes == 0)
-		return (false);
-	return (true);
+	if (quotes < 0)
+		return (1);
+	if (quotes > 0)
+		return (2);
+	return (0);
 }
 
 bool	is_invalid_char_in_quote(const char *str)

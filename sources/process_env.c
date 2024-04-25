@@ -12,6 +12,32 @@
 
 #include "../includes/minishell.h"
 
+void	free_env(t_env *env, char **v_path)
+{
+	int 	i;
+	t_env	*tmp;
+
+	i = 0;
+	if (v_path)
+	{
+		while (v_path[i])
+			free(v_path[i++]);
+		free(v_path);
+	}
+	if (env)
+	{
+		env = env_first(env);
+		while (env)
+		{
+			tmp = env->next;
+			free(env->value);
+			free(env->var);
+			free(env);
+			env = tmp;
+		}
+	}
+}
+
 char	*allocate_value(char *env)
 {
 	int		i;
@@ -62,7 +88,7 @@ bool	put_env_in_list(t_data *data, char **env)
 	data->env_list = env_lstnew(NULL);
 	if (!data->env_list)
 		return (false);
-	data->env_list->variable = allocate_variable(env[i]);
+	data->env_list->var = allocate_variable(env[i]);
 	data->env_list->value = allocate_value(env[i]);
 	while (env[i])
 	{
@@ -70,10 +96,11 @@ bool	put_env_in_list(t_data *data, char **env)
 		if (!data->env_list->next)
 			return (false);
 		data->env_list = data->env_list->next;
-		data->env_list->variable = allocate_variable(env[i]);
+		data->env_list->var = allocate_variable(env[i]);
 		data->env_list->value = allocate_value(env[i]);
 		i++;
 	}
+	data->env_list = env_first(data->env_list);
 	return (true);
 }
 
@@ -99,5 +126,4 @@ void	process_env(t_data *data, char **env)
 	path = ft_strdup(temp + 5);
 	data->v_path = ft_split(path, ':');
 	free(path);
-	return ;
 }

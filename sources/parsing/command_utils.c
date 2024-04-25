@@ -10,32 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	print_all(t_command *cmd)
 {
+	int	i;
+
 	while (cmd)
 	{
 		printf("prev %p | actual %p ; !%s!| next %p\n",
 			cmd->prev, cmd, cmd->cmd, cmd->next);
+		i = 0;
+		while (cmd->v_cmd[i])
+		{
+			printf("v_cmd = !%s!\n", cmd->v_cmd[i]);
+			i++;
+		}
 		cmd = cmd->next;
 	}
-}
-
-void	free_cmd_list(t_command *cmd)
-{
-	t_command	*tmp;
-
-	cmd = cmd_last(cmd);
-	while (cmd->prev)
-	{
-		tmp = cmd->prev;
-		if (cmd->cmd)
-			free(cmd->cmd);
-		free(cmd);
-		cmd = tmp;
-	}
-	free(cmd->cmd);
 }
 
 t_command	*cmd_last(t_command *lst)
@@ -47,7 +39,31 @@ t_command	*cmd_last(t_command *lst)
 	return (lst);
 }
 
-void	cmd_new(t_command *prev)
+void	free_cmd_list(t_command *cmd)
+{
+	t_command	*tmp;
+	int			i;
+
+	cmd = cmd_last(cmd);
+	while (cmd)
+	{
+		tmp = cmd->prev;
+		if (cmd->cmd)
+			free(cmd->cmd);
+		if (cmd->v_cmd)
+		{
+			i = 0;
+			while (cmd->v_cmd[i])
+				free(cmd->v_cmd[i++]);
+			free(cmd->v_cmd);
+		}
+		if (cmd->prev)
+			free(cmd);
+		cmd = tmp;
+	}
+}
+
+static void	cmd_new(t_command *prev)
 {
 	t_command	*command;
 
@@ -57,4 +73,25 @@ void	cmd_new(t_command *prev)
 	ft_memset(command, 0, sizeof(t_command));
 	prev->next = command;
 	command->prev = prev;
+}
+
+bool	create_cmd_list(t_data *data)
+{
+	t_command	*command;
+	size_t		i;
+
+	i = 0;
+	command = data->cmd_list;
+	while (i < data->nb_pipes)
+	{
+		cmd_new(command);
+		if (command->next == NULL)
+		{
+			free_cmd_list(command);
+			return (false);
+		}
+		command = command->next;
+		i++;
+	}
+	return (true);
 }

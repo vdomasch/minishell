@@ -1,3 +1,9 @@
 Import Libft (Makefile)
 strrchr to have a short pwd
 multi-split
+
+message = i;
+tmp = j;
+env = k;
+
+echo $DISPLAY | echo $OUIOUI

@@ -8,18 +8,21 @@ HEADER_DIR			=	includes
 
 DLIB				=	libft
 
-FILES				=	main.c						\
-						read_command_line.c			\
-						process_message.c			\
-						signals.c					\
-						quotes_utils.c				\
-						pipes_checks.c				\
-						command_utils.c				\
-						split_arguments.c			\
-						env_list.c					\
-						exec.c						\
-						pipes.c						\
-						process_env.c
+FILES				=	main.c							\
+						read_command_line.c				\
+						minishell_utils.c				\
+						signals.c						\
+						env_list.c						\
+						exec.c							\
+						pipes.c							\
+						process_env.c					\
+							parsing/process_message.c	\
+							parsing/dollars.c			\
+							parsing/redirections.c		\
+							parsing/quotes_utils.c		\
+							parsing/pipes_checks.c		\
+							parsing/command_utils.c		\
+							parsing/split_arguments.c
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)
 
@@ -41,6 +44,7 @@ $(NAME):			$(OBJS_DIR) $(OBJS) $(HEADERS) $(DLIB)/libft.a
 
 $(OBJS_DIR):
 						mkdir -p $(OBJS_DIR)
+						mkdir -p $(OBJS_DIR)/parsing
 
 libft:
 						$(MAKE) -C $(DLIB)
