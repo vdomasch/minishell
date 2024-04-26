@@ -52,7 +52,7 @@ static void	child(t_data *data, int *pipe_fds, unsigned int i)
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
 	if (exec(data))
-		printf("Error exec\n");
+		printf("command not found\n");
 	return ;
 }
 

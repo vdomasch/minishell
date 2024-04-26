@@ -49,10 +49,6 @@ int	exec(t_data *data)
 	if (waitpid(pc_id, &status, 0) == -1)
 		return (1);
 	if (WIFEXITED(status) && !WEXITSTATUS(status))
-	{
 		return (0);
-	}
-	else
-		printf("command not found\n");
 	return (1);
 }

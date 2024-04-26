@@ -1,9 +1,4 @@
-Import Libft (Makefile)
-strrchr to have a short pwd
-multi-split
+gerer les multi-redirections
 
-message = i;
-tmp = j;
-env = k;
+gerer les mallocs failled
 
-echo $DISPLAY | echo $OUIOUI
