@@ -43,6 +43,7 @@ typedef struct s_data
 {
 	t_command		*cmd_list;
 	t_env			*env_list;
+	char			**env;
 	char			*message;
 	char			**v_path;
 	unsigned int	nb_pipes;
@@ -72,12 +73,14 @@ bool		create_cmd_list(t_data *data);
 void		free_cmd_list(t_command *cmd);
 
 t_command	*cmd_last(t_command *lst);
+t_command	*cmd_first(t_command *lst);
 
 t_env		*env_lstnew(t_env *prev);
 t_env		*env_first(t_env *env);
 void		process_env(t_data *data, char **env);
 void		free_env(t_env *env, char **v_path);
 int			exec(t_data *data);
+void		pipes_commands(t_data *data);
 
 void		print_all(t_command *cmd);
 

@@ -58,29 +58,31 @@ static void	child(t_data *data, int *pipe_fds, unsigned int i)
 
 void pipes_commands(t_data *data)
 {
-	int				pid;
+	//int				pid;
 	unsigned int	i;
 	int				pipe_fds[data->nb_pipes * 2];
+	t_command		*command;
 
 	i = 0;
 	open_pipes(data->nb_pipes, pipe_fds);
-	while (data->cmd_list)
+	command = data->cmd_list;
+	while (command)
 	{
-		pid = fork();
-		if (pid == 0)
+		//pid = fork();
+		//if (pid == 0)
 			child(data, pipe_fds, i);
-		else if (pid < 0)
+		/*else if (pid < 0)
 		{
 			printf("Error fork\n");
 			exit(EXIT_FAILURE);
-		}
-		data->cmd_list = data->cmd_list->next;
+		}*/
+		command = command->next;
 		i += 2;
 	}
-	i = 0;
+	//i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	while(waitpid(0,0,0) < 0);
+	//while(waitpid(0,0,0) < 0);
 }
 /*
 int main(int argc, char **argv, char **env)

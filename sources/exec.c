@@ -40,7 +40,7 @@ int	exec(t_data *data)
 		{
 			path = ft_strjoin(data->v_path[i], "/");
 			path = ft_strfreejoin(path, data->cmd_list->v_cmd[0]);
-			execve(path, &data->cmd_list->v_cmd[0], NULL);
+			execve(path, &data->cmd_list->v_cmd[0], data->env);
 			free(path);
 			i++;
 		}
@@ -50,10 +50,9 @@ int	exec(t_data *data)
 		return (1);
 	if (WIFEXITED(status) && !WEXITSTATUS(status))
 	{
-		printf("Process finished with success\n");
 		return (0);
 	}
 	else
-		printf("Failure\n");
+		printf("command not found\n");
 	return (1);
 }

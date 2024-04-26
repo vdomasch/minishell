@@ -39,6 +39,15 @@ t_command	*cmd_last(t_command *lst)
 	return (lst);
 }
 
+t_command	*cmd_first(t_command *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->prev)
+		lst = lst->prev;
+	return (lst);
+}
+
 void	free_cmd_list(t_command *cmd)
 {
 	t_command	*tmp;

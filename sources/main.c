@@ -23,6 +23,7 @@ int main(int argc, char **argv, char **env)
 	ft_memset(&data, 0, sizeof(t_data));
 	ft_memset(&data.cmd_list, 0, sizeof(t_command));
 	data.cmd_list = &command_list;
+	data.env = env;
 	process_env(&data, env);
 	signal_set();
     ft_readline(&data);
