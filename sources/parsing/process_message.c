@@ -115,19 +115,6 @@ int	process_message(t_data *data, char *message)
 		return (4);
 	pipes_commands(data);
 	free_cmd_list(data->cmd_list);
-	/*if (!ft_strncmp(message, "exit", 5))
-	{
-		printf("%s\n", message);
-		free_env(data->env_list, data->v_path);
-		free(data->message);
-		exit (0);
-	}
-	else if (message[0])
-	{
-		printf("%s: command not found\n", data->message);
-		free(data->message);
-		return (2);
-	}*/
 	free(data->message);
 	return (0);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   execution.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdomasch <vdomasch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-static void open_pipes(unsigned int nb_pipes, int *pipe_fds)
+static void	open_pipes(unsigned int nb_pipes, int *pipe_fds)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	i = 0;
 	while (i < nb_pipes)
@@ -32,7 +32,6 @@ static void	child(t_data *data, int *pipe_fds, unsigned int i)
 {
 	if (data->cmd_list->next)
 	{
-		printf("||%d||\n", i);
 		if (dup2(pipe_fds[i + 1], 1) < 0)
 		{
 			printf("Error dup2 not last\n");
@@ -51,38 +50,31 @@ static void	child(t_data *data, int *pipe_fds, unsigned int i)
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	if (exec(data))
-		printf("command not found\n");
+	if (exec(data, 42, 0, 0) == 1)
+		printf("%s: command not found\n", data->cmd_list->v_cmd[0]);
 	return ;
 }
 
-void pipes_commands(t_data *data)
+void	pipes_commands(t_data *data)
 {
-	//int				pid;
 	unsigned int	i;
-	int				pipe_fds[data->nb_pipes * 2];
+	int				*pipe_fds;
 	t_command		*command;
 
 	i = 0;
+	pipe_fds = malloc(sizeof(int) * (data->nb_pipes * 2));
+	if (!pipe_fds)
+		return ;
 	open_pipes(data->nb_pipes, pipe_fds);
 	command = data->cmd_list;
 	while (command)
 	{
-		//pid = fork();
-		//if (pid == 0)
-			child(data, pipe_fds, i);
-		/*else if (pid < 0)
-		{
-			printf("Error fork\n");
-			exit(EXIT_FAILURE);
-		}*/
+		child(data, pipe_fds, i);
 		command = command->next;
 		i += 2;
 	}
-	//i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	//while(waitpid(0,0,0) < 0);
 }
 /*
 int main(int argc, char **argv, char **env)
@@ -112,6 +104,6 @@ int main(int argc, char **argv, char **env)
 	if (data.nb_pipes > 0)
 		pipes_commands(&data);
 	else
-		exec(&data);
+		execution(&data);
 	return (0);
 }*/

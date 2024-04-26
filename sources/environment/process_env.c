@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	free_env(t_env *env, char **v_path)
 {
-	int 	i;
+	int		i;
 	t_env	*tmp;
 
 	i = 0;
@@ -41,8 +41,8 @@ void	free_env(t_env *env, char **v_path)
 char	*allocate_value(char *env)
 {
 	int		i;
-	int 	j;
-	int 	len;
+	int		j;
+	int		len;
 	char	*value;
 
 	i = 0;
@@ -114,7 +114,6 @@ void	process_env(t_data *data, char **env)
 	if (!env)
 		return ;
 	put_env_in_list(data, env);
-	//print_env_list(data);
 	while (env[i])
 	{
 		temp = ft_strnstr(env[i++], "PATH", 4);

@@ -52,21 +52,21 @@ add_executable(minishell
         libft/srcs/get_next_line.c
         libft/srcs/get_next_line_utils.c
 
-        sources/main.c
         includes/minishell.h
+        sources/main.c
+        sources/minishell_utils.c
         sources/read_command_line.c
-        sources/parsing/process_message.c
         sources/signals.c
-        sources/parsing/quotes_utils.c
-        sources/parsing/pipes_checks.c
         sources/parsing/command_utils.c
-        sources/parsing/split_arguments.c
-        sources/env_list.c
-        sources/exec.c
-        sources/process_env.c
-        sources/pipes.c
         sources/parsing/dollars.c
+        sources/parsing/pipes_checks.c
+        sources/parsing/process_message.c
+        sources/parsing/quotes_utils.c
         sources/parsing/redirections.c
-        sources/minishell_utils.c)
+        sources/parsing/split_arguments.c
+        sources/environment/env_list.c
+        sources/environment/process_env.c
+        sources/execution/exec.c
+        sources/execution/pipes.c)
 
 target_link_libraries(minishell readline)

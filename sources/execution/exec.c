@@ -10,30 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	exec_builtins(char **v_cmd)
 {
 	if (!ft_strncmp(v_cmd[0], "exit", 5))
+	{
+		printf("exit");
 		exit(0);
+	}
 	if (!ft_strncmp(v_cmd[0], "export", 6))
 		return (1);
-	//list all builtins
 	return (0);
 }
 
-int	exec(t_data *data)
+int	exec(t_data *data, int pc_id, int status, int i)
 {
 	char	*path;
-	int		pc_id;
-	int		status;
-	int		i;
 
 	if (exec_builtins(data->cmd_list->v_cmd))
 		return (0);
 	pc_id = fork();
-	status = 0;
-	i = 0;
 	if (pc_id == 0)
 	{
 		while (data->v_path[i])
@@ -44,11 +41,11 @@ int	exec(t_data *data)
 			free(path);
 			i++;
 		}
-		return (1);
+		exit(1);
 	}
 	if (waitpid(pc_id, &status, 0) == -1)
+		return (3);
+	if (WIFEXITED(status) && WEXITSTATUS(status))
 		return (1);
-	if (WIFEXITED(status) && !WEXITSTATUS(status))
-		return (0);
-	return (1);
+	return (0);
 }

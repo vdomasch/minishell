@@ -12,10 +12,10 @@ FILES				=	main.c							\
 						read_command_line.c				\
 						minishell_utils.c				\
 						signals.c						\
-						env_list.c						\
-						exec.c							\
-						pipes.c							\
-						process_env.c					\
+							environment/env_list.c		\
+							environment/process_env.c	\
+							execution/exec.c			\
+							execution/pipes.c			\
 							parsing/process_message.c	\
 							parsing/dollars.c			\
 							parsing/redirections.c		\
@@ -44,6 +44,8 @@ $(NAME):			$(OBJS_DIR) $(OBJS) $(HEADERS) $(DLIB)/libft.a
 
 $(OBJS_DIR):
 						mkdir -p $(OBJS_DIR)
+						mkdir -p $(OBJS_DIR)/environment
+						mkdir -p $(OBJS_DIR)/execution
 						mkdir -p $(OBJS_DIR)/parsing
 
 libft:

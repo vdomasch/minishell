@@ -79,7 +79,7 @@ t_env		*env_lstnew(t_env *prev);
 t_env		*env_first(t_env *env);
 void		process_env(t_data *data, char **env);
 void		free_env(t_env *env, char **v_path);
-int			exec(t_data *data);
+int			exec(t_data *data, int pc_id, int status, int i);
 void		pipes_commands(t_data *data);
 
 void		print_all(t_command *cmd);

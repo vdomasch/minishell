@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void	print_all(t_command *cmd)
+/*void	print_all(t_command *cmd)
 {
 	int	i;
 
@@ -28,7 +28,7 @@ void	print_all(t_command *cmd)
 		}
 		cmd = cmd->next;
 	}
-}
+}*/
 
 t_command	*cmd_last(t_command *lst)
 {
