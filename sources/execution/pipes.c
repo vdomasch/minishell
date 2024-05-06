@@ -22,44 +22,41 @@ static void	open_pipes(unsigned int nb_pipes, int *pipe_fds)
 		if (pipe(pipe_fds + (2 * i)) < 0)
 		{
 			printf("Pipe opening error\n");
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 		i++;
 	}
 }
 
-static void	child(t_data *data, int *pipe_fds, unsigned int i)
+static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 {
-	if (data->cmd_list->next)
+	signal_set_child();
+	if (cmd->next)
 	{
 		if (dup2(pipe_fds[i + 1], 1) < 0)
-		{
-			printf("Error dup2 not last\n");
-			exit(EXIT_FAILURE);
-		}
+			exit(1);
 	}
 	if (i != 0)
 	{
-		printf("|%d|\n", i);
 		if (dup2(pipe_fds[i - 2], 0) < 0)
-		{
-			printf("Error dup2 not first\n");
-			exit(EXIT_FAILURE);
-		}
+			exit(1);
 	}
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	if (exec(data, 42, 0, 0) == 1)
+	if (exec(data, 0) == 1)
 		printf("%s: command not found\n", data->cmd_list->v_cmd[0]);
-	return ;
+	free_cmd_list(data->cmd_list);
+	free_env(data->env_list, data->v_path);
+	free(pipe_fds);
+	free(data->message);
+	exit(0);
 }
 
-void	pipes_commands(t_data *data)
+void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 {
-	unsigned int	i;
+	int				pid;
 	int				*pipe_fds;
-	t_command		*command;
 
 	i = 0;
 	pipe_fds = malloc(sizeof(int) * (data->nb_pipes * 2));
@@ -69,12 +66,20 @@ void	pipes_commands(t_data *data)
 	command = data->cmd_list;
 	while (command)
 	{
-		child(data, pipe_fds, i);
+		pid = fork();
+		if (pid == 0)
+			child(data, command, pipe_fds, i);
+		else if (pid < 0)
+			exit(1);
 		command = command->next;
 		i += 2;
 	}
+	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
+	while (waitpid(0, 0, 0) > 0)
+		;
+	free(pipe_fds);
 }
 /*
 int main(int argc, char **argv, char **env)

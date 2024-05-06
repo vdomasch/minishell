@@ -24,28 +24,20 @@ int	exec_builtins(char **v_cmd)
 	return (0);
 }
 
-int	exec(t_data *data, int pc_id, int status, int i)
+int	exec(t_data *data, int i)
 {
 	char	*path;
 
 	if (exec_builtins(data->cmd_list->v_cmd))
 		return (0);
-	pc_id = fork();
-	if (pc_id == 0)
+	while (data->v_path[i])
 	{
-		while (data->v_path[i])
-		{
-			path = ft_strjoin(data->v_path[i], "/");
-			path = ft_strfreejoin(path, data->cmd_list->v_cmd[0]);
-			execve(path, &data->cmd_list->v_cmd[0], data->env);
-			free(path);
-			i++;
-		}
-		exit(1);
+		path = ft_strjoin(data->v_path[i], "/");
+		path = ft_strfreejoin(path, data->cmd_list->v_cmd[0]);
+		execve(path, &data->cmd_list->v_cmd[0], data->env);
+		free(path);
+		i++;
 	}
-	if (waitpid(pc_id, &status, 0) == -1)
-		return (3);
-	if (WIFEXITED(status) && WEXITSTATUS(status))
-		return (1);
-	return (0);
+	return (1);
 }
+

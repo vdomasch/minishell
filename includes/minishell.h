@@ -53,6 +53,8 @@ typedef struct s_data
 char		*ft_getcwd(void);
 void		ft_readline(t_data *data);
 void		signal_set(void);
+void		signal_set_child(void);
+
 int			process_message(t_data *data, char *message);
 
 size_t		count_pipes(const char *str);
@@ -81,8 +83,8 @@ t_env		*env_lstnew(t_env *prev);
 t_env		*env_first(t_env *env);
 void		process_env(t_data *data, char **env);
 void		free_env(t_env *env, char **v_path);
-int			exec(t_data *data, int pc_id, int status, int i);
-void		pipes_commands(t_data *data);
+int			exec(t_data *data, int i);
+void		pipes_commands(t_data *data, t_command *command, unsigned int i);
 
 void		print_all(t_command *cmd);
 

@@ -13,10 +13,8 @@
 #include "../includes/minishell.h"
 #include <termios.h>
 
-static void	signal_handler(int sig, siginfo_t *info, void *context)
+static void	signal_handler(int sig)
 {
-	(void)info;
-	(void)context;
 	if (sig == SIGINT)
 	{
 		printf("\n");
@@ -24,20 +22,16 @@ static void	signal_handler(int sig, siginfo_t *info, void *context)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	if (sig == SIGQUIT)
-	{
-		exit(0);
-		//does nothing
-	}
 }
 
 void	signal_set(void)
 {
-	struct sigaction	sig_action;
+	signal(SIGINT, &signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
 
-	sig_action.sa_sigaction = &signal_handler;
-	sigemptyset(&sig_action.sa_mask);
-	sig_action.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sig_action, NULL);
-	sigaction(SIGQUIT, &sig_action, NULL);
+void	signal_set_child(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }

@@ -118,7 +118,7 @@ int	process_message(t_data *data, char *message)
 	ft_memset(data->cmd_list, 0, sizeof(t_command));
 	if (!standardize_command(data, message, NULL))
 		return (4);
-	pipes_commands(data);
+	pipes_commands(data, data->cmd_list, 0);
 	free_cmd_list(data->cmd_list);
 	free(data->message);
 	return (0);
