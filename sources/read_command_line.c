@@ -17,7 +17,7 @@ char	*ft_getcwd(void)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	if (pwd == NULL)
+	if (!pwd)
 	{
 		printf("Error pwd!\n");
 		return (NULL);
@@ -34,20 +34,21 @@ char	*ft_last_pwd(void)
 
 	i = 0;
 	save = ft_getcwd();
-	if (save == NULL)
+	if (!save)
 		return (NULL);
 	tmp = ft_strrchr(save, '/') + 1;
 	result = malloc(sizeof(char) * ft_strlen(tmp) + 3);
-	if (result == NULL)
-		return (NULL);
-	while (tmp[i])
+	if (result)
 	{
-		result[i] = tmp[i];
-		i++;
+		while (tmp[i])
+		{
+			result[i] = tmp[i];
+			i++;
+		}
+		result[i + 2] = tmp[i];
+		result[i + 1] = ' ';
+		result[i] = '$';
 	}
-	result[i + 2] = tmp[i];
-	result[i + 1] = ' ';
-	result[i] = '$';
 	free(save);
 	return (result);
 }
@@ -66,7 +67,7 @@ void	ft_readline(t_data *data)
 			rl = readline(pwd);
 		if (pwd)
 			free(pwd);
-		if (rl == NULL)
+		if (!rl)
 		{
 			printf("exit\n");
 			return ;

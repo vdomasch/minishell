@@ -67,6 +67,7 @@ add_executable(minishell
         sources/environment/env_list.c
         sources/environment/process_env.c
         sources/execution/exec.c
-        sources/execution/pipes.c)
+        sources/execution/pipes.c
+        sources/parsing/redirections_checks.c)
 
 target_link_libraries(minishell readline)

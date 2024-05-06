@@ -42,7 +42,8 @@ bool	is_invalid_char_in_quote(const char *str)
 	i = 0;
 	while (str[i])
 	{
-		if ((ft_strchr("~`#&*()\\[]{};?!", str[i]) && !is_in_quotes(str, i)))
+		if ((ft_strchr("~`#&*()\\[]{};!", str[i]) && !is_in_quotes(str, i))
+			|| (str[i] == '?' && !is_in_quotes(str, i) && i > 0 && str[i - 1] != '$'))
 			return (true);
 		i++;
 	}

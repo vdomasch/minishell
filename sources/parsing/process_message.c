@@ -14,18 +14,21 @@
 
 bool	is_command_valid(const char *message)
 {
-	if (are_quotes_closed(message) == 1)
+	if (are_quotes_closed(message))
 		printf("\nError, quote isn't closed!\n");
-	else if (is_invalid_char_in_quote(message) == 1)
+	else if (is_invalid_char_in_quote(message))
 		printf("\nError, special character not in quote!\n");
-	else if (is_starting_by_pipe(message) == 1)
+	else if (is_starting_by_pipe(message))
 		printf("\nError, is starting by pipe!\n");
-	else if (is_ended_by_pipe(message) == 1)
+	else if (is_ended_by_pipe(message))
 		printf("\nError, ended by pipes!\n");
 	else if (is_empty_pipe(message))
 		printf("\nError, empty pipe!\n");
+	else if (!is_redirection_valid(message))
+		printf("\nError, invalid redirection!\n");
 	else
 		return (true);
+	free((char *)message);
 	return (false);
 }
 
@@ -45,10 +48,7 @@ char	*cut_commands(const char *message, int letter, int j)
 	}
 	cmd = malloc(sizeof(char) * (i - j + 1));
 	if (!cmd)
-	{
-		printf("Error, malloc failed!\n");
 		return (NULL);
-	}
 	while (j < i)
 		cmd[letter++] = message[j++];
 	cmd[letter] = '\0';
@@ -57,7 +57,7 @@ char	*cut_commands(const char *message, int letter, int j)
 	return (cmd);
 }
 
-bool	split_command(t_command *command)
+bool	split_command(t_data *data, t_command *command)
 {
 	char	*cmd_clean;
 
@@ -66,12 +66,15 @@ bool	split_command(t_command *command)
 		cmd_clean = clean_command(command->cmd);
 		if (!cmd_clean)
 		{
+			free(data->message);
 			free_cmd_list(command);
 			return (false);
 		}
 		command->v_cmd = split_arguments(cmd_clean, " \n\r\t\v\f");
 		if (!command->v_cmd)
 		{
+			free(data->message);
+			free(cmd_clean);
 			free_cmd_list(command);
 			return (false);
 		}
@@ -81,10 +84,8 @@ bool	split_command(t_command *command)
 	return (true);
 }
 
-bool	standardize_command(t_data *data, char *message)
+bool	standardize_command(t_data *data, char *message, t_command *command)
 {
-	t_command	*command;
-
 	command = data->cmd_list;
 	data->message = replace_variables(data, message, data->env_list);
 	if (!data->message)
@@ -99,10 +100,14 @@ bool	standardize_command(t_data *data, char *message)
 		command->cmd = ft_free_strtrim(cut_commands(data->message, 0, 0),
 				" \n\r\t\v\f");
 		if (!command->cmd)
+		{
+			free(data->message);
+			free_cmd_list(data->cmd_list);
 			return (false);
+		}
 		command = command->next;
 	}
-	if (!split_command(data->cmd_list))
+	if (!split_command(data, data->cmd_list))
 		return (false);
 	return (true);
 }
@@ -111,7 +116,7 @@ int	process_message(t_data *data, char *message)
 {
 	data->message = message;
 	ft_memset(data->cmd_list, 0, sizeof(t_command));
-	if (!standardize_command(data, message))
+	if (!standardize_command(data, message, NULL))
 		return (4);
 	pipes_commands(data);
 	free_cmd_list(data->cmd_list);

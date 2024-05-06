@@ -8,20 +8,21 @@ HEADER_DIR			=	includes
 
 DLIB				=	libft
 
-FILES				=	main.c							\
-						read_command_line.c				\
-						minishell_utils.c				\
-						signals.c						\
-							environment/env_list.c		\
-							environment/process_env.c	\
-							execution/exec.c			\
-							execution/pipes.c			\
-							parsing/process_message.c	\
-							parsing/dollars.c			\
-							parsing/redirections.c		\
-							parsing/quotes_utils.c		\
-							parsing/pipes_checks.c		\
-							parsing/command_utils.c		\
+FILES				=	main.c								\
+						read_command_line.c					\
+						minishell_utils.c					\
+						signals.c							\
+							environment/env_list.c			\
+							environment/process_env.c		\
+							execution/exec.c				\
+							execution/pipes.c				\
+							parsing/process_message.c		\
+							parsing/dollars.c				\
+							parsing/redirections.c			\
+							parsing/redirections_checks.c	\
+							parsing/quotes_utils.c			\
+							parsing/pipes_checks.c			\
+							parsing/command_utils.c			\
 							parsing/split_arguments.c
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)

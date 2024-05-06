@@ -12,14 +12,15 @@
 
 #include "../../includes/minishell.h"
 
-/*void	print_all(t_command *cmd)
+void	print_all(t_command *cmd)
 {
 	int	i;
 
 	while (cmd)
 	{
-		printf("prev %p | actual %p ; !%s!| next %p\n",
-			cmd->prev, cmd, cmd->cmd, cmd->next);
+		printf("prev %p <-- actual %p --> next %p\n",
+			cmd->prev, cmd, cmd->next);
+		printf("text: !%s!\n", cmd->cmd);
 		i = 0;
 		while (cmd->v_cmd[i])
 		{
@@ -28,7 +29,7 @@
 		}
 		cmd = cmd->next;
 	}
-}*/
+}
 
 t_command	*cmd_last(t_command *lst)
 {
@@ -77,7 +78,7 @@ static void	cmd_new(t_command *prev)
 	t_command	*command;
 
 	command = (t_command *)malloc(sizeof(t_command));
-	if (command == NULL)
+	if (!command)
 		return ;
 	ft_memset(command, 0, sizeof(t_command));
 	prev->next = command;
@@ -94,8 +95,9 @@ bool	create_cmd_list(t_data *data)
 	while (i < data->nb_pipes)
 	{
 		cmd_new(command);
-		if (command->next == NULL)
+		if (!command->next)
 		{
+			free(data->message);
 			free_cmd_list(command);
 			return (false);
 		}

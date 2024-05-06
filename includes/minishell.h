@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <errno.h>
 # include <signal.h>
 # include <wait.h>
 
@@ -61,6 +62,7 @@ bool		are_quotes_closed(const char *str);
 bool		is_empty_pipe(const char *str);
 bool		is_ended_by_pipe(const char *str);
 bool		is_starting_by_pipe(const char *str);
+bool		is_redirection_valid(const char *str);
 
 bool		str_is_space(char *str);
 bool		str_is_ascii(char *str);
