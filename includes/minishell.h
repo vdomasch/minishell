@@ -24,12 +24,12 @@
 # include <signal.h>
 # include <wait.h>
 
-#define ERR_QUOTE_NOT_CLOSED "syntax error: quotes aren't closed\n"
-#define ERR_SPECIAL_CHAR "syntax error: special character\n"
-#define ERR_PIPE_START "syntax error: starting by pipe\n"
-#define ERR_PIPE_END "syntax error: ending by pipe\n"
-#define ERR_EMPTY_PIPE "syntax error: empty pipe\n"
-#define ERR_INVALID_REDIRECTION "syntax error: invalid redirection\n"
+# define ERR_QUOTE_NOT_CLOSED "syntax error: quotes aren't closed\n"
+# define ERR_SPECIAL_CHAR "syntax error: special character\n"
+# define ERR_PIPE_START "syntax error: starting by pipe\n"
+# define ERR_PIPE_END "syntax error: ending by pipe\n"
+# define ERR_EMPTY_PIPE "syntax error: empty pipe\n"
+# define ERR_INVALID_REDIRECTION "syntax error: invalid redirection\n"
 
 typedef struct s_env
 {
@@ -90,7 +90,7 @@ t_env		*env_lstnew(t_env *prev);
 t_env		*env_first(t_env *env);
 void		process_env(t_data *data, char **env);
 void		free_env(t_env *env, char **v_path);
-int			exec(t_data *data, int i);
+int			exec(t_data *data, t_command *cmd, int i);
 void		pipes_commands(t_data *data, t_command *command, unsigned int i);
 
 void		print_all(t_command *cmd);

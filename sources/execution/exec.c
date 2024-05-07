@@ -24,7 +24,7 @@ int	exec_builtins(char **v_cmd)
 	return (0);
 }
 
-int	exec(t_data *data, int i)
+int	exec(t_data *data, t_command *cmd, int i)
 {
 	char	*path;
 
@@ -33,11 +33,10 @@ int	exec(t_data *data, int i)
 	while (data->v_path[i])
 	{
 		path = ft_strjoin(data->v_path[i], "/");
-		path = ft_strfreejoin(path, data->cmd_list->v_cmd[0]);
-		execve(path, &data->cmd_list->v_cmd[0], data->env);
+		path = ft_strfreejoin(path, cmd->v_cmd[0]);
+		execve(path, &cmd->v_cmd[0], data->env);
 		free(path);
 		i++;
 	}
 	return (1);
 }
-
