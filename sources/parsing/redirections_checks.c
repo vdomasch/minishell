@@ -82,19 +82,10 @@ bool	is_ending_by_redirection(const char *str)
 bool	is_redirection_valid(const char *str)
 {
 	if (is_ending_by_redirection(str))
-	{
-		printf("syntax error near unexpected token `newline'");
 		return (false);
-	}
 	if (is_redirection_followed_by_pipe(str))
-	{
-		printf("syntax error near unexpected token `|'");
 		return (false);
-	}
 	if (is_more_than_two_redirections(str))
-	{
-		printf("Error");
 		return (false);
-	}
 	return (true);
 }
