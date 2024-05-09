@@ -69,6 +69,8 @@ add_executable(minishell
         sources/environment/env_list.c
         sources/environment/process_env.c
         sources/execution/exec.c
+        sources/execution/exec_redirections.c
+        sources/execution/in_out_redirection.c
         sources/execution/pipes.c
         sources/execution/builtins/ft_pwd.c
         sources/execution/builtins/ft_echo.c

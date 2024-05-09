@@ -37,6 +37,8 @@ typedef struct s_command
 {
 	char				**v_cmd;
 	char				*cmd;
+	char				*input_redirection;
+	char				*output_redirection;
 	struct s_command	*next;
 	struct s_command	*prev;
 }	t_command;
@@ -89,6 +91,10 @@ void		free_env(t_env *env, char **v_path);
 int			exec(t_data *data, t_command *cmd, int i);
 bool		exec_builtins(t_data *data);
 void		pipes_commands(t_data *data, t_command *command, unsigned int i);
+void		exec_redirections(t_command *command, int *pipe_fds,
+							  unsigned int pipe_id);
+void		in_out_redirection(t_command *command, int pipe_fd, int i);
+char		*next_redirection_name(t_command *cmd, int i);
 
 void		print_all(t_command *cmd);
 

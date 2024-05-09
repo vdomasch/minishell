@@ -60,6 +60,10 @@ void	free_cmd_list(t_command *cmd)
 		tmp = cmd->prev;
 		if (cmd->cmd)
 			free(cmd->cmd);
+		if (cmd->input_redirection)
+			free(cmd->input_redirection);
+		if (cmd->output_redirection)
+			free(cmd->output_redirection);
 		if (cmd->v_cmd)
 		{
 			i = 0;

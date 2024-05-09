@@ -15,6 +15,8 @@ FILES				=	main.c								\
 							environment/env_list.c			\
 							environment/process_env.c		\
 							execution/exec.c				\
+							execution/exec_redirections.c	\
+							execution/in_out_redirection.c	\
 							execution/pipes.c				\
 							execution/builtins/ft_pwd.c		\
 							execution/builtins/ft_echo.c	\

@@ -41,6 +41,7 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 		if (dup2(pipe_fds[i - 2], 0) < 0)
 			exit(1);
 	}
+	exec_redirections(cmd, pipe_fds, i);
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
@@ -59,10 +60,15 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 	int				*pipe_fds;
 
 	i = 0;
-	pipe_fds = malloc(sizeof(int) * (data->nb_pipes * 2));
-	if (!pipe_fds)
-		return ;
-	open_pipes(data->nb_pipes, pipe_fds);
+	if (data->nb_pipes)
+	{
+		pipe_fds = malloc(sizeof(int) * (data->nb_pipes * 2));
+		if (!pipe_fds)
+			return;
+		open_pipes(data->nb_pipes, pipe_fds);
+	}
+	else
+		pipe_fds = NULL;
 	command = data->cmd_list;
 	while (command)
 	{
