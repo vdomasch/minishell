@@ -19,7 +19,6 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	(void)env;
 	ft_memset(&data, 0, sizeof(t_data));
 	ft_memset(&data.cmd_list, 0, sizeof(t_command));
 	data.cmd_list = &command_list;
@@ -30,5 +29,3 @@ int	main(int argc, char **argv, char **env)
 	free_env(data.env_list, data.v_path);
 	return (0);
 }
-
-//echo 1 > test | TEST "$TEST $DISPLAY non $OUI" | '$PATH' '|' | ECHO yep > $PATH: command not found

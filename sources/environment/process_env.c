@@ -40,16 +40,18 @@ void	free_env(t_env *env, char **v_path)
 
 char	*allocate_value(char *env)
 {
-	int		i;
-	int		j;
-	int		len;
-	char	*value;
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	len;
+	char			*value;
 
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
 	len = ft_strlen(env) - i++;
 	value = malloc(sizeof(char) * (len + 1));
+	if (!value)
+		return (NULL);
 	j = 0;
 	while (env[i])
 	{
@@ -63,13 +65,15 @@ char	*allocate_value(char *env)
 
 char	*allocate_variable(char *env)
 {
-	int		i;
-	char	*variable;
+	unsigned int	i;
+	char			*variable;
 
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
 	variable = malloc(sizeof(char) * (i + 1));
+	if (!variable)
+		return (NULL);
 	i = 0;
 	while (env[i] && env[i] != '=')
 	{

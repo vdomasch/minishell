@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "error_messages.h"
 # include "../libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -23,13 +24,6 @@
 # include <errno.h>
 # include <signal.h>
 # include <wait.h>
-
-# define ERR_QUOTE_NOT_CLOSED "syntax error: quotes aren't closed\n"
-# define ERR_SPECIAL_CHAR "syntax error: special character\n"
-# define ERR_PIPE_START "syntax error: starting by pipe\n"
-# define ERR_PIPE_END "syntax error: ending by pipe\n"
-# define ERR_EMPTY_PIPE "syntax error: empty pipe\n"
-# define ERR_INVALID_REDIRECTION "syntax error: invalid redirection\n"
 
 typedef struct s_env
 {
@@ -89,8 +83,11 @@ t_command	*cmd_first(t_command *lst);
 t_env		*env_lstnew(t_env *prev);
 t_env		*env_first(t_env *env);
 void		process_env(t_data *data, char **env);
+char		*allocate_variable(char *env);
+char		*allocate_value(char *env);
 void		free_env(t_env *env, char **v_path);
 int			exec(t_data *data, t_command *cmd, int i);
+bool		exec_builtins(t_data *data);
 void		pipes_commands(t_data *data, t_command *command, unsigned int i);
 
 void		print_all(t_command *cmd);
@@ -98,5 +95,9 @@ void		print_all(t_command *cmd);
 char		**split_arguments(const char *s, char *set);
 
 char		*ft_free_strtrim(char *s1, const char *s2);
+
+bool	ft_pwd(void);
+void	ft_echo(char **v_cmd);
+bool	ft_export(t_data *data);
 
 #endif

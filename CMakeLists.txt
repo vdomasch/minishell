@@ -53,6 +53,7 @@ add_executable(minishell
         libft/srcs/get_next_line_utils.c
 
         includes/minishell.h
+        includes/error_messages.h
         sources/main.c
         sources/minishell_utils.c
         sources/read_command_line.c
@@ -64,10 +65,13 @@ add_executable(minishell
         sources/parsing/quotes_utils.c
         sources/parsing/redirections.c
         sources/parsing/split_arguments.c
+        sources/parsing/redirections_checks.c
         sources/environment/env_list.c
         sources/environment/process_env.c
         sources/execution/exec.c
         sources/execution/pipes.c
-        sources/parsing/redirections_checks.c)
+        sources/execution/builtins/ft_pwd.c
+        sources/execution/builtins/ft_echo.c
+        sources/execution/builtins/ft_export.c)
 
 target_link_libraries(minishell readline)

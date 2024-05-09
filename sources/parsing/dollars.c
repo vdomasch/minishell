@@ -12,6 +12,16 @@
 
 #include "../../includes/minishell.h"
 
+static bool	check_env_var_name(t_data *data, int i)
+{
+	return (!ft_strncmp(data->message + i, data->env_list->var,
+			ft_strlen(data->env_list->var)) \
+			&& ((!ft_isalnum(*(data->message \
+			+ (i + ft_strlen(data->env_list->var)))) && *(data->message \
+			+ (i + ft_strlen(data->env_list->var))) != '_') || *(data->message \
+			+ (i + ft_strlen(data->env_list->var))) == 0));
+}
+
 static size_t	count_size(char *msg, t_env *env, int i, size_t count)
 {
 	while (msg[i])
@@ -50,8 +60,7 @@ static void	replace(t_data *data, char *result, int *i, int *j)
 	data->env_list = env_first(data->env_list);
 	while (data->env_list->next)
 	{
-		if (!ft_strncmp(data->message + *i, data->env_list->var,
-				ft_strlen(data->env_list->var)))
+		if (check_env_var_name(data, *i))
 		{
 			while (data->env_list->value[k])
 				result[(*j)++] = data->env_list->value[k++];

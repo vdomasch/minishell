@@ -16,6 +16,9 @@ FILES				=	main.c								\
 							environment/process_env.c		\
 							execution/exec.c				\
 							execution/pipes.c				\
+							execution/builtins/ft_pwd.c		\
+							execution/builtins/ft_echo.c	\
+							execution/builtins/ft_export.c	\
 							parsing/process_message.c		\
 							parsing/dollars.c				\
 							parsing/redirections.c			\
@@ -27,7 +30,8 @@ FILES				=	main.c								\
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)
 
-HEADERS				=	$(HEADER_DIR)/$(NAME).h
+HEADERS				=	$(HEADER_DIR)/$(NAME).h				\
+						$(HEADER_DIR)/error_messages.h
 
 CC					=	cc
 
@@ -47,6 +51,7 @@ $(OBJS_DIR):
 						mkdir -p $(OBJS_DIR)
 						mkdir -p $(OBJS_DIR)/environment
 						mkdir -p $(OBJS_DIR)/execution
+						mkdir -p $(OBJS_DIR)/execution/builtins
 						mkdir -p $(OBJS_DIR)/parsing
 
 libft:
