@@ -15,10 +15,15 @@
 bool	exec_builtins(t_data *data)
 {
 	if (!ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
+	{
 		printf("exit\n");
+		if (data->cmd_list->v_cmd[1])
+			exit(ft_atoi(data->cmd_list->v_cmd[1]));
+		else
+			exit(0);
+	}
 	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "cd", 3))
-		//ft_chdir();
-		;
+		ft_cd(data, data->cmd_list->v_cmd);
 	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "export", 7))
 	//	ft_export(data);
 		(void)data;

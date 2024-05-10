@@ -21,7 +21,9 @@ void	free_env(t_env *env, char **v_path)
 	if (v_path)
 	{
 		while (v_path[i])
-			free(v_path[i++]);
+			i++;
+		while (i-- > 0)
+			free(v_path[i]);
 		free(v_path);
 	}
 	if (env)
@@ -128,5 +130,6 @@ void	process_env(t_data *data, char **env)
 		return ;
 	path = ft_strdup(temp + 5);
 	data->v_path = ft_split(path, ':');
+	data->env = copy_env(env);
 	free(path);
 }

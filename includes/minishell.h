@@ -105,5 +105,11 @@ char		*ft_free_strtrim(char *s1, const char *s2);
 bool	ft_pwd(void);
 void	ft_echo(char **v_cmd);
 bool	ft_export(t_data *data);
+bool	ft_cd(t_data *data, char **v_cmd);
+
+
+char	*ft_getcwd(void);
+
+char	**copy_env(char **env);
 
 #endif

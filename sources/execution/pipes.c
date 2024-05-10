@@ -33,12 +33,12 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 	signal_set_child();
 	if (cmd->next)
 	{
-		if (dup2(pipe_fds[i + 1], 1) < 0)
+		if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)
 			exit(1);
 	}
 	if (i != 0)
 	{
-		if (dup2(pipe_fds[i - 2], 0) < 0)
+		if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
 			exit(1);
 	}
 	exec_redirections(cmd, pipe_fds, i);

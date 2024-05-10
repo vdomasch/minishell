@@ -74,6 +74,8 @@ add_executable(minishell
         sources/execution/pipes.c
         sources/execution/builtins/ft_pwd.c
         sources/execution/builtins/ft_echo.c
-        sources/execution/builtins/ft_export.c)
+        sources/execution/builtins/ft_export.c
+        sources/execution/builtins/ft_cd.c
+        sources/environment/env_array.c)
 
 target_link_libraries(minishell readline)

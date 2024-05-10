@@ -16,6 +16,13 @@ char	*ft_strfreejoin(char *s1, const char *s2)
 {
 	char	*str;
 
+	if (!s1)
+		return (NULL);
+	if (!s2)
+	{
+		free(s1);
+		return (NULL);
+	}
 	str = ft_strjoin(s1, s2);
 	if (s1)
 		free(s1);

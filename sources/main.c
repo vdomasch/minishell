@@ -22,10 +22,17 @@ int	main(int argc, char **argv, char **env)
 	ft_memset(&data, 0, sizeof(t_data));
 	ft_memset(&data.cmd_list, 0, sizeof(t_command));
 	data.cmd_list = &command_list;
-	data.env = env;
 	process_env(&data, env);
+	if (!data.env)
+	{
+		perror("minishell:");
+		free_env(data.env_list, NULL);
+		return (ENOMEM);
+	}
 	signal_set();
 	ft_readline(&data);
 	free_env(data.env_list, data.v_path);
+	free_env(NULL, data.env);
 	return (0);
+	(void)env;
 }

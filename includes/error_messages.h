@@ -30,4 +30,5 @@
 # define ERR_PIPE_END "syntax error: ending by pipe\n"
 # define ERR_EMPTY_PIPE "syntax error: empty pipe\n"
 # define ERR_INVALID_REDIRECTION "syntax error: invalid redirection\n"
+# define ERR_
 #endif
