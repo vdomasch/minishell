@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-bool	is_there_redirection(char *str, char c)
+bool	is_there_chr(char *str, char c)
 {
 	int	i;
 
@@ -61,7 +61,7 @@ char	*redirection(t_command *cmd, char input_token)
 	int		start;
 	int		i;
 
-	if (!is_there_redirection(cmd->cmd, input_token))
+	if (!is_there_chr(cmd->cmd, input_token))
 		return (NULL);
 	str = malloc(sizeof(char)
 			* (last_redirection_size(cmd->cmd, input_token, &start) + 1));
@@ -105,23 +105,26 @@ char	*next_redirection_name(t_command *cmd, int i)
 	return (redirection);
 }
 
-void	exec_redirections(t_command *command, int *pipe_fds,
-							unsigned int pipe_id)
+void	exec_redirections(t_command *command, unsigned int nb_pipes,
+						  int *pipe_fds, unsigned int pipe_id)
 {
 	int	i;
 
 	i = 0;
+	(void)nb_pipes;
+	if (!is_there_chr(command->cmd, '>') && !is_there_chr(command->cmd, '<'))
+		return ;
 	command->input_redirection = redirection(command, '<');
 	command->output_redirection = redirection(command, '>');
 	while (command->cmd[i])
 	{
-		if (pipe_fds && command->cmd[i] == '>')
+		if (pipe_fds && pipe_id != 2 * nb_pipes && command->cmd[i] == '>')
 			in_out_redirection(command, pipe_fds[pipe_id + 1], i++);
 		else if (command->cmd[i] == '>')
 			in_out_redirection(command, STDOUT_FILENO, i++);
-		else if (pipe_fds && command->cmd[i] == '<')
+		else if (pipe_fds && pipe_id != 2 * nb_pipes && command->cmd[i] == '<')
 			in_out_redirection(command, pipe_fds[pipe_id], i++);
-		else if (!pipe_fds && command->cmd[i] == '<')
+		else if (command->cmd[i] == '<')
 			in_out_redirection(command, STDIN_FILENO, i++);
 		i++;
 	}

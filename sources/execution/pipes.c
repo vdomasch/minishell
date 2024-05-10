@@ -41,7 +41,7 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 		if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
 			exit(1);
 	}
-	exec_redirections(cmd, pipe_fds, i);
+	exec_redirections(cmd, data->nb_pipes, pipe_fds, i);
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
@@ -72,12 +72,14 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 	command = data->cmd_list;
 	while (command)
 	{
-		pid = fork();
-		if (pid == 0)
-			child(data, command, pipe_fds, i);
-		else if (pid < 0)
-			exit(1);
-		exec_builtins(data);
+		if (!exec_builtins(data, command))
+		{
+			pid = fork();
+			if (pid == 0)
+				child(data, command, pipe_fds, i);
+			else if (pid < 0)
+				exit(1);
+		}
 		command = command->next;
 		i += 2;
 	}

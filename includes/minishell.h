@@ -89,10 +89,10 @@ char		*allocate_variable(char *env);
 char		*allocate_value(char *env);
 void		free_env(t_env *env, char **v_path);
 int			exec(t_data *data, t_command *cmd, int i);
-bool		exec_builtins(t_data *data);
+bool		exec_builtins(t_data *data, t_command *cmd);
 void		pipes_commands(t_data *data, t_command *command, unsigned int i);
-void		exec_redirections(t_command *command, int *pipe_fds,
-							  unsigned int pipe_id);
+void		exec_redirections(t_command *command, unsigned int nb_pipes,
+							  int *pipe_fds, unsigned int pipe_id);
 void		in_out_redirection(t_command *command, int pipe_fd, int i);
 char		*next_redirection_name(t_command *cmd, int i);
 

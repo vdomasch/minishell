@@ -12,19 +12,19 @@
 
 #include "../../includes/minishell.h"
 
-bool	exec_builtins(t_data *data)
+bool	exec_builtins(t_data *data, t_command *cmd)
 {
 	if (!ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
 	{
 		printf("exit\n");
-		if (data->cmd_list->v_cmd[1])
-			exit(ft_atoi(data->cmd_list->v_cmd[1]));
+		if (cmd->v_cmd[1])
+			exit(ft_atoi(cmd->v_cmd[1]));
 		else
 			exit(0);
 	}
-	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "cd", 3))
+	else if (!ft_strncmp(cmd->v_cmd[0], "cd", 3))
 		ft_cd(data, data->cmd_list->v_cmd);
-	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "export", 7))
+	else if (!ft_strncmp(cmd->v_cmd[0], "export", 7))
 	//	ft_export(data);
 		(void)data;
 	else
