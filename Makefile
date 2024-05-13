@@ -21,6 +21,7 @@ FILES				=	main.c								\
 							execution/pipes.c				\
 							execution/builtins/ft_pwd.c		\
 							execution/builtins/ft_echo.c	\
+							execution/builtins/ft_env.c		\
 							execution/builtins/ft_export.c	\
 							execution/builtins/ft_cd.c		\
 							parsing/process_message.c		\

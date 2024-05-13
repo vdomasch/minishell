@@ -37,15 +37,13 @@ static bool	exec_builtins_child(t_data *data)
 	if (!ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
 		;
 	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "cd", 3))
-		//ft_chdir();
 		;
 	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "pwd", 4))
 		ft_pwd();
 	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "echo", 5))
 		ft_echo(data->cmd_list->v_cmd);
 	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "env", 4))
-		//ft_env();
-		;
+		ft_env(data->env_list);
 	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "export", 7))
 	//	ft_export_child(data)
 		;

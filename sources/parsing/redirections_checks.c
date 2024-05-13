@@ -30,7 +30,8 @@ bool	is_more_than_two_redirections(const char *str)
 		}
 		if (count > 2)
 			return (true);
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (false);
 }
