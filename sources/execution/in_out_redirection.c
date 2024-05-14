@@ -27,7 +27,7 @@ static void	append_redirection(t_command *cmd, int pipe_fd, int i)
 				exit (1);
 	}
 	free(pathname);
-	//close(fd);
+	close(fd);
 }
 
 static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
@@ -45,7 +45,7 @@ static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
 				exit (1);
 	}
 	free(pathname);
-	//close(fd);
+	close(fd);
 }
 
 static void	input_redirection(t_command *cmd, int pipe_fd, int i)
@@ -65,7 +65,7 @@ static void	input_redirection(t_command *cmd, int pipe_fd, int i)
 				exit(1);
 	}
 	free(pathname);
-	//close(fd);
+	close(fd);
 }
 
 void	in_out_redirection(t_command *command, int pipe_fd, int i)
@@ -80,4 +80,5 @@ void	in_out_redirection(t_command *command, int pipe_fd, int i)
 		;
 	else if (command->cmd[i - 1] == '<')
 		input_redirection(command, pipe_fd, i);
+	(void)pipe_fd;
 }

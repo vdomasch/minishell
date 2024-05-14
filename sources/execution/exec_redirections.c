@@ -11,6 +11,81 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+/*
+static void	append_redirection(t_command *cmd, int pipe_fd, int i)
+{
+	int		fd;
+	char	*pathname;
+
+	pathname = next_redirection_name(cmd, i);
+	if (!pathname)
+		return ;
+	fd = open(pathname, O_CREAT | O_APPEND | O_WRONLY, 0600);
+	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname)))
+	{
+		if (dup2(fd, pipe_fd) < 0)
+			exit (1);
+	}
+	free(pathname);
+	close(fd);
+}
+
+static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
+{
+	int		fd;
+	char	*pathname;
+
+	pathname = next_redirection_name(cmd, i);
+	if (!pathname)
+		return ;
+	fd = open(pathname, O_CREAT | O_TRUNC | O_WRONLY, 0600);
+	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname)))
+	{
+		if (dup2(fd, pipe_fd) < 0)
+			exit (1);
+	}
+	free(pathname);
+	close(fd);
+}
+
+static void	input_redirection(t_command *cmd, int pipe_fd, int i)
+{
+	int		fd;
+	char	*pathname;
+
+	pathname = next_redirection_name(cmd, i);
+	if (!pathname)
+		return ;
+	fd = open(pathname, O_RDONLY, 0600);
+	if (fd < 0)
+		printf("No such file or directory\n");
+	if (!ft_strncmp(pathname, cmd->input_redirection, ft_strlen(pathname)))
+	{
+		if (dup2(fd, pipe_fd) < 0)
+			exit(1);
+	}
+	free(pathname);
+	close(fd);
+}
+
+void	in_out_redirection(t_command *command, int pipe_fd, int i)
+{
+	(void)pipe_fd;
+	if (command->cmd[i] == '>' || command->cmd[i] == '<')
+		i++;
+	if (command->cmd[i - 1] == '>' && command->cmd[i] == '>')
+		append_redirection(command, pipe_fd, i + 1);
+	else if (command->cmd[i - 1] == '>')
+		trunc_redirection(command, pipe_fd, i);
+	else if (command->cmd[i - 1] == '<' && command->cmd[i] == '<')
+		;
+	else if (command->cmd[i - 1] == '<')
+		input_redirection(command, pipe_fd, i);
+}
+*/
+
+
+
 
 bool	is_there_chr(char *str, char c)
 {
@@ -117,14 +192,17 @@ void	exec_redirections(t_command *command, unsigned int nb_pipes,
 	command->output_redirection = redirection(command, '>');
 	while (command->cmd[i])
 	{
-		if (pipe_fds && pipe_id != 2 * nb_pipes && command->cmd[i] == '>')
-			in_out_redirection(command, pipe_fds[pipe_id + 1], i++);
-		else if (command->cmd[i] == '>')
+		/*if (pipe_fds && pipe_id != 2 * nb_pipes && command->cmd[i] == '>')
 			in_out_redirection(command, STDOUT_FILENO, i++);
-		else if (pipe_fds && pipe_id != 2 * nb_pipes && command->cmd[i] == '<')
-			in_out_redirection(command, pipe_fds[pipe_id], i++);
-		else if (command->cmd[i] == '<')
+		else */if (command->cmd[i] == '>')
+			in_out_redirection(command, STDOUT_FILENO, i++);
+		/*else if (pipe_fds && pipe_id != 2 * nb_pipes && command->cmd[i] == '<')
+			in_out_redirection(command, STDIN_FILENO, i++);
+		else */if (command->cmd[i] == '<')
 			in_out_redirection(command, STDIN_FILENO, i++);
 		i++;
 	}
+	(void)nb_pipes;
+	(void)pipe_fds;
+	(void)pipe_id;
 }
