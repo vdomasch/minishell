@@ -31,8 +31,8 @@ int	main(int argc, char **argv, char **env)
 	}
 	signal_set();
 	ft_readline(&data);
+	clear_history();
 	free_env(data.env_list, data.v_path);
 	free_env(NULL, data.env);
 	return (0);
-	(void)env;
 }

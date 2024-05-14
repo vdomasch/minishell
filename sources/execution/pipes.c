@@ -49,6 +49,8 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 		printf("%s: command not found\n", cmd->v_cmd[0]);
 	free_cmd_list(data->cmd_list);
 	free_env(data->env_list, data->v_path);
+	free_env(NULL, data->env);
+	clear_history();
 	free(pipe_fds);
 	free(data->message);
 	exit(0);
