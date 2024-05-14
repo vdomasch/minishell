@@ -111,7 +111,6 @@ void	exec_redirections(t_command *command, unsigned int nb_pipes,
 	int	i;
 
 	i = 0;
-	(void)nb_pipes;
 	if (!is_there_chr(command->cmd, '>') && !is_there_chr(command->cmd, '<'))
 		return ;
 	command->input_redirection = redirection(command, '<');

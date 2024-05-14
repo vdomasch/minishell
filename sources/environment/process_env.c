@@ -96,7 +96,7 @@ bool	put_env_in_list(t_data *data, char **env)
 		return (false);
 	data->env_list->var = allocate_variable(env[i]);
 	data->env_list->value = allocate_value(env[i]);
-	while (env[i])
+	while (env[++i])
 	{
 		data->env_list->next = env_lstnew(data->env_list);
 		if (!data->env_list->next)
@@ -104,7 +104,6 @@ bool	put_env_in_list(t_data *data, char **env)
 		data->env_list = data->env_list->next;
 		data->env_list->var = allocate_variable(env[i]);
 		data->env_list->value = allocate_value(env[i]);
-		i++;
 	}
 	data->env_list = env_first(data->env_list);
 	return (true);
