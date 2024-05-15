@@ -28,12 +28,13 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 		ft_export(data);
 	else
 		return (false);
+	if (!ft_strncmp(cmd->v_cmd[0], "export", 7) && !cmd->v_cmd[1])
+		return (false);
 	return (true);
 }
 
 static bool	exec_builtins_child(t_data *data, t_command *command)
 {
-	(void)data;
 	if (!ft_strncmp(command->v_cmd[0], "exit", 5))
 		;
 	else if (!ft_strncmp(command->v_cmd[0], "cd", 3))
@@ -44,8 +45,8 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 		ft_echo(command->v_cmd);
 	else if (!ft_strncmp(command->v_cmd[0], "env", 4))
 		ft_env(data->env_list);
-	else if (!ft_strncmp(command->v_cmd[0], "export", 7))
-		;//ft_export_child(data);
+	else if (!ft_strncmp(command->v_cmd[0], "export", 7) && !command->v_cmd[1])
+		ft_export_child(data->env);
 	else if (!ft_strncmp(command->v_cmd[0], "unset", 6))
 		;
 	else
