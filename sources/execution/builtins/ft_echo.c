@@ -21,11 +21,11 @@ void	ft_echo(char **v_cmd)
 		i++;
 	while(v_cmd[i])
 	{
-		ft_putstr_fd(v_cmd[i], STDOUT_FILENO);
+		printf("%s", v_cmd[i]);
 		if (v_cmd[i + 1])
-			ft_putchar_fd(' ', STDOUT_FILENO);
+			printf(" ");
 		i++;
 	}
 	if (ft_strncmp(v_cmd[1], "-n", 3))
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		printf("\n");
 }

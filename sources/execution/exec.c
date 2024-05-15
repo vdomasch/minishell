@@ -23,31 +23,30 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 			exit(0);
 	}
 	else if (!ft_strncmp(cmd->v_cmd[0], "cd", 3))
-		ft_cd(data, data->cmd_list->v_cmd);
+		ft_cd(data, cmd->v_cmd);
 	else if (!ft_strncmp(cmd->v_cmd[0], "export", 7))
-	//	ft_export(data);
-		(void)data;
+		ft_export(data);
 	else
 		return (false);
 	return (true);
 }
 
-static bool	exec_builtins_child(t_data *data)
+static bool	exec_builtins_child(t_data *data, t_command *command)
 {
-	if (!ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
+	(void)data;
+	if (!ft_strncmp(command->v_cmd[0], "exit", 5))
 		;
-	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "cd", 3))
+	else if (!ft_strncmp(command->v_cmd[0], "cd", 3))
 		;
-	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "pwd", 4))
+	else if (!ft_strncmp(command->v_cmd[0], "pwd", 4))
 		ft_pwd();
-	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "echo", 5))
-		ft_echo(data->cmd_list->v_cmd);
-	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "env", 4))
+	else if (!ft_strncmp(command->v_cmd[0], "echo", 5))
+		ft_echo(command->v_cmd);
+	else if (!ft_strncmp(command->v_cmd[0], "env", 4))
 		ft_env(data->env_list);
-	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "export", 7))
-	//	ft_export_child(data)
-		;
-	else if (!ft_strncmp(data->cmd_list->v_cmd[0], "unset", 6))
+	else if (!ft_strncmp(command->v_cmd[0], "export", 7))
+		;//ft_export_child(data);
+	else if (!ft_strncmp(command->v_cmd[0], "unset", 6))
 		;
 	else
 		return (false);
@@ -58,7 +57,7 @@ int	exec(t_data *data, t_command *cmd, int i)
 {
 	char	*path;
 
-	if (exec_builtins_child(data))
+	if (exec_builtins_child(data, cmd))
 		return (0);
 	while (data->v_path[i])
 	{
