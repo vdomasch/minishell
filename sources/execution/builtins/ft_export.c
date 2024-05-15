@@ -12,9 +12,38 @@
 
 #include "../../../includes/minishell.h"
 
+bool	new_var_in_env(t_env *env_list, char *var, t_data *data)
+{
+	unsigned int	i;
+	char 			**new_env;
 
+	i = 0;
+	while (data->env[i])
+		i++;
+	new_env = malloc(sizeof(char *) * (i + 1));
+	if (!new_env)
+		return (false);
+	new_env[i] = NULL;
+	i = 0;
+	while (data->env[i])
+	{
+		new_env[i] = data->env[i];
+		i++;
+	}
+	while (env_list && ft_strncmp(env_list->var, var, ft_strlen(var)))
+		env_list = env_list->next;
+	new_env[i] = ft_strfreejoin(ft_strjoin(env_list->var, "="), env_list->value);
+	if (!new_env[i])
+	{
+		free(new_env);
+		return (false);
+	}
+	free(data->env);
+	data->env = new_env;
+	return (true);
+}
 
-bool	new_var_in_list(char *cmd, t_env *env_list, char *var, char **env)
+bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
 {
 	t_env *new;
 
@@ -30,49 +59,45 @@ bool	new_var_in_list(char *cmd, t_env *env_list, char *var, char **env)
 		free(new);
 		return (false);
 	}
-								(void)env;
+	if (new_var_in_env(env_list, var, data))
+	{
+		free(new->var);
+		free(new->value);
+		new->prev->next = NULL;
+		free(new);
+		return (false);
+	}
 	return (true);
 }
 
-bool	replace_existing_var_in_env(char *cmd, char *var, t_data *data)
+bool	replace_existing_var_in_env(char *cmd, t_data *data)
 {
 	int		i;
-	char	**new_env;
-	char 	*tmp;
+	t_env	*list;
 
+	list = data->env_list;
 	i = 0;
 	while (data->env[i])
-		i++;
-	new_env = malloc(sizeof(char *) * i + 1);
-	if (!new_env)
-		return (false);
-	i = 0;
-	while (new_env[i])
 	{
-		if (!ft_strncmp(var, cmd, ft_strlen(var)))
+		if (!ft_strncmp(list->var, cmd, ft_strlen(list->var)))
 		{
-			new_env[i] = ft_strdup(cmd);
-
+			free(data->env[i]);
+			data->env[i] = ft_strdup(cmd);
 		}
-		else
-			new_env[i] = data->env[i];
+		list = list->next;
 		i++;
 	}
-	tmp = data->env[i];
-	free(data->env);
-	free(tmp);
-	data->env = new_env;
 	return (true);
 }
 
-bool	replace_existing_var_in_list(char *cmd, t_env *env_list, t_data *data)
+bool	replace_existing_var(char *cmd, t_env *env_list, t_data *data)
 {
 	if (env_list->value)
 		free(env_list->value);
 	env_list->value = allocate_value(cmd);
 	if (!env_list->value)
 		return (false);
-	replace_existing_var_in_env(cmd, env_list->var, data);
+	replace_existing_var_in_env(cmd, data);
 	return (true);
 }
 
@@ -91,7 +116,7 @@ bool	find_existing_var(t_data *data, char *cmd)
 			&& !strncmp(tmp->var, var, ft_strlen(tmp->var)))
 		{
 			free(var);
-			if (!replace_existing_var_in_list(cmd, tmp, data))
+			if (!replace_existing_var(cmd, tmp, data))
 				return (false);
 			return (true);
 		}
@@ -99,7 +124,7 @@ bool	find_existing_var(t_data *data, char *cmd)
 			break ;
 		tmp = tmp->next;
 	}
-	if (!new_var_in_list(cmd, tmp, var, data->env))
+	if (!new_var_in_list(cmd, tmp, var, data))
 		return (false);
 	return (true);
 }
