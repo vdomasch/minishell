@@ -17,7 +17,7 @@ int	ch_env_pwd(t_data *data, char *path)
 	t_env	*pwd;
 	t_env	*oldpwd;
 	char	*var_path;
-	char 	*env_var_pwd;
+	char	*env_var_pwd;
 
 	pwd = data->env_list;
 	oldpwd = data->env_list;
@@ -71,7 +71,7 @@ bool	relative_path(t_data *data, char *relative_path)
 
 bool	ft_cd(t_data *data, char **v_cmd)
 {
-	t_env *list;
+	t_env	*list;
 
 	list = data->env_list;
 	if (v_cmd[1] && v_cmd[2])
