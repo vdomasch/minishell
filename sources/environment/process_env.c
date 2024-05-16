@@ -23,8 +23,8 @@ void	free_env(t_env *env, char **v_path)
 		while (v_path[i])
 			i++;
 		while (i-- > 0)
-			free(v_path[i]);
-		free(v_path);
+			ft_free(v_path[i]);
+		ft_free(v_path);
 	}
 	if (env)
 	{
@@ -32,9 +32,9 @@ void	free_env(t_env *env, char **v_path)
 		while (env)
 		{
 			tmp = env->next;
-			free(env->value);
-			free(env->var);
-			free(env);
+			ft_free(env->value);
+			ft_free(env->var);
+			ft_free(env);
 			env = tmp;
 		}
 	}
@@ -136,5 +136,5 @@ void	process_env(t_data *data, char **env)
 	path = ft_strdup(temp + 5);
 	data->v_path = ft_split(path, ':');
 	data->env = copy_env(env);
-	free(path);
+	ft_free(path);
 }

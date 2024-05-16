@@ -113,5 +113,6 @@ bool		ft_cd(t_data *data, char **v_cmd);
 char		*ft_getcwd(void);
 
 char		**copy_env(char **env);
+void		ft_free(void *ptr);
 
 #endif

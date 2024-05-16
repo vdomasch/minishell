@@ -12,17 +12,17 @@
 
 #include "../../../includes/minishell.h"
 
-bool	new_var_in_env(t_env *env_list, char *var, t_data *data)
+char **new_var_in_env(char *cmd, t_data *data)
 {
 	unsigned int	i;
 	char 			**new_env;
 
 	i = 0;
-	while (data->env[i])
-		i++;
+	while (data->env[i++])
+		;
 	new_env = malloc(sizeof(char *) * (i + 1));
 	if (!new_env)
-		return (false);
+		return (NULL);
 	new_env[i] = NULL;
 	i = 0;
 	while (data->env[i])
@@ -30,17 +30,14 @@ bool	new_var_in_env(t_env *env_list, char *var, t_data *data)
 		new_env[i] = data->env[i];
 		i++;
 	}
-	while (env_list && ft_strncmp(env_list->var, var, ft_strlen(var)))
-		env_list = env_list->next;
-	new_env[i] = ft_strfreejoin(ft_strjoin(env_list->var, "="), env_list->value);
+	new_env[i] = ft_strdup(cmd);
 	if (!new_env[i])
 	{
-		free(new_env);
-		return (false);
+		ft_free(new_env);
+		return (NULL);
 	}
-	free(data->env);
-	data->env = new_env;
-	return (true);
+	ft_free(data->env);
+	return (new_env);
 }
 
 bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
@@ -54,17 +51,18 @@ bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
 	new->value = allocate_value(cmd);
 	if (!new->value)
 	{
-		free(new->var);
+		ft_free(new->var);
 		new->prev->next = NULL;
-		free(new);
+		ft_free(new);
 		return (false);
 	}
-	if (new_var_in_env(env_list, var, data))
+	data->env = new_var_in_env(cmd, data);
+	if(!data->env)
 	{
-		free(new->var);
-		free(new->value);
+		ft_free(new->var);
+		ft_free(new->value);
 		new->prev->next = NULL;
-		free(new);
+		ft_free(new);
 		return (false);
 	}
 	return (true);
@@ -81,7 +79,7 @@ bool	replace_existing_var_in_env(char *cmd, t_data *data)
 	{
 		if (!ft_strncmp(list->var, cmd, ft_strlen(list->var)))
 		{
-			free(data->env[i]);
+			ft_free(data->env[i]);
 			data->env[i] = ft_strdup(cmd);
 		}
 		list = list->next;
@@ -93,7 +91,7 @@ bool	replace_existing_var_in_env(char *cmd, t_data *data)
 bool	replace_existing_var(char *cmd, t_env *env_list, t_data *data)
 {
 	if (env_list->value)
-		free(env_list->value);
+		ft_free(env_list->value);
 	env_list->value = allocate_value(cmd);
 	if (!env_list->value)
 		return (false);
@@ -115,7 +113,7 @@ bool	find_existing_var(t_data *data, char *cmd)
 		if (!strncmp(tmp->var, var, ft_strlen(var))
 			&& !strncmp(tmp->var, var, ft_strlen(tmp->var)))
 		{
-			free(var);
+			ft_free(var);
 			if (!replace_existing_var(cmd, tmp, data))
 				return (false);
 			return (true);
@@ -142,10 +140,10 @@ bool	ft_export(t_data *data)
 			return (false);
 		i++;
 	}
-	while (tmp->next)
-	{
-		tmp = tmp->next;
-		//printf("var = !%s! et value = !%s!\n", env_list->var, env_list->value);
-	}
+	//while (tmp->next)
+	//{
+	//	tmp = tmp->next;
+	//	printf("var = !%s! et value = !%s!\n", env_list->var, env_list->value);
+	//}
 	return (true);
 }

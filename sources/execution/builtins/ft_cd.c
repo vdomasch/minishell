@@ -37,7 +37,7 @@ int	ch_env_pwd(t_data *data, char *path)
 	if (!var_path)
 		return (false);
 	replace_existing_var(var_path, oldpwd, data);
-	free(var_path);
+	ft_free(var_path);
 	if (chdir(path))
 		return (false);
 	var_path = ft_getcwd();
@@ -45,8 +45,8 @@ int	ch_env_pwd(t_data *data, char *path)
 	if (!var_path)
 		return (false);
 	replace_existing_var(env_var_pwd, pwd, data);
-	free(env_var_pwd);
-	free(var_path);
+	ft_free(env_var_pwd);
+	ft_free(var_path);
 	return (true);
 }
 
@@ -62,10 +62,10 @@ bool	relative_path(t_data *data, char *relative_path)
 		return (false);
 	if (!ch_env_pwd(data, path))
 	{
-		free(path);
+		ft_free(path);
 		return (false);
 	}
-	free(path);
+	ft_free(path);
 	return (true);
 }
 

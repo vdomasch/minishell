@@ -12,6 +12,12 @@
 
 #include "../includes/minishell.h"
 
+void	ft_free(void *ptr)
+{
+	if (ptr)
+		free(ptr);
+}
+
 char	*ft_free_strtrim(char *s1, const char *s2)
 {
 	char	*result;
@@ -19,7 +25,7 @@ char	*ft_free_strtrim(char *s1, const char *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	result = ft_strtrim(s1, s2);
-	free(s1);
+	ft_free(s1);
 	return (result);
 }
 

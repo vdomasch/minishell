@@ -28,7 +28,7 @@ bool	is_command_valid(const char *message)
 		printf(ERR_INVALID_REDIRECTION);
 	else
 		return (true);
-	free((char *)message);
+	ft_free((char *)message);
 	return (false);
 }
 
@@ -66,20 +66,20 @@ bool	split_command(t_data *data, t_command *command)
 		cmd_clean = clean_command(command->cmd);
 		if (!cmd_clean)
 		{
-			free(data->message);
+			ft_free(data->message);
 			free_cmd_list(command);
 			return (false);
 		}
 		command->v_cmd = split_arguments(cmd_clean, " \n\r\t\v\f");
 		if (!command->v_cmd)
 		{
-			free(data->message);
-			free(cmd_clean);
+			ft_free(data->message);
+			ft_free(cmd_clean);
 			free_cmd_list(command);
 			return (false);
 		}
 		command = command->next;
-		free(cmd_clean);
+		ft_free(cmd_clean);
 	}
 	return (true);
 }
@@ -101,7 +101,7 @@ bool	standardize_command(t_data *data, char *message, t_command *command)
 				" \n\r\t\v\f");
 		if (!command->cmd)
 		{
-			free(data->message);
+			ft_free(data->message);
 			free_cmd_list(data->cmd_list);
 			return (false);
 		}
@@ -123,6 +123,6 @@ int	process_message(t_data *data, char *message)
 	else
 		pipes_commands(data, data->cmd_list, 0);
 	free_cmd_list(data->cmd_list);
-	free(data->message);
+	ft_free(data->message);
 	return (0);
 }

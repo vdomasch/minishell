@@ -49,7 +49,7 @@ char	*ft_last_pwd(void)
 		result[i + 1] = ' ';
 		result[i] = '$';
 	}
-	free(save);
+	ft_free(save);
 	return (result);
 }
 
@@ -66,7 +66,7 @@ void	ft_readline(t_data *data)
 		else
 			rl = readline(pwd);
 		if (pwd)
-			free(pwd);
+			ft_free(pwd);
 		if (!rl)
 		{
 			printf("exit\n");
@@ -76,8 +76,8 @@ void	ft_readline(t_data *data)
 		{
 			add_history(rl);
 			if (!str_is_space(rl) && process_message(data, rl) == 1)
-				return (free(rl));
+				return (ft_free(rl));
 		}
-		free(rl);
+		ft_free(rl);
 	}
 }

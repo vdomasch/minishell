@@ -51,8 +51,8 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 	free_env(data->env_list, data->v_path);
 	free_env(NULL, data->env);
 	clear_history();
-	free(pipe_fds);
-	free(data->message);
+	ft_free(pipe_fds);
+	ft_free(data->message);
 	exit(0);
 }
 
@@ -90,5 +90,5 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 		close(pipe_fds[i++]);
 	while (waitpid(0, 0, 0) > 0)
 		;
-	free(pipe_fds);
+	ft_free(pipe_fds);
 }

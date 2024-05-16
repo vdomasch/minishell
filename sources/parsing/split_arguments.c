@@ -108,8 +108,8 @@ char	**split_arguments(const char *s, char *set)
 		if (array[current_word - 1] == NULL)
 		{
 			while (current_word--)
-				free(array[current_word]);
-			free(array);
+				ft_free(array[current_word]);
+			ft_free(array);
 			return (NULL);
 		}
 	}

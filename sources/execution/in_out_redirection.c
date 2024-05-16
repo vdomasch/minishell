@@ -26,7 +26,7 @@ static void	append_redirection(t_command *cmd, int pipe_fd, int i)
 		if (dup2(fd, pipe_fd) < 0)
 			exit (1);
 	}
-	free(pathname);
+	ft_free(pathname);
 	close(fd);
 }
 
@@ -44,7 +44,7 @@ static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
 		if (dup2(fd, pipe_fd) < 0)
 			exit (1);
 	}
-	free(pathname);
+	ft_free(pathname);
 	close(fd);
 }
 
@@ -64,7 +64,7 @@ static void	input_redirection(t_command *cmd, int pipe_fd, int i)
 		if (dup2(fd, pipe_fd) < 0)
 			exit(1);
 	}
-	free(pathname);
+	ft_free(pathname);
 	close(fd);
 }
 

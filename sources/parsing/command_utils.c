@@ -59,20 +59,20 @@ void	free_cmd_list(t_command *cmd)
 	{
 		tmp = cmd->prev;
 		if (cmd->cmd)
-			free(cmd->cmd);
+			ft_free(cmd->cmd);
 		if (cmd->input_redirection)
-			free(cmd->input_redirection);
+			ft_free(cmd->input_redirection);
 		if (cmd->output_redirection)
-			free(cmd->output_redirection);
+			ft_free(cmd->output_redirection);
 		if (cmd->v_cmd)
 		{
 			i = 0;
 			while (cmd->v_cmd[i])
-				free(cmd->v_cmd[i++]);
-			free(cmd->v_cmd);
+				ft_free(cmd->v_cmd[i++]);
+			ft_free(cmd->v_cmd);
 		}
 		if (cmd->prev)
-			free(cmd);
+			ft_free(cmd);
 		cmd = tmp;
 	}
 }
@@ -101,7 +101,7 @@ bool	create_cmd_list(t_data *data)
 		cmd_new(command);
 		if (!command->next)
 		{
-			free(data->message);
+			ft_free(data->message);
 			free_cmd_list(command);
 			return (false);
 		}

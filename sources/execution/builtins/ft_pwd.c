@@ -20,7 +20,7 @@ bool	ft_pwd(void)
 	if (pwd)
 	{
 		printf("%s\n", pwd);
-		free(pwd);
+		ft_free(pwd);
 		return (true);
 	}
 	return (false);
