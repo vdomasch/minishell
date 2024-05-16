@@ -12,10 +12,10 @@
 
 #include "../../../includes/minishell.h"
 
-char **new_var_in_env(char *cmd, t_data *data)
+char	**new_var_in_env(char *cmd, t_data *data)
 {
 	unsigned int	i;
-	char 			**new_env;
+	char			**new_env;
 
 	i = 0;
 	while (data->env[i++])
@@ -42,7 +42,7 @@ char **new_var_in_env(char *cmd, t_data *data)
 
 bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
 {
-	t_env *new;
+	t_env	*new;
 
 	new = env_lstnew(env_list);
 	if (!new)
@@ -57,7 +57,7 @@ bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
 		return (false);
 	}
 	data->env = new_var_in_env(cmd, data);
-	if(!data->env)
+	if (!data->env)
 	{
 		ft_free(new->var);
 		ft_free(new->value);
@@ -68,34 +68,32 @@ bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
 	return (true);
 }
 
-bool	replace_existing_var_in_env(char *cmd, t_data *data)
+bool	replace_existing_var(char *cmd, t_env *env_list, t_data *data)
 {
 	int		i;
 	t_env	*list;
+	char	*tmp;
 
+	if (env_list->value)
+		ft_free(env_list->value);
+	env_list->value = allocate_value(cmd);
+	if (!env_list->value)
+		return (false);
 	list = data->env_list;
 	i = 0;
 	while (data->env[i])
 	{
 		if (!ft_strncmp(list->var, cmd, ft_strlen(list->var)))
 		{
+			tmp = ft_strdup(cmd);
+			if (!tmp)
+				return (false);
 			ft_free(data->env[i]);
-			data->env[i] = ft_strdup(cmd);
+			data->env[i] = tmp;
 		}
 		list = list->next;
 		i++;
 	}
-	return (true);
-}
-
-bool	replace_existing_var(char *cmd, t_env *env_list, t_data *data)
-{
-	if (env_list->value)
-		ft_free(env_list->value);
-	env_list->value = allocate_value(cmd);
-	if (!env_list->value)
-		return (false);
-	replace_existing_var_in_env(cmd, data);
 	return (true);
 }
 
@@ -129,21 +127,14 @@ bool	find_existing_var(t_data *data, char *cmd)
 
 bool	ft_export(t_data *data)
 {
-	int i;
-	t_env *tmp;
+	int		i;
 
 	i = 1;
-	tmp = data->env_list;
 	while (data->cmd_list->v_cmd[i])
 	{
-		if (!find_existing_var(data, data->cmd_list->v_cmd[i])) //verifier les frees
+		if (!find_existing_var(data, data->cmd_list->v_cmd[i]))
 			return (false);
 		i++;
 	}
-	//while (tmp->next)
-	//{
-	//	tmp = tmp->next;
-	//	printf("var = !%s! et value = !%s!\n", env_list->var, env_list->value);
-	//}
 	return (true);
 }

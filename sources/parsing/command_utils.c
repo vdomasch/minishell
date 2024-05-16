@@ -12,40 +12,12 @@
 
 #include "../../includes/minishell.h"
 
-void	print_all(t_command *cmd)
-{
-	int	i;
-
-	while (cmd)
-	{
-		printf("prev %p <-- actual %p --> next %p\n",
-			cmd->prev, cmd, cmd->next);
-		printf("text: !%s!\n", cmd->cmd);
-		i = 0;
-		while (cmd->v_cmd[i])
-		{
-			printf("v_cmd = !%s!\n", cmd->v_cmd[i]);
-			i++;
-		}
-		cmd = cmd->next;
-	}
-}
-
 t_command	*cmd_last(t_command *lst)
 {
 	if (!lst)
 		return (NULL);
 	while (lst->next)
 		lst = lst->next;
-	return (lst);
-}
-
-t_command	*cmd_first(t_command *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->prev)
-		lst = lst->prev;
 	return (lst);
 }
 
