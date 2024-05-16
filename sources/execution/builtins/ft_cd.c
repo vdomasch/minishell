@@ -71,13 +71,20 @@ bool	relative_path(t_data *data, char *relative_path)
 
 bool	ft_cd(t_data *data, char **v_cmd)
 {
+	t_env *list;
+
+	list = data->env_list;
 	if (v_cmd[1] && v_cmd[2])
 	{
 		printf("cd: too many arguments\n");
 		return (false);
 	}
 	else if (!v_cmd[1])
-		return (ch_env_pwd(data, "/home/bhumeau"));
+	{
+		while (list && ft_strncmp(list->var, "HOME", 5))
+			list = list->next;
+		return (ch_env_pwd(data, list->value));
+	}
 	else if (v_cmd[1][0] == '/')
 		return (ch_env_pwd(data, v_cmd[1]));
 	else
