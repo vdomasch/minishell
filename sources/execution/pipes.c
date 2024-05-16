@@ -66,7 +66,7 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 	{
 		pipe_fds = malloc(sizeof(int) * (data->nb_pipes * 2));
 		if (!pipe_fds)
-			return;
+			return ;
 		open_pipes(data->nb_pipes, pipe_fds);
 	}
 	else

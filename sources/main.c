@@ -19,13 +19,14 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	(void)env;
 	ft_memset(&data, 0, sizeof(t_data));
 	ft_memset(&data.cmd_list, 0, sizeof(t_command));
 	data.cmd_list = &command_list;
 	process_env(&data, env);
 	if (!data.env)
 	{
-		perror("minishell:");
+		perror("minishell: ");
 		free_env(data.env_list, NULL);
 		return (ENOMEM);
 	}

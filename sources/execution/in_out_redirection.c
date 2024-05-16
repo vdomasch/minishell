@@ -23,8 +23,8 @@ static void	append_redirection(t_command *cmd, int pipe_fd, int i)
 	fd = open(pathname, O_CREAT | O_APPEND | O_WRONLY, 0600);
 	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname)))
 	{
-			if (dup2(fd, pipe_fd) < 0)
-				exit (1);
+		if (dup2(fd, pipe_fd) < 0)
+			exit (1);
 	}
 	free(pathname);
 	close(fd);
@@ -41,8 +41,8 @@ static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
 	fd = open(pathname, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname)))
 	{
-			if (dup2(fd, pipe_fd) < 0)
-				exit (1);
+		if (dup2(fd, pipe_fd) < 0)
+			exit (1);
 	}
 	free(pathname);
 	close(fd);
@@ -61,8 +61,8 @@ static void	input_redirection(t_command *cmd, int pipe_fd, int i)
 		printf("No such file or directory\n");
 	if (!ft_strncmp(pathname, cmd->input_redirection, ft_strlen(pathname)))
 	{
-			if (dup2(fd, pipe_fd) < 0)
-				exit(1);
+		if (dup2(fd, pipe_fd) < 0)
+			exit(1);
 	}
 	free(pathname);
 	close(fd);
@@ -80,5 +80,4 @@ void	in_out_redirection(t_command *command, int pipe_fd, int i)
 		;
 	else if (command->cmd[i - 1] == '<')
 		input_redirection(command, pipe_fd, i);
-	(void)pipe_fd;
 }

@@ -14,12 +14,12 @@
 
 void	ft_echo(char **v_cmd)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (!ft_strncmp(v_cmd[1], "-n", 3))
 		i++;
-	while(v_cmd[i])
+	while (v_cmd[i])
 	{
 		printf("%s", v_cmd[i]);
 		if (v_cmd[i + 1])

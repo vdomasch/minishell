@@ -116,8 +116,11 @@ void	process_env(t_data *data, char **env)
 	int		i;
 
 	i = 0;
-	if (!env)
-		return ;
+	if (!env || !*env)
+	{
+		printf("minishell: env not found\n");
+		exit(0);
+	}
 	put_env_in_list(data, env);
 	while (env[i])
 	{

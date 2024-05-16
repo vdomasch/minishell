@@ -44,6 +44,4 @@ bool	ft_cd(t_data *data, char **v_cmd)
 		return (chdir(v_cmd[1]));
 	else
 		return (relative_path(v_cmd[1]));
-	(void)data;
-	//change_env();
 }
