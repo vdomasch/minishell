@@ -12,7 +12,45 @@
 
 #include "../../../includes/minishell.h"
 
-bool	relative_path(char *relative_path)
+int	ch_env_pwd(t_data *data, char *path)
+{
+	t_env	*pwd;
+	t_env	*oldpwd;
+	char	*var_path;
+	char 	*env_var_pwd;
+
+	pwd = data->env_list;
+	oldpwd = data->env_list;
+	while (pwd)
+	{
+		if (!ft_strncmp(pwd->var, "PWD", 4))
+			break ;
+		pwd = pwd->next;
+	}
+	while (oldpwd)
+	{
+		if (!ft_strncmp(oldpwd->var, "OLDPWD", 7))
+			break ;
+		oldpwd = oldpwd->next;
+	}
+	var_path = ft_strjoin("OLDPWD=", pwd->value);
+	if (!var_path)
+		return (false);
+	replace_existing_var(var_path, oldpwd, data);
+	free(var_path);
+	if (chdir(path))
+		return (false);
+	var_path = ft_getcwd();
+	env_var_pwd = ft_strjoin("PWD=", var_path);
+	if (!var_path)
+		return (false);
+	replace_existing_var(env_var_pwd, pwd, data);
+	free(env_var_pwd);
+	free(var_path);
+	return (true);
+}
+
+bool	relative_path(t_data *data, char *relative_path)
 {
 	char	*path;
 
@@ -22,7 +60,7 @@ bool	relative_path(char *relative_path)
 	path = ft_strfreejoin(ft_strfreejoin(path, "/"), relative_path);
 	if (!path)
 		return (false);
-	if (!chdir(path))
+	if (!ch_env_pwd(data, path))
 	{
 		free(path);
 		return (false);
@@ -39,9 +77,9 @@ bool	ft_cd(t_data *data, char **v_cmd)
 		return (false);
 	}
 	else if (!v_cmd[1])
-		return (chdir("/home/bhumeau"));
+		return (ch_env_pwd(data, "/home/bhumeau"));
 	else if (v_cmd[1][0] == '/')
-		return (chdir(v_cmd[1]));
+		return (ch_env_pwd(data, v_cmd[1]));
 	else
-		return (relative_path(v_cmd[1]));
+		return (relative_path(data, v_cmd[1]));
 }

@@ -106,6 +106,7 @@ bool		ft_pwd(void);
 void		ft_echo(char **v_cmd);
 void		ft_env(t_env *env_list);
 bool		ft_export(t_data *data);
+bool		replace_existing_var(char *cmd, t_env *env_list, t_data *data);
 void		ft_export_child(char **env);
 bool		ft_cd(t_data *data, char **v_cmd);
 
