@@ -14,9 +14,9 @@
 
 bool	exec_builtins(t_data *data, t_command *cmd)
 {
-	if (!*cmd->v_cmd)
+	if (!cmd->v_cmd || !*cmd->v_cmd)
 		return (false);
-	if (!ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
+	if (*data->cmd_list->v_cmd && !ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
 	{
 		printf("exit\n");
 		if (cmd->v_cmd[1])
@@ -24,7 +24,7 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 		else
 			exit(0);
 	}
-	else if (!ft_strncmp(cmd->v_cmd[0], "cd", 3))
+	if (!ft_strncmp(cmd->v_cmd[0], "cd", 3))
 		ft_cd(data, cmd->v_cmd);
 	else if (!ft_strncmp(cmd->v_cmd[0], "export", 7))
 		ft_export(data);
@@ -37,7 +37,7 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 
 static bool	exec_builtins_child(t_data *data, t_command *command)
 {
-	if (!*command->v_cmd)
+	if (!command->v_cmd || !*command->v_cmd)
 		return (false);
 	if (!ft_strncmp(command->v_cmd[0], "exit", 5))
 		;
@@ -67,11 +67,11 @@ int	exec(t_data *data, t_command *cmd, int i)
 		return (0);
 	while (data->v_path[i])
 	{
-		if (!*cmd->v_cmd)
+		if (!cmd->v_cmd || !*cmd->v_cmd)
 			return (2);
 		path = ft_strjoin(data->v_path[i], "/");
 		path = ft_strfreejoin(path, cmd->v_cmd[0]);
-		execve(path, &cmd->v_cmd[0], data->env);
+		execve(path, cmd->v_cmd, data->env);
 		ft_free(path);
 		i++;
 	}

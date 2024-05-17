@@ -71,7 +71,6 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 	}
 	else
 		pipe_fds = NULL;
-	command = data->cmd_list;
 	while (command)
 	{
 		if (!exec_builtins(data, command))
