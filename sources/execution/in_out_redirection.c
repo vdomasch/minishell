@@ -26,7 +26,7 @@ static void	append_redirection(t_command *cmd, int pipe_fd, int i)
 		if (dup2(fd, pipe_fd) < 0)
 			exit (1);
 	}
-	ft_free(pathname);
+	free(pathname);
 	close(fd);
 }
 
@@ -44,7 +44,7 @@ static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
 		if (dup2(fd, pipe_fd) < 0)
 			exit (1);
 	}
-	ft_free(pathname);
+	free(pathname);
 	close(fd);
 }
 
@@ -64,7 +64,7 @@ static void	input_redirection(t_command *cmd, int pipe_fd, int i)
 		if (dup2(fd, pipe_fd) < 0)
 			exit(1);
 	}
-	ft_free(pathname);
+	free(pathname);
 	close(fd);
 }
 
@@ -77,7 +77,7 @@ void	in_out_redirection(t_command *command, int pipe_fd, int i)
 	else if (command->cmd[i - 1] == '>')
 		trunc_redirection(command, pipe_fd, i);
 	else if (command->cmd[i - 1] == '<' && command->cmd[i] == '<')
-		;
+		heredoc_redirection(command, pipe_fd, i + 1);
 	else if (command->cmd[i - 1] == '<')
 		input_redirection(command, pipe_fd, i);
 }

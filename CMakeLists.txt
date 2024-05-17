@@ -78,6 +78,7 @@ add_executable(minishell
         sources/execution/builtins/ft_cd.c
         sources/environment/env_array.c
         sources/execution/builtins/ft_env.c
-        sources/execution/builtins/ft_export_child.c)
+        sources/execution/builtins/ft_export_child.c
+        sources/execution/heredoc_redirection.c)
 
 target_link_libraries(minishell readline)

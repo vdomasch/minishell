@@ -25,6 +25,12 @@
 # include <signal.h>
 # include <wait.h>
 
+typedef struct s_heredoc
+{
+	char				*line;
+	struct s_heredoc	*next;
+}	t_heredoc;
+
 typedef struct s_env
 {
 	char			*var;
@@ -94,6 +100,7 @@ void		pipes_commands(t_data *data, t_command *command, unsigned int i);
 void		exec_redirections(t_command *command, unsigned int nb_pipes,
 				int *pipe_fds, unsigned int pipe_id);
 void		in_out_redirection(t_command *command, int pipe_fd, int i);
+void		heredoc_redirection(t_command *cmd, int pipe_fd, int i);
 char		*next_redirection_name(t_command *cmd, int i);
 
 void		print_all(t_command *cmd);
