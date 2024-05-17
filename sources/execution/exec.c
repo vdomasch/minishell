@@ -14,6 +14,8 @@
 
 bool	exec_builtins(t_data *data, t_command *cmd)
 {
+	if (!*cmd->v_cmd)
+		return (false);
 	if (!ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
 	{
 		printf("exit\n");
@@ -35,6 +37,8 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 
 static bool	exec_builtins_child(t_data *data, t_command *command)
 {
+	if (!*command->v_cmd)
+		return (false);
 	if (!ft_strncmp(command->v_cmd[0], "exit", 5))
 		;
 	else if (!ft_strncmp(command->v_cmd[0], "cd", 3))
@@ -62,10 +66,13 @@ int	exec(t_data *data, t_command *cmd, int i)
 		return (0);
 	while (data->v_path[i])
 	{
-		path = ft_strjoin(data->v_path[i], "/");
-		path = ft_strfreejoin(path, cmd->v_cmd[0]);
-		execve(path, &cmd->v_cmd[0], data->env);
-		ft_free(path);
+		if (*cmd->v_cmd)
+		{
+			path = ft_strjoin(data->v_path[i], "/");
+			path = ft_strfreejoin(path, cmd->v_cmd[0]);
+			execve(path, &cmd->v_cmd[0], data->env);
+			ft_free(path);
+		}
 		i++;
 	}
 	return (1);
