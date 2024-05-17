@@ -62,17 +62,17 @@ int	exec(t_data *data, t_command *cmd, int i)
 {
 	char	*path;
 
+
 	if (exec_builtins_child(data, cmd))
 		return (0);
 	while (data->v_path[i])
 	{
-		if (*cmd->v_cmd)
-		{
-			path = ft_strjoin(data->v_path[i], "/");
-			path = ft_strfreejoin(path, cmd->v_cmd[0]);
-			execve(path, &cmd->v_cmd[0], data->env);
-			ft_free(path);
-		}
+		if (!*cmd->v_cmd)
+			return (2);
+		path = ft_strjoin(data->v_path[i], "/");
+		path = ft_strfreejoin(path, cmd->v_cmd[0]);
+		execve(path, &cmd->v_cmd[0], data->env);
+		ft_free(path);
 		i++;
 	}
 	return (1);

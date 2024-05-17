@@ -45,7 +45,7 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	if (exec(data, cmd, 0) == 1 && cmd->v_cmd)
+	if (exec(data, cmd, 0) == 1 && *cmd->v_cmd)
 		printf("%s: command not found\n", cmd->v_cmd[0]);
 	free_cmd_list(data->cmd_list);
 	free_env(data->env_list, data->v_path);
