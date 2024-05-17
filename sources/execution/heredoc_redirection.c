@@ -31,7 +31,7 @@ static void	heredocument(t_command *cmd, char *eof, int fd)
 
 static void	heredoc_child(t_command *cmd, char *eof, int *fd)
 {
-	signal_set_child();
+	signal(SIGQUIT, SIG_IGN);
 	close(fd[0]);
 	heredocument(cmd, eof, fd[1]);
 	close(fd[1]);
@@ -42,7 +42,9 @@ static void	heredoc_parent(t_command *cmd, char *eof, int *fd)
 {
 	int	status;
 
+	signal(SIGQUIT, SIG_IGN);
 	waitpid(0, &status, 0);
+	signal_set();
 	close(fd[1]);
 	if (WIFEXITED(status))
 	{
