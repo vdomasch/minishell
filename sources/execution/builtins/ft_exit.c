@@ -14,7 +14,7 @@
 
 void	ft_exit(t_data *data, t_command *cmd)
 {
-	int tmp;
+	int	tmp;
 
 	tmp = 0;
 	if (cmd->v_cmd[1])

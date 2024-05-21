@@ -12,9 +12,9 @@
 
 #include "../../../includes/minishell.h"
 
-bool 	echo_option(char *str)
+static bool	echo_option(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (str[i] == '-')

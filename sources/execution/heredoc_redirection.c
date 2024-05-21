@@ -20,7 +20,8 @@ static void	heredocument(t_command *cmd, char *eof, int fd)
 	{
 		line = readline("> ");
 		if (!line)
-			ft_putstr_fd("minishell: warning: here-document delimited by end-of-file\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: warning: here-document delimited by"
+				"end-of-file\n", STDERR_FILENO);
 		if (!ft_strncmp(line, eof, ft_strlen(eof) + 1))
 			break ;
 		ft_putstr_fd(line, fd);
