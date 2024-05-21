@@ -17,6 +17,8 @@ void	ft_echo(char **v_cmd)
 	int	i;
 
 	i = 1;
+	if (!v_cmd || *v_cmd)
+		return ;
 	if (!ft_strncmp(v_cmd[1], "-n", 3))
 		i++;
 	while (v_cmd[i])

@@ -28,7 +28,7 @@ static void	open_pipes(unsigned int nb_pipes, int *pipe_fds)
 	}
 }
 
-static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
+static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 {
 	signal_set_child();
 	if (cmd->next)
@@ -56,12 +56,23 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 	exit(0);
 }
 
+static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
+{
+	int pid;
+
+	pid = fork();
+	if (pid == 0)
+		child_exec(data, cmd, pipe_fds, i);
+	else if (pid < 0)
+		exit(1);
+}
+
 void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 {
-	int				pid;
 	int				*pipe_fds;
 
 	i = 0;
+	pipe_fds = NULL;
 	if (data->nb_pipes)
 	{
 		pipe_fds = malloc(sizeof(int) * (data->nb_pipes * 2));
@@ -69,18 +80,10 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 			return ;
 		open_pipes(data->nb_pipes, pipe_fds);
 	}
-	else
-		pipe_fds = NULL;
 	while (command)
 	{
 		if (!exec_builtins(data, command))
-		{
-			pid = fork();
-			if (pid == 0)
-				child(data, command, pipe_fds, i);
-			else if (pid < 0)
-				exit(1);
-		}
+			child(data, command, pipe_fds, i);
 		command = command->next;
 		i += 2;
 	}

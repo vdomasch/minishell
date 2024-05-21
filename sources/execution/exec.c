@@ -16,14 +16,9 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 {
 	if (!cmd->v_cmd || !*cmd->v_cmd)
 		return (false);
-	if (*data->cmd_list->v_cmd && !ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
-	{
-		printf("exit\n");
-		if (cmd->v_cmd[1])
-			exit(ft_atoi(cmd->v_cmd[1]));
-		else
-			exit(0);
-	}
+	if (*data->cmd_list->v_cmd
+		&& !ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
+		ft_exit(data, cmd);
 	if (!ft_strncmp(cmd->v_cmd[0], "cd", 3))
 		ft_cd(data, cmd->v_cmd);
 	else if (!ft_strncmp(cmd->v_cmd[0], "export", 7))
@@ -61,7 +56,6 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 int	exec(t_data *data, t_command *cmd, int i)
 {
 	char	*path;
-
 
 	if (exec_builtins_child(data, cmd))
 		return (0);

@@ -21,6 +21,8 @@ static void	append_redirection(t_command *cmd, int pipe_fd, int i)
 	if (!pathname)
 		return ;
 	fd = open(pathname, O_CREAT | O_APPEND | O_WRONLY, 0600);
+	if (fd < 0)
+		perror("bash: ");
 	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname)))
 	{
 		if (dup2(fd, pipe_fd) < 0)
@@ -39,6 +41,11 @@ static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
 	if (!pathname)
 		return ;
 	fd = open(pathname, O_CREAT | O_TRUNC | O_WRONLY, 0600);
+	if (fd < 0)
+	{
+		perror("bash: ");
+
+	}
 	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname)))
 	{
 		if (dup2(fd, pipe_fd) < 0)
@@ -58,7 +65,7 @@ static void	input_redirection(t_command *cmd, int pipe_fd, int i)
 		return ;
 	fd = open(pathname, O_RDONLY, 0600);
 	if (fd < 0)
-		printf("No such file or directory\n");
+		perror("bash: ");
 	if (!ft_strncmp(pathname, cmd->input_redirection, ft_strlen(pathname)))
 	{
 		if (dup2(fd, pipe_fd) < 0)

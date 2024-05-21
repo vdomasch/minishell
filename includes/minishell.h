@@ -112,6 +112,7 @@ char		*ft_free_strtrim(char *s1, const char *s2);
 bool		ft_pwd(void);
 void		ft_echo(char **v_cmd);
 void		ft_env(t_env *env_list);
+void		ft_exit(t_data *data, t_command *cmd);
 bool		ft_export(t_data *data);
 bool		replace_existing_var(char *cmd, t_env *env_list, t_data *data);
 void		ft_export_child(char **env);
