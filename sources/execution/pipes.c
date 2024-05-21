@@ -31,6 +31,7 @@ static void	open_pipes(unsigned int nb_pipes, int *pipe_fds)
 static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 {
 	signal_set_child();
+	exec_redirections(cmd, data->nb_pipes, pipe_fds, i);
 	if (cmd->next)
 	{
 		if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)
@@ -41,7 +42,6 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds, unsigned int
 		if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
 			exit(1);
 	}
-	exec_redirections(cmd, data->nb_pipes, pipe_fds, i);
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);

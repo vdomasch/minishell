@@ -12,14 +12,28 @@
 
 #include "../../../includes/minishell.h"
 
+bool 	echo_option(char *str)
+{
+	int i;
+
+	i = 0;
+	if (str[i] == '-')
+		i++;
+	while (str[i] == 'n')
+		i++;
+	if (str[i] != '\0')
+		return (false);
+	return (true);
+}
+
 void	ft_echo(char **v_cmd)
 {
 	int	i;
 
 	i = 1;
-	if (!v_cmd || *v_cmd)
+	if (!v_cmd || !*v_cmd)
 		return ;
-	if (!ft_strncmp(v_cmd[1], "-n", 3))
+	if (echo_option(v_cmd[1]))
 		i++;
 	while (v_cmd[i])
 	{
@@ -28,6 +42,6 @@ void	ft_echo(char **v_cmd)
 			printf(" ");
 		i++;
 	}
-	if (ft_strncmp(v_cmd[1], "-n", 3))
+	if (!echo_option(v_cmd[1]))
 		printf("\n");
 }
