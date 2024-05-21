@@ -33,7 +33,7 @@ void	ft_echo(char **v_cmd)
 	i = 1;
 	if (!v_cmd || !*v_cmd)
 		return ;
-	if (echo_option(v_cmd[1]))
+	while (echo_option(v_cmd[i]))
 		i++;
 	while (v_cmd[i])
 	{
