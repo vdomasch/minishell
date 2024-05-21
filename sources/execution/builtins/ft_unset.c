@@ -12,6 +12,34 @@
 
 #include "../../../includes/minishell.h"
 
+bool	remove_in_env(t_data *data, char *cmd, int i)
+{
+	char	**new_env;
+	char 	**tmp;
+	int		j;
+
+	while (data->env[i])
+		i++;
+	new_env = malloc(sizeof(char *) * (i + 1));
+	if (!new_env)
+		return (false);
+	i = 0;
+	j = 0;
+	while (data->env[i + j])
+	{
+		if (j == 0 && !ft_strncmp(data->env[i], cmd, ft_strlen(cmd)) && ++j)
+			ft_free(data->env[i]);
+		new_env[i] = data->env[i + j];
+		if (data->env[i + j])
+			i++;
+	}
+	new_env[i] = NULL;
+	tmp = data->env;
+	data->env = new_env;
+	ft_free(tmp);
+	return (true);
+}
+
 void	remove_in_env_list(t_data *data, char *cmd)
 {
 	t_env	*tmp;
@@ -34,16 +62,6 @@ void	remove_in_env_list(t_data *data, char *cmd)
 	}
 }
 
-bool	remove_in_env(t_data *data, char *cmd)
-{
-	//char	**new_env;
-
-	printf("cmd = %s\n\n", cmd);
-	(void)data;
-	(void)cmd;
-	return (true);
-}
-
 bool	find_existing_var_unset(t_data *data, char *cmd)
 {
 	t_env	*tmp;
@@ -54,8 +72,8 @@ bool	find_existing_var_unset(t_data *data, char *cmd)
 		if (!ft_strncmp(tmp->var, cmd, ft_strlen(cmd)))
 		{
 			remove_in_env_list(data, cmd);
-			if (!remove_in_env(data, cmd))
-				return (true);
+			if (!remove_in_env(data, cmd, 0))
+				return (false);
 			return (true);
 		}
 		tmp = tmp->next;
