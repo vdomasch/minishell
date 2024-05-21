@@ -74,9 +74,9 @@ bool	replace_existing_var(char *cmd, t_env *env_list, t_data *data)
 	t_env	*list;
 	char	*tmp;
 
-	if (env_list->value)
-		ft_free(env_list->value);
+	tmp = env_list->value;
 	env_list->value = allocate_value(cmd);
+	ft_free(tmp);
 	if (!env_list->value)
 		return (false);
 	list = data->env_list;

@@ -52,6 +52,8 @@ char	*allocate_value(char *env)
 		i++;
 	if (!env[i])
 		return (NULL);
+	if (env[i + 1] == '\'' || env[i + 1] == '"')
+		i++;
 	len = ft_strlen(env) - i++;
 	value = malloc(sizeof(char) * (len + 1));
 	if (!value)
@@ -70,21 +72,29 @@ char	*allocate_value(char *env)
 char	*allocate_variable(char *env)
 {
 	unsigned int	i;
+	unsigned int	j;
 	char			*variable;
 
 	i = 0;
+	j = 0;
 	while (env[i] && env[i] != '=')
 		i++;
+	if (env[i - 1] == '\'' || env[i - 1] == '"')
+		i--;
 	variable = malloc(sizeof(char) * (i + 1));
 	if (!variable)
 		return (NULL);
 	i = 0;
 	while (env[i] && env[i] != '=')
 	{
-		variable[i] = env[i];
+		if (!(env[i + 1 ] == '=' && (env[i] == '\'' || env[i] == '"')))
+		{
+			variable[j] = env[i];
+			j++;
+		}
 		i++;
 	}
-	variable[i] = '\0';
+	variable[j] = '\0';
 	return (variable);
 }
 

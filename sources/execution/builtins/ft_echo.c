@@ -35,6 +35,7 @@ void	ft_echo(char **v_cmd)
 		return ;
 	while (echo_option(v_cmd[i]))
 		i++;
+	printf("|%s|\n", v_cmd[1]);
 	while (v_cmd[i])
 	{
 		printf("%s", v_cmd[i]);

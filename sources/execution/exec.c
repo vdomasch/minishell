@@ -47,7 +47,7 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 	else if (!ft_strncmp(command->v_cmd[0], "env", 4))
 		ft_env(data->env_list);
 	else if (!ft_strncmp(command->v_cmd[0], "export", 7) && !command->v_cmd[1])
-		ft_export_child(data->env);
+		ft_export_child(data->env_list);
 	else if (!ft_strncmp(command->v_cmd[0], "unset", 6))
 		;
 	else
