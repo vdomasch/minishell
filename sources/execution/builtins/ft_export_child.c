@@ -18,5 +18,5 @@ void	ft_export_child(char **env)
 
 	i = 0;
 	while (env[i])
-		printf("declare -x %s\n", env[i++]);
+		printf("declare -x \"%s\"\n", env[i++]);
 }

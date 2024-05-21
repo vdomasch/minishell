@@ -117,6 +117,8 @@ bool		ft_export(t_data *data);
 bool		replace_existing_var(char *cmd, t_env *env_list, t_data *data);
 void		ft_export_child(char **env);
 bool		ft_cd(t_data *data, char **v_cmd);
+bool		ft_unset(t_data *data);
+bool		is_there_chr(char *str, char c);
 
 char		*ft_getcwd(void);
 

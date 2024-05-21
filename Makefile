@@ -27,6 +27,7 @@ FILES				=	main.c										\
 							execution/builtins/ft_export.c			\
 							execution/builtins/ft_export_child.c	\
 							execution/builtins/ft_cd.c				\
+							execution/builtins/ft_unset.c			\
 							parsing/process_message.c				\
 							parsing/dollars.c						\
 							parsing/redirections.c					\

@@ -50,6 +50,8 @@ char	*allocate_value(char *env)
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
+	if (!env[i])
+		return (NULL);
 	len = ft_strlen(env) - i++;
 	value = malloc(sizeof(char) * (len + 1));
 	if (!value)

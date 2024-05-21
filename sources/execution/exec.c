@@ -23,6 +23,8 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 		ft_cd(data, cmd->v_cmd);
 	else if (!ft_strncmp(cmd->v_cmd[0], "export", 7))
 		ft_export(data);
+	else if (!ft_strncmp(cmd->v_cmd[0], "unset", 6))
+		ft_unset(data);
 	else
 		return (false);
 	if (!ft_strncmp(cmd->v_cmd[0], "export", 7) && !cmd->v_cmd[1])

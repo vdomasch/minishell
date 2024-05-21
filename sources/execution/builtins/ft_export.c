@@ -22,7 +22,7 @@ char	**new_var_in_env(char *cmd, t_data *data)
 		;
 	new_env = malloc(sizeof(char *) * (i + 1));
 	if (!new_env)
-		return (NULL);
+		return (data->env);
 	new_env[i] = NULL;
 	i = 0;
 	while (data->env[i])
@@ -34,7 +34,7 @@ char	**new_var_in_env(char *cmd, t_data *data)
 	if (!new_env[i])
 	{
 		ft_free(new_env);
-		return (NULL);
+		return (data->env);
 	}
 	ft_free(data->env);
 	return (new_env);
@@ -49,7 +49,7 @@ bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
 		return (false);
 	new->var = var;
 	new->value = allocate_value(cmd);
-	if (!new->value)
+	if (!new->value && is_there_chr(cmd, '=') && *ft_strrchr(cmd, '=') + 1 != '\0')
 	{
 		ft_free(new->var);
 		new->prev->next = NULL;
