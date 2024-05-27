@@ -33,7 +33,7 @@ static size_t	count_size(char *msg, t_env *env, int i, size_t count)
 		{
 			i++;
 			env = env_first(env);
-			while (env->next)
+			while (env)
 			{
 				if (!ft_strncmp(msg + i, env->var, ft_strlen(env->var)))
 				{
@@ -58,7 +58,7 @@ static void	replace(t_data *data, char *result, int *i, int *j)
 	k = 0;
 	(*i)++;
 	data->env_list = env_first(data->env_list);
-	while (data->env_list->next)
+	while (data->env_list)
 	{
 		if (check_env_var_name(data, *i))
 		{
@@ -66,7 +66,10 @@ static void	replace(t_data *data, char *result, int *i, int *j)
 				result[(*j)++] = data->env_list->value[k++];
 			break ;
 		}
-		data->env_list = data->env_list->next;
+		if (data->env_list->next)
+			data->env_list = data->env_list->next;
+		else
+			break ;
 	}
 	while (ft_isalnum(data->message[*i]) || data->message[*i] == '_')
 		(*i)++;

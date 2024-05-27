@@ -17,6 +17,8 @@ static bool	echo_option(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return false;
 	if (str[i] == '-')
 		i++;
 	while (str[i] == 'n')
@@ -35,7 +37,6 @@ void	ft_echo(char **v_cmd)
 		return ;
 	while (echo_option(v_cmd[i]))
 		i++;
-	printf("|%s|\n", v_cmd[1]);
 	while (v_cmd[i])
 	{
 		printf("%s", v_cmd[i]);
