@@ -54,7 +54,7 @@ static size_t	count_size(char *msg, t_env *env, int i, size_t count)
 
 static void	replace(t_data *data, char *result, int *i, int *j)
 {
-	int	k;
+	int		k;
 	t_env	*list;
 
 	k = 0;

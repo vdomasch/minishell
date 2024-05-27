@@ -49,7 +49,8 @@ bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
 		return (false);
 	new->var = var;
 	new->value = allocate_value(cmd);
-	if (!new->value && is_there_chr(cmd, '=') && *ft_strrchr(cmd, '=') + 1 != '\0')
+	if (!new->value && is_there_chr(cmd, '=')
+		&& *ft_strrchr(cmd, '=') + 1 != '\0')
 	{
 		ft_free(new->var);
 		new->prev->next = NULL;
@@ -132,6 +133,13 @@ bool	ft_export(t_data *data)
 	i = 1;
 	while (data->cmd_list->v_cmd[i])
 	{
+		if (ft_isdigit(data->cmd_list->v_cmd[i][0]))
+		{
+			ft_putstr_fd("minishell: export: \'", 2);
+			ft_putstr_fd(data->cmd_list->v_cmd[i++], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			continue ;
+		}
 		if (!find_existing_var(data, data->cmd_list->v_cmd[i]))
 			return (false);
 		i++;
