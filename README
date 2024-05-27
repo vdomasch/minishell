@@ -3,5 +3,3 @@ echo $?
 current-fix: export var="'value'" puis echo $var -> value
     '-> manque les ''
        problem multi-quotes
-
-export 1=1 -> invalid var name

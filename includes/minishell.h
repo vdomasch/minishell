@@ -56,6 +56,7 @@ typedef struct s_data
 	char			**env;
 	char			*message;
 	char			**v_path;
+	int 			return_value;
 	unsigned int	nb_pipes;
 }	t_data;
 
@@ -110,7 +111,7 @@ char		**split_arguments(const char *s, char *set);
 char		*ft_free_strtrim(char *s1, const char *s2);
 
 bool		ft_pwd(void);
-void		ft_echo(char **v_cmd);
+void		ft_echo(t_data *data, char **v_cmd);
 void		ft_env(t_env *env_list);
 void		ft_exit(t_data *data, t_command *cmd);
 bool		ft_export(t_data *data);

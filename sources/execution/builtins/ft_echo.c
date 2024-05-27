@@ -28,7 +28,7 @@ static bool	echo_option(char *str)
 	return (true);
 }
 
-void	ft_echo(char **v_cmd)
+void	ft_echo(t_data *data, char **v_cmd)
 {
 	int	i;
 
@@ -39,6 +39,9 @@ void	ft_echo(char **v_cmd)
 		i++;
 	while (v_cmd[i])
 	{
+//		if (!ft_strncmp(v_cmd[i], "$?", 3))
+//			printf("%d", data->return_value);
+//		else
 		printf("%s", v_cmd[i]);
 		if (v_cmd[i + 1])
 			printf(" ");
@@ -46,4 +49,5 @@ void	ft_echo(char **v_cmd)
 	}
 	if (!echo_option(v_cmd[1]))
 		printf("\n");
+	(void)data;
 }

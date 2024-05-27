@@ -43,7 +43,7 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 	else if (!ft_strncmp(command->v_cmd[0], "pwd", 4))
 		ft_pwd();
 	else if (!ft_strncmp(command->v_cmd[0], "echo", 5))
-		ft_echo(command->v_cmd);
+		ft_echo(data, command->v_cmd);
 	else if (!ft_strncmp(command->v_cmd[0], "env", 4))
 		ft_env(data->env_list);
 	else if (!ft_strncmp(command->v_cmd[0], "export", 7) && !command->v_cmd[1])
@@ -55,19 +55,40 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 	return (true);
 }
 
+char *add_absolute_path(t_command *cmd)
+{
+	char *tmp;
+	char *abs_path;
+
+	if (ft_strncmp(cmd->v_cmd[0], "./", 2))
+		return (NULL);
+	tmp = cmd->v_cmd[0];
+	abs_path = getcwd(NULL, 0);
+	if (!abs_path)
+		return (NULL);
+	cmd->v_cmd[0] = ft_strjoin(abs_path, cmd->v_cmd[0] + 1);
+	free(abs_path);
+	free(tmp);
+	return (cmd->v_cmd[0]);
+}
+
 int	exec(t_data *data, t_command *cmd, int i)
 {
 	char	*path;
 
 	if (exec_builtins_child(data, cmd))
 		return (0);
+	path = add_absolute_path(cmd);
 	while (data->v_path[i])
 	{
 		if (!cmd->v_cmd || !*cmd->v_cmd)
 			return (2);
-		path = ft_strjoin(data->v_path[i], "/");
-		path = ft_strfreejoin(path, cmd->v_cmd[0]);
-		execve(path, cmd->v_cmd, data->env);
+		if (!path)
+		{
+			path = ft_strjoin(data->v_path[i], "/");
+			path = ft_strfreejoin(path, cmd->v_cmd[0]);
+		}
+		execve(path, cmd->v_cmd + 1, data->env);
 		ft_free(path);
 		i++;
 	}

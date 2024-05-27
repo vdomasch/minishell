@@ -91,7 +91,13 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	while (waitpid(0, 0, 0) > 0)
+	int status;
+	while (waitpid(0, &status, 0) > 0)
 		;
+//	if (WIFEXITED(status))
+//	{
+//		if (WEXITSTATUS(status))
+//			printf("%d", status);
+//	}
 	ft_free(pipe_fds);
 }
