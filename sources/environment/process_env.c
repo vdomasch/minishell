@@ -87,7 +87,7 @@ char	*allocate_variable(char *env)
 	i = 0;
 	while (env[i] && env[i] != '=')
 	{
-		if (!(env[i + 1 ] == '=' && (env[i] == '\'' || env[i] == '"')))
+		if (!(env[i + 1] == '=' && (env[i] == '\'' || env[i] == '"')))
 		{
 			variable[j] = env[i];
 			j++;

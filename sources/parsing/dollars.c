@@ -23,7 +23,7 @@ static bool	check_env_var_name(char *msg, t_env *list, int i)
 	return (false);
 }
 
-static size_t	count_size(char *msg, t_env *env, int i, size_t count)
+static size_t	count_size(char *msg, t_env *list, int i, size_t count)
 {
 	while (msg[i])
 	{
@@ -33,15 +33,15 @@ static size_t	count_size(char *msg, t_env *env, int i, size_t count)
 		else
 		{
 			i++;
-			env = env_first(env);
-			while (env)
+			list = env_first(list);
+			while (list)
 			{
-				if (check_env_var_name(msg, env, i))
+				if (check_env_var_name(msg, list, i))
 				{
-					count += ft_strlen(env->value);
+					count += ft_strlen(list->value);
 					break ;
 				}
-				env = env->next;
+				list = list->next;
 			}
 			count += i - 1;
 			while (ft_isalnum(msg[i]) || msg[i] == '_')
