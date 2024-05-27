@@ -1,12 +1,7 @@
 echo $?
-parserror: export var="'value'" puis echo $var -> segfault
-    '->fonction check_env_var_name
-    '->export var="''var''" -> segfault
 
 current-fix: export var="'value'" puis echo $var -> value
     '-> manque les ''
-+ conditional jump -> export var="'value'" puis export var2=2 puis echo $notset puis echo $var2
-
-export var=value puis var=value2 = segfault
+       problem multi-quotes
 
 export 1=1 -> invalid var name

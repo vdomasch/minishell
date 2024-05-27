@@ -12,14 +12,15 @@
 
 #include "../../includes/minishell.h"
 
-static bool	check_env_var_name(t_data *data, int i)
+static bool	check_env_var_name(char *msg, t_env *list, int i)
 {
-	return (!ft_strncmp(data->message + i, data->env_list->var,
-			ft_strlen(data->env_list->var)) \
-			&& ((!ft_isalnum(*(data->message \
-			+ (i + ft_strlen(data->env_list->var)))) && *(data->message \
-			+ (i + ft_strlen(data->env_list->var))) != '_') || *(data->message \
-			+ (i + ft_strlen(data->env_list->var))) == 0));
+	if (!ft_strncmp(msg + i, list->var, ft_strlen(list->var)))
+	{
+		i += ft_strlen(list->var);
+		if ((!ft_isalnum(*(msg + i)) && *(msg + i) != '_') || *(msg + i) == 0)
+			return (true);
+	}
+	return (false);
 }
 
 static size_t	count_size(char *msg, t_env *env, int i, size_t count)
@@ -35,7 +36,7 @@ static size_t	count_size(char *msg, t_env *env, int i, size_t count)
 			env = env_first(env);
 			while (env)
 			{
-				if (!ft_strncmp(msg + i, env->var, ft_strlen(env->var)))
+				if (check_env_var_name(msg, env, i))
 				{
 					count += ft_strlen(env->value);
 					break ;
@@ -54,20 +55,21 @@ static size_t	count_size(char *msg, t_env *env, int i, size_t count)
 static void	replace(t_data *data, char *result, int *i, int *j)
 {
 	int	k;
+	t_env	*list;
 
 	k = 0;
 	(*i)++;
-	data->env_list = env_first(data->env_list);
-	while (data->env_list)
+	list = env_first(data->env_list);
+	while (list)
 	{
-		if (check_env_var_name(data, *i))
+		if (check_env_var_name(data->message, list, *i))
 		{
-			while (data->env_list->value[k])
-				result[(*j)++] = data->env_list->value[k++];
+			while (list->value[k])
+				result[(*j)++] = list->value[k++];
 			break ;
 		}
-		if (data->env_list->next)
-			data->env_list = data->env_list->next;
+		if (list->next)
+			list = list->next;
 		else
 			break ;
 	}
