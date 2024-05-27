@@ -44,7 +44,6 @@ static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
 	if (fd < 0)
 	{
 		perror("bash: ");
-
 	}
 	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname)))
 	{

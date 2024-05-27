@@ -15,7 +15,7 @@
 bool	remove_in_env(t_data *data, char *cmd, int i)
 {
 	char	**new_env;
-	char 	**tmp;
+	char	**tmp;
 	int		j;
 
 	while (data->env[i])

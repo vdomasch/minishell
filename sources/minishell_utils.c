@@ -15,10 +15,7 @@
 void	ft_free(void *ptr)
 {
 	if (ptr)
-	{
 		free(ptr);
-		//ptr = NULL;
-	}
 }
 
 char	*ft_free_strtrim(char *s1, const char *s2)
