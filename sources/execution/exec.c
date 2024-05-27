@@ -76,6 +76,7 @@ int	exec(t_data *data, t_command *cmd, int i)
 {
 	char	*path;
 
+	path = NULL;
 	if (exec_builtins_child(data, cmd))
 		return (0);
 	path = add_absolute_path(cmd);
@@ -88,8 +89,9 @@ int	exec(t_data *data, t_command *cmd, int i)
 			path = ft_strjoin(data->v_path[i], "/");
 			path = ft_strfreejoin(path, cmd->v_cmd[0]);
 		}
-		execve(path, cmd->v_cmd + 1, data->env);
+		execve(path, cmd->v_cmd, data->env);
 		ft_free(path);
+		path = NULL;
 		i++;
 	}
 	return (1);
