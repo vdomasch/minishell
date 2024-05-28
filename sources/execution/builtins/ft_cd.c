@@ -12,11 +12,21 @@
 
 #include "../../../includes/minishell.h"
 
+void	print_error_msg_cd(char *path)
+{
+	char	*command;
+
+	command = ft_strrchr(path, '/') + 1;
+	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(command, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+}
+
 t_env	*find_element_env_list(t_env *list, char *str)
 {
 	while (list)
 	{
-		if (!ft_strncmp(list->var, "PWD", 4))
+		if (!ft_strncmp(list->var, str, ft_strlen(str) + 1))
 			break ;
 		list = list->next;
 	}
@@ -32,13 +42,16 @@ int	ch_env_pwd(t_data *data, char *path)
 
 	pwd = find_element_env_list(data->env_list, "PWD");
 	oldpwd = find_element_env_list(data->env_list, "OLDPWD");
+	if (chdir(path))
+	{
+		print_error_msg_cd(path);
+		return (false);
+	}
 	var_path = ft_strjoin("OLDPWD=", pwd->value);
 	if (!var_path)
 		return (false);
 	replace_existing_var(var_path, oldpwd, data);
 	ft_free(var_path);
-	if (chdir(path))
-		return (false);
 	var_path = ft_getcwd();
 	env_var_pwd = ft_strjoin("PWD=", var_path);
 	if (!var_path)

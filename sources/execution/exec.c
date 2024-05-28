@@ -94,7 +94,7 @@ int	exec(t_data *data, t_command *cmd, int i)
 	{
 		if (!cmd->v_cmd || !*cmd->v_cmd)
 			return (2);
-		if (!path)
+		if (!path && find_element_env_list(data->env_list, "PATH"))
 		{
 			path = ft_strjoin(data->v_path[i], "/");
 			path = ft_strfreejoin(path, cmd->v_cmd[0]);
