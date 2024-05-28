@@ -56,7 +56,7 @@ typedef struct s_data
 	char			**env;
 	char			*message;
 	char			**v_path;
-	int 			return_value;
+	int				return_value;
 	unsigned int	nb_pipes;
 }	t_data;
 
@@ -92,7 +92,7 @@ t_command	*cmd_first(t_command *lst);
 t_env		*env_lstnew(t_env *prev);
 t_env		*env_first(t_env *env);
 void		process_env(t_data *data, char **env);
-bool	put_env_in_list(t_data *data, char **env);
+bool		put_env_in_list(t_data *data, char **env);
 char		*allocate_variable(char *env);
 char		*allocate_value(char *env);
 void		free_env(t_env *env, char **v_path);

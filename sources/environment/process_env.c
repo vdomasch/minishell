@@ -40,9 +40,9 @@ void	free_env(t_env *env, char **v_path)
 	}
 }
 
-char	**init_env()
+char	**init_env(void)
 {
-	char **env_array;
+	char	**env_array;
 
 	env_array = malloc(sizeof(char *) * 4);
 	if (!env_array)

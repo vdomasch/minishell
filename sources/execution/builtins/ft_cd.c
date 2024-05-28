@@ -12,6 +12,17 @@
 
 #include "../../../includes/minishell.h"
 
+t_env	*find_element_env_list(t_env *list, char *str)
+{
+	while (list)
+	{
+		if (!ft_strncmp(list->var, "PWD", 4))
+			break ;
+		list = list->next;
+	}
+	return (list);
+}
+
 int	ch_env_pwd(t_data *data, char *path)
 {
 	t_env	*pwd;
@@ -19,20 +30,8 @@ int	ch_env_pwd(t_data *data, char *path)
 	char	*var_path;
 	char	*env_var_pwd;
 
-	pwd = data->env_list;
-	oldpwd = data->env_list;
-	while (pwd)
-	{
-		if (!ft_strncmp(pwd->var, "PWD", 4))
-			break ;
-		pwd = pwd->next;
-	}
-	while (oldpwd)
-	{
-		if (!ft_strncmp(oldpwd->var, "OLDPWD", 7))
-			break ;
-		oldpwd = oldpwd->next;
-	}
+	pwd = find_element_env_list(data->env_list, "PWD");
+	oldpwd = find_element_env_list(data->env_list, "OLDPWD");
 	var_path = ft_strjoin("OLDPWD=", pwd->value);
 	if (!var_path)
 		return (false);

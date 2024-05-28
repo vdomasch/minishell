@@ -91,7 +91,6 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	int status;
 	waitpid(0, &status, 0);
 	ft_free(pipe_fds);
 }
