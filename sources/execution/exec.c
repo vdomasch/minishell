@@ -55,21 +55,31 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 	return (true);
 }
 
-char *add_absolute_path(t_command *cmd)
+char	*add_absolute_path(t_command *cmd)
 {
-	char *tmp;
-	char *abs_path;
+	char	*tmp;
+	char	*abs_path;
 
+	if (cmd->v_cmd[0][0] == '/')
+	{
+		tmp = ft_strdup(cmd->v_cmd[0]);
+		if (!tmp)
+			perror("Malloc failed: ");
+		return (tmp);
+	}
 	if (ft_strncmp(cmd->v_cmd[0], "./", 2))
 		return (NULL);
-	tmp = cmd->v_cmd[0];
 	abs_path = getcwd(NULL, 0);
 	if (!abs_path)
+	{
+		perror("Error path: ");
 		return (NULL);
-	cmd->v_cmd[0] = ft_strjoin(abs_path, cmd->v_cmd[0] + 1);
+	}
+	tmp = ft_strjoin(abs_path, cmd->v_cmd[0] + 1);
+	if (!tmp)
+		perror("Malloc failed: ");
 	free(abs_path);
-	free(tmp);
-	return (cmd->v_cmd[0]);
+	return (tmp);
 }
 
 int	exec(t_data *data, t_command *cmd, int i)
@@ -88,6 +98,8 @@ int	exec(t_data *data, t_command *cmd, int i)
 		{
 			path = ft_strjoin(data->v_path[i], "/");
 			path = ft_strfreejoin(path, cmd->v_cmd[0]);
+			if (!path)
+				perror("Malloc failed: ");
 		}
 		execve(path, cmd->v_cmd, data->env);
 		ft_free(path);
