@@ -48,9 +48,16 @@ char	**init_env(void)
 	if (!env_array)
 		return (NULL);
 	env_array[3] = NULL;
-	env_array[0] = ft_getcwd();
+	env_array[0] = NULL;//ft_strjoin("PWD=", ft_getcwd());
 	env_array[1] = ft_strdup("SHLVL=1");
 	env_array[2] = ft_strdup("_=/usr/bin/env");
+	if (!env_array[0] || !env_array[1] || !env_array[2])
+	{
+		ft_free(env_array[0]);
+		ft_free(env_array[1]);
+		ft_free(env_array[2]);
+		free(env_array);
+	}
 	return (env_array);
 }
 
@@ -64,7 +71,8 @@ void	process_env(t_data *data, char **env)
 	if (!env || !*env)
 	{
 		data->env = init_env();
-		put_env_in_list(data, data->env);
+		if (data->env)
+			put_env_in_list(data, data->env);
 		return ;
 	}
 	put_env_in_list(data, env);

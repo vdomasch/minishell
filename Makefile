@@ -46,14 +46,20 @@ CC					=	cc
 
 FLAGS				=	-Wall -Werror -Wextra
 
+DFLAGS				=	-fsanitize=address -g3
+
 RL_FLAGS			=	-lreadline
+
+ifeq ($(DEBUG),true)
+	FLAGS = -Wall -Werror -Wextra $(DFLAGS)
+endif
 
 all:				libft $(OBJS_DIR) $(NAME)
 
 $(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c $(HEADERS)
 						$(CC) $(FLAGS) -c $< -o $@
 
-$(NAME):			$(OBJS_DIR) $(OBJS) $(HEADERS) $(DLIB)/libft.a
+$(NAME):			$(OBJS_DIR) $(OBJS) $(HEADERS) $(DLIB)/libft.a Makefile
 						$(CC) $(FLAGS) $(OBJS) $(DLIB)/libft.a -o $(NAME) $(RL_FLAGS)
 
 $(OBJS_DIR):
@@ -78,4 +84,7 @@ fclean:
 re:
 						$(MAKE) fclean all
 
-.PHONY: all clean fclean re libft
+debug				:
+							@$(MAKE) fclean all DEBUG=true
+
+.PHONY: all clean fclean re libft debug

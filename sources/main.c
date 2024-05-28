@@ -34,6 +34,7 @@ int	main(int argc, char **argv, char **env)
 	ft_readline(&data);
 	clear_history();
 	free_env(data.env_list, data.v_path);
-	free_env(NULL, data.env);
+	if (data.env && *data.env && **data.env)
+		free_env(NULL, data.env);
 	return (0);
 }

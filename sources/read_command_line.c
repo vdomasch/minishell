@@ -69,7 +69,7 @@ void	ft_readline(t_data *data)
 			ft_free(pwd);
 		if (!rl)
 		{
-			printf("exit\n");
+			printf("\nexit\n");
 			return ;
 		}
 		if (rl[0] != 0 && str_is_ascii(rl))
