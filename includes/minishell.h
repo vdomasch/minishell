@@ -25,6 +25,10 @@
 # include <signal.h>
 # include <wait.h>
 
+/* ************************************************************************** */
+/*									STRUCT									  */
+/* ************************************************************************** */
+
 typedef struct s_heredoc
 {
 	char				*line;
@@ -60,72 +64,90 @@ typedef struct s_data
 	unsigned int	nb_pipes;
 }	t_data;
 
-char		*ft_getcwd(void);
+/* ************************************************************************** */
+/*								MAIN FUNCTION								  */
+/* ************************************************************************** */
+
+void		process_env(t_data *data, char **env);
 void		ft_readline(t_data *data);
+int			process_message(t_data *data, char *message);
+void		pipes_commands(t_data *data, t_command *command, unsigned int i);
+
+/* ************************************************************************** */
+/*									SIGNALS									  */
+/* ************************************************************************** */
+
 void		signal_set(void);
 void		signal_set_child(void);
 
-int			process_message(t_data *data, char *message);
+/* ************************************************************************** */
+/*									PARSING									  */
+/* ************************************************************************** */
 
-size_t		count_pipes(const char *str);
-int			is_in_quotes(const char *str, int j);
-bool		is_invalid_char_in_quote(const char *str);
 bool		are_quotes_closed(const char *str);
+bool		create_cmd_list(t_data *data);
 bool		is_empty_pipe(const char *str);
 bool		is_ended_by_pipe(const char *str);
-bool		is_starting_by_pipe(const char *str);
+bool		is_invalid_char_in_quote(const char *str);
 bool		is_redirection_valid(const char *str);
-
-bool		str_is_space(char *str);
-bool		str_is_ascii(char *str);
-
+bool		is_starting_by_pipe(const char *str);
+int			is_in_quotes(const char *str, int j);
 char		*clean_command(char *cmd);
-
 char		*replace_variables(t_data *data, char *message, t_env *env);
-
-bool		create_cmd_list(t_data *data);
+char		**split_arguments(const char *s, char *set);
 void		free_cmd_list(t_command *cmd);
+size_t		count_pipes(const char *str);
 
-t_command	*cmd_last(t_command *lst);
-t_command	*cmd_first(t_command *lst);
+/* ************************************************************************** */
+/*									EXECUTION								  */
+/* ************************************************************************** */
 
-t_env		*env_lstnew(t_env *prev);
-t_env		*env_first(t_env *env);
-void		process_env(t_data *data, char **env);
-bool		put_env_in_list(t_data *data, char **env);
-char		*allocate_variable(char *env);
-char		*allocate_value(char *env);
-void		free_env(t_env *env, char **v_path);
-int			exec(t_data *data, t_command *cmd, int i);
 bool		exec_builtins(t_data *data, t_command *cmd);
-void		pipes_commands(t_data *data, t_command *command, unsigned int i);
+int			exec(t_data *data, t_command *cmd, int i);
 void		exec_redirections(t_command *command, unsigned int nb_pipes,
 				int *pipe_fds, unsigned int pipe_id);
-void		in_out_redirection(t_command *command, int pipe_fd, int i);
 void		heredoc_redirection(t_command *cmd, int pipe_fd, int i);
+void		in_out_redirection(t_command *command, int pipe_fd, int i);
 char		*next_redirection_name(t_command *cmd, int i);
 
-void		print_all(t_command *cmd);
+/* ************************************************************************** */
+/*									ENVIRONMENT								  */
+/* ************************************************************************** */
 
-char		**split_arguments(const char *s, char *set);
+bool		put_env_in_list(t_data *data, char **env);
+bool		replace_existing_var(char *cmd, t_env *env_list, t_data *data);
+char		*allocate_variable(char *env);
+char		*allocate_value(char *env);
+char		**copy_env(char **env);
+void		free_env(t_env *env, char **v_path);
+t_env		*env_lstnew(t_env *prev);
+t_env		*env_first(t_env *env);
+t_env		*find_element_env_list(t_env *list, char *str);
 
-char		*ft_free_strtrim(char *s1, const char *s2);
+/* ************************************************************************** */
+/*									BUILTINS								  */
+/* ************************************************************************** */
 
-bool		ft_pwd(void);
+bool		ft_cd(t_data *data, char **v_cmd);
 void		ft_echo(t_data *data, char **v_cmd);
 void		ft_env(t_env *env_list);
 void		ft_exit(t_data *data, t_command *cmd);
 bool		ft_export(t_data *data);
-bool		replace_existing_var(char *cmd, t_env *env_list, t_data *data);
 void		ft_export_child(t_env *env);
-bool		ft_cd(t_data *data, char **v_cmd);
-t_env		*find_element_env_list(t_env *list, char *str);
+bool		ft_pwd(void);
 bool		ft_unset(t_data *data);
-bool		is_there_chr(char *str, char c);
 
-char		*ft_getcwd(void);
+/* ************************************************************************** */
+/*									UTILS								  */
+/* ************************************************************************** */
 
-char		**copy_env(char **env);
 void		ft_free(void *ptr);
+char		*ft_free_strtrim(char *s1, const char *s2);
+char		*ft_getcwd(void);
+bool		is_there_chr(char *str, char c);
+bool		str_is_space(char *str);
+bool		str_is_ascii(char *str);
+t_command	*cmd_last(t_command *lst);
+t_command	*cmd_first(t_command *lst);
 
 #endif
