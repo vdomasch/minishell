@@ -55,7 +55,7 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 	return (true);
 }
 
-char	*add_absolute_path(t_command *cmd)
+char	*add_absolute_relative_path(t_command *cmd)
 {
 	char	*tmp;
 	char	*abs_path;
@@ -89,8 +89,8 @@ int	exec(t_data *data, t_command *cmd, int i)
 	path = NULL;
 	if (exec_builtins_child(data, cmd))
 		return (0);
-	path = add_absolute_path(cmd);
-	while (data->v_path[i])
+	path = add_absolute_relative_path(cmd);
+	while ((data->v_path && data->v_path[i]) || path)
 	{
 		if (!cmd->v_cmd || !*cmd->v_cmd)
 			return (2);
