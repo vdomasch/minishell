@@ -3,3 +3,12 @@ echo $?
 current-fix: export var="'value'" puis echo $var -> value
     '-> manque les ''
        problem multi-quotes
+
+return_value:
+0
+1       -> export: invalid identifier   V
+2
+126     -> ... is a directory           ???
+127     -> command not found            V
+130     -> signal SIGINT
+131     -> signal SIGQUIT

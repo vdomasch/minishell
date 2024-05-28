@@ -102,6 +102,9 @@ int	exec(t_data *data, t_command *cmd, int i)
 				perror("Malloc failed: ");
 		}
 		execve(path, cmd->v_cmd, data->env);
+		if (g_return_value)
+			data->return_value = g_return_value;
+		g_return_value = 0;
 		ft_free(path);
 		path = NULL;
 		i++;

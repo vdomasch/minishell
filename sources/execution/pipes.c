@@ -34,27 +34,26 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 	signal_set_child();
 	exec_redirections(cmd, data->nb_pipes, pipe_fds, i);
 	if (cmd->next)
-	{
 		if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)
 			exit(1);
-	}
 	if (i != 0)
-	{
 		if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
 			exit(1);
-	}
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
 	if (exec(data, cmd, 0) == 1 && *cmd->v_cmd)
+	{
 		printf("%s: command not found\n", cmd->v_cmd[0]);
+		data->return_value = 127;
+	}
 	free_cmd_list(data->cmd_list);
 	free_env(data->env_list, data->v_path);
 	free_env(NULL, data->env);
 	clear_history();
 	ft_free(pipe_fds);
 	ft_free(data->message);
-	exit(0);
+	exit(data->return_value);
 }
 
 static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
@@ -72,7 +71,6 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 {
 	int				*pipe_fds;
 
-	i = 0;
 	pipe_fds = NULL;
 	if (data->nb_pipes)
 	{
@@ -91,6 +89,9 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	waitpid(0, 0, 0);
+	int status;
+	waitpid(0, &status, 0);
+	if (WIFEXITED(status))
+		data->return_value = WEXITSTATUS(status);
 	ft_free(pipe_fds);
 }

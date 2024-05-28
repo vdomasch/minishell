@@ -14,7 +14,7 @@
 
 void	ft_exit(t_data *data, t_command *cmd)
 {
-	int	tmp;
+	unsigned char	tmp;
 
 	tmp = 0;
 	(void)cmd;

@@ -72,7 +72,10 @@ void	process_env(t_data *data, char **env)
 	{
 		data->env = init_env();
 		if (data->env)
+		{
+			printf("here\n");
 			put_env_in_list(data, data->env);
+		}
 		return ;
 	}
 	put_env_in_list(data, env);

@@ -40,7 +40,7 @@ void	ft_echo(t_data *data, char **v_cmd)
 	while (v_cmd[i])
 	{
 		if (!ft_strncmp(v_cmd[i], "$?", 3))
-			printf("%d", data->return_value);
+			printf("%d", (unsigned char)data->return_value);
 		else
 			printf("%s", v_cmd[i]);
 		if (v_cmd[i + 1])
