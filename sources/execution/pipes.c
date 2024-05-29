@@ -90,8 +90,7 @@ void	pipes_commands(t_data *data, t_command *command,
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	waitpid(0, &status, 0);
-	if (WIFEXITED(status))
+	if (waitpid(0, &status, 0) != -1 && WIFEXITED(status))
 		set_return_value(WEXITSTATUS(status));
 	ft_free(pipe_fds);
 }

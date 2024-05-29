@@ -126,19 +126,24 @@ bool	find_existing_var(t_data *data, char *cmd)
 	return (true);
 }
 
-bool	ft_export(t_data *data)
+bool	ft_export(t_data *data, int i, int j)
 {
-	int		i;
-
-	i = 1;
 	while (data->cmd_list->v_cmd[i])
 	{
-		if (ft_isdigit(data->cmd_list->v_cmd[i][0]))
+		j = 0;
+		while (j >= 0 && data->cmd_list->v_cmd[i][j])
+		{
+			if (!ft_isalnum(data->cmd_list->v_cmd[i][j]) && data->cmd_list->v_cmd[i][j] != '_' && data->cmd_list->v_cmd[i][j] != '=')
+				j = -2;
+			j++;
+		}
+		if (j == -1 || ft_isdigit(data->cmd_list->v_cmd[i][0]))
 		{
 			ft_putstr_fd("minishell: export: \'", 2);
 			ft_putstr_fd(data->cmd_list->v_cmd[i++], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
-			continue ;
+			set_return_value(1);
+			continue;
 		}
 		if (!find_existing_var(data, data->cmd_list->v_cmd[i]))
 			return (false);

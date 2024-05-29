@@ -29,6 +29,7 @@ bool	is_command_valid(const char *message)
 	else
 		return (true);
 	ft_free((char *)message);
+	set_return_value(2);
 	return (false);
 }
 
