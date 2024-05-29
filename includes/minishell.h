@@ -71,7 +71,8 @@ typedef struct s_data
 void		process_env(t_data *data, char **env);
 void		ft_readline(t_data *data);
 int			process_message(t_data *data, char *message);
-void		pipes_commands(t_data *data, t_command *command, unsigned int i);
+void		pipes_commands(t_data *data, t_command *command,
+						   unsigned int i, int status);
 
 /* ************************************************************************** */
 /*									SIGNALS									  */
@@ -141,6 +142,7 @@ bool		ft_unset(t_data *data);
 /*									UTILS								  */
 /* ************************************************************************** */
 
+int			ft_set_return_value(unsigned char return_value, bool export);
 void		ft_free(void *ptr);
 char		*ft_free_strtrim(char *s1, const char *s2);
 char		*ft_getcwd(void);

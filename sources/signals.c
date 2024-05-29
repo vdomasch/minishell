@@ -17,11 +17,11 @@ static void	signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
+		ft_set_return_value(130, 1);
 		printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		g_return_value = 130;
 	}
 }
 

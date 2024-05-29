@@ -53,6 +53,7 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 	clear_history();
 	ft_free(pipe_fds);
 	ft_free(data->message);
+	data->return_value = ft_set_return_value(0, 0);
 	exit(data->return_value);
 }
 
@@ -67,9 +68,10 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 		exit(1);
 }
 
-void	pipes_commands(t_data *data, t_command *command, unsigned int i)
+void	pipes_commands(t_data *data, t_command *command,
+					   unsigned int i, int status)
 {
-	int				*pipe_fds;
+	int	*pipe_fds;
 
 	pipe_fds = NULL;
 	if (data->nb_pipes)
@@ -89,7 +91,6 @@ void	pipes_commands(t_data *data, t_command *command, unsigned int i)
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	int status;
 	waitpid(0, &status, 0);
 	if (WIFEXITED(status))
 		data->return_value = WEXITSTATUS(status);

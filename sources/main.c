@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int g_return_value;
-
 int	main(int argc, char **argv, char **env)
 {
 	t_data		data;

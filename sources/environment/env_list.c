@@ -104,7 +104,7 @@ bool	put_env_in_list(t_data *data, char **env)
 	data->env_list = env_lstnew(NULL);
 	if (!data->env_list)
 		return (false);
-	if (*env)
+	if (env && *env)
 	{
 		data->env_list->var = allocate_variable(env[i]);
 		data->env_list->value = allocate_value(env[i]);
