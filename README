@@ -12,3 +12,14 @@ return_value:
 127     -> command not found            V
 130     -> signal SIGINT
 131     -> signal SIGQUIT
+
+
+cd\0            -> conditionnal jump
+
+cat | echo      -> pb prompt
+
+export oui=     -> conditional jump
+
+./non.sh        -> n'execute pas le script
+
+autocompletion: Cm puis tab puis remplacement Cm par CM puis tab puis entree = free invalid pointer
