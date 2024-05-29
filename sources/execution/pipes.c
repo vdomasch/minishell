@@ -45,7 +45,7 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 	if (exec(data, cmd, 0) == 1 && *cmd->v_cmd)
 	{
 		printf("%s: command not found\n", cmd->v_cmd[0]);
-		data->return_value = 127;
+		set_return_value(127);
 	}
 	free_cmd_list(data->cmd_list);
 	free_env(data->env_list, data->v_path);
@@ -53,8 +53,7 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 	clear_history();
 	ft_free(pipe_fds);
 	ft_free(data->message);
-	data->return_value = ft_set_return_value(0, 0);
-	exit(data->return_value);
+	exit(set_return_value(0));
 }
 
 static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
@@ -93,6 +92,6 @@ void	pipes_commands(t_data *data, t_command *command,
 		close(pipe_fds[i++]);
 	waitpid(0, &status, 0);
 	if (WIFEXITED(status))
-		data->return_value = WEXITSTATUS(status);
+		set_return_value(WEXITSTATUS(status));
 	ft_free(pipe_fds);
 }

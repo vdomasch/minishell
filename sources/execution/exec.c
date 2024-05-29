@@ -19,7 +19,7 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 	if (*data->cmd_list->v_cmd
 		&& !ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
 		ft_exit(data, cmd);
-	if (!ft_strncmp(cmd->v_cmd[0], "cd", 3))
+	else if (!ft_strncmp(cmd->v_cmd[0], "cd", 3))
 		ft_cd(data, cmd->v_cmd);
 	else if (!ft_strncmp(cmd->v_cmd[0], "export", 7))
 		ft_export(data);
@@ -102,8 +102,6 @@ int	exec(t_data *data, t_command *cmd, int i)
 				perror("Malloc failed: ");
 		}
 		execve(path, cmd->v_cmd, data->env);
-		//if (ft_set_return_value(0, 0))
-		//	data->return_value = ft_set_return_value(0, 0);
 		ft_free(path);
 		path = NULL;
 		i++;

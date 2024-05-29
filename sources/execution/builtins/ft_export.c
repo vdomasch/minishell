@@ -138,7 +138,6 @@ bool	ft_export(t_data *data)
 			ft_putstr_fd("minishell: export: \'", 2);
 			ft_putstr_fd(data->cmd_list->v_cmd[i++], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
-			data->return_value = 1;
 			continue ;
 		}
 		if (!find_existing_var(data, data->cmd_list->v_cmd[i]))

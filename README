@@ -1,25 +1,13 @@
-echo $?
-
-current-fix: export var="'value'" puis echo $var -> value
-    '-> manque les ''
-       problem multi-quotes
-
 return_value:
 0
 1       -> export: invalid identifier   V
 2
 126     -> ... is a directory           ???
 127     -> command not found            V
-130     -> signal SIGINT
+130     -> signal SIGINT                V
 131     -> signal SIGQUIT
 
 
-cd\0            -> conditionnal jump
-
 cat | echo      -> pb prompt
 
-export oui=     -> conditional jump
-
 ./non.sh        -> n'execute pas le script
-
-autocompletion: Cm puis tab puis remplacement Cm par CM puis tab puis entree = free invalid pointer

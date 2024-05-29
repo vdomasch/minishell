@@ -142,7 +142,7 @@ bool		ft_unset(t_data *data);
 /*									UTILS								  */
 /* ************************************************************************** */
 
-int			ft_set_return_value(unsigned char return_value, bool export);
+int			set_return_value(unsigned char return_value);
 void		ft_free(void *ptr);
 char		*ft_free_strtrim(char *s1, const char *s2);
 char		*ft_getcwd(void);

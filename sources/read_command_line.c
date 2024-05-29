@@ -65,8 +65,7 @@ void	ft_readline(t_data *data)
 			rl = readline("$> ");
 		else
 			rl = readline(pwd);
-		if (pwd)
-			ft_free(pwd);
+		ft_free(pwd);
 		if (!rl)
 		{
 			printf("\nexit\n");

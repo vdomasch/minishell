@@ -12,18 +12,14 @@
 
 #include "../includes/minishell.h"
 
-int	ft_set_return_value(unsigned char return_value, bool export)
+int	set_return_value(unsigned char return_value)
 {
-	static char	save;
-	char		tmp;
+	static unsigned char	save = 0;
+	static unsigned char	save2 = 0;
 
-	if (export)
-	{
-		tmp = save;
-		save = return_value;
-		return (tmp);
-	}
-	return (save);
+	save2 = save;
+	save = return_value;
+	return (save2);
 }
 
 void	ft_free(void *ptr)
