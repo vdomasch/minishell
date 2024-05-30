@@ -21,7 +21,7 @@ static void	open_pipes(unsigned int nb_pipes, int *pipe_fds)
 	{
 		if (pipe(pipe_fds + (2 * i)) < 0)
 		{
-			printf("Pipe opening error\n");
+			perror("Pipe opening error:\n");
 			exit(1);
 		}
 		i++;
@@ -44,7 +44,8 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 		close(pipe_fds[i++]);
 	if (exec(data, cmd, 0) == 1 && *cmd->v_cmd)
 	{
-		printf("%s: command not found\n", cmd->v_cmd[0]);
+		ft_putstr_fd(cmd->v_cmd[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
 		set_return_value(127);
 	}
 	free_cmd_list(data->cmd_list);
@@ -83,7 +84,7 @@ void	wait_parent(t_data *data, int *pipe_fds)
 	{
 		sig = WTERMSIG(status);
 		if (sig == 3)
-			printf("Quit (core dumped)\n");
+			ft_putstr_fd("Quit (core dumped)\n", 2);
 		if (sig == 2)
 			printf("\r");
 	}

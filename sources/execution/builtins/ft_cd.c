@@ -88,7 +88,7 @@ bool	ft_cd(t_data *data, char **v_cmd)
 	list = data->env_list;
 	if (v_cmd[1] && v_cmd[2])
 	{
-		printf("cd: too many arguments\n");
+		ft_putstr_fd("cd: too many arguments\n", 2);
 		return (false);
 	}
 	else if (!v_cmd[1])
