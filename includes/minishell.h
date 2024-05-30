@@ -72,7 +72,7 @@ void		process_env(t_data *data, char **env);
 void		ft_readline(t_data *data);
 int			process_message(t_data *data, char *message);
 void		pipes_commands(t_data *data, t_command *command,
-						   unsigned int i, int status);
+						   unsigned int i);
 
 /* ************************************************************************** */
 /*									SIGNALS									  */

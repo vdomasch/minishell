@@ -67,8 +67,30 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 		exit(1);
 }
 
+void	wait_parent(t_data *data, int *pipe_fds)
+{
+	unsigned int i;
+	int	status;
+	int sig;
+
+	i = 0;
+	status = 0;
+	while (i < 2 * data->nb_pipes)
+		close(pipe_fds[i++]);
+	if (waitpid(0, &status, 0) != -1 && WIFEXITED(status))
+		set_return_value(WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+	{
+		sig = WTERMSIG(status);
+		if (sig == 3)
+			printf("Quit (core dumped)\n");
+		if (sig == 2)
+			printf("\r");
+	}
+}
+
 void	pipes_commands(t_data *data, t_command *command,
-					   unsigned int i, int status)
+					   unsigned int i)
 {
 	int	*pipe_fds;
 
@@ -87,10 +109,6 @@ void	pipes_commands(t_data *data, t_command *command,
 		command = command->next;
 		i += 2;
 	}
-	i = 0;
-	while (i < 2 * data->nb_pipes)
-		close(pipe_fds[i++]);
-	if (waitpid(0, &status, 0) != -1 && WIFEXITED(status))
-		set_return_value(WEXITSTATUS(status));
+	wait_parent(data, pipe_fds);
 	ft_free(pipe_fds);
 }

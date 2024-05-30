@@ -122,7 +122,7 @@ int	process_message(t_data *data, char *message)
 	if (data->nb_pipes > 50)
 		printf("minishell: too many pipes used\n");
 	else
-		pipes_commands(data, data->cmd_list, 0, 0);
+		pipes_commands(data, data->cmd_list, 0);
 	free_cmd_list(data->cmd_list);
 	ft_free(data->message);
 	return (0);

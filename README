@@ -5,7 +5,7 @@ return_value:
 126     -> ... is a directory           ???
 127     -> command not found            V
 130     -> signal SIGINT                V
-131     -> signal SIGQUIT
+131     -> signal SIGQUIT               V
 
 
 cat | echo      -> pb prompt
