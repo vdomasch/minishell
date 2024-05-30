@@ -4,3 +4,4 @@ minishell
 .objs/
 libft/libft.a
 libft/objs/
+minishell_tester/
