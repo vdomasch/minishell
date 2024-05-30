@@ -45,6 +45,7 @@ int	ch_env_pwd(t_data *data, char *path)
 	if (chdir(path))
 	{
 		print_error_msg_cd(path);
+		set_return_value(1);
 		return (false);
 	}
 	var_path = ft_strjoin("OLDPWD=", pwd->value);
@@ -89,6 +90,7 @@ bool	ft_cd(t_data *data, char **v_cmd)
 	if (v_cmd[1] && v_cmd[2])
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
+		set_return_value(1);
 		return (false);
 	}
 	else if (!v_cmd[1])

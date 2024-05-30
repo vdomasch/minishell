@@ -12,6 +12,7 @@ FILES				=	main.c										\
 						read_command_line.c							\
 						minishell_utils.c							\
 						signals.c									\
+						process_message.c							\
 							environment/env_list.c					\
 							environment/env_array.c					\
 							environment/process_env.c				\
@@ -28,7 +29,6 @@ FILES				=	main.c										\
 							execution/builtins/ft_export_child.c	\
 							execution/builtins/ft_cd.c				\
 							execution/builtins/ft_unset.c			\
-							parsing/process_message.c				\
 							parsing/dollars.c						\
 							parsing/redirections.c					\
 							parsing/redirections_checks.c			\
