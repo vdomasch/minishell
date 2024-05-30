@@ -61,7 +61,7 @@ add_executable(minishell
         sources/parsing/command_utils.c
         sources/parsing/dollars.c
         sources/parsing/pipes_checks.c
-        sources/parsing/process_message.c
+        sources/process_message.c
         sources/parsing/quotes_utils.c
         sources/parsing/redirections.c
         sources/parsing/split_arguments.c

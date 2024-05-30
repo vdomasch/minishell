@@ -71,8 +71,6 @@ typedef struct s_data
 void		process_env(t_data *data, char **env);
 void		ft_readline(t_data *data);
 int			process_message(t_data *data, char *message);
-void		pipes_commands(t_data *data, t_command *command,
-						   unsigned int i);
 
 /* ************************************************************************** */
 /*									SIGNALS									  */
@@ -110,6 +108,7 @@ void		exec_redirections(t_command *command, unsigned int nb_pipes,
 void		heredoc_redirection(t_command *cmd, int pipe_fd, int i);
 void		in_out_redirection(t_command *command, int pipe_fd, int i);
 char		*next_redirection_name(t_command *cmd, int i);
+void		pipes_commands(t_data *data, t_command *command, unsigned int i);
 
 /* ************************************************************************** */
 /*									ENVIRONMENT								  */
