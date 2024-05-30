@@ -69,9 +69,9 @@ static void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 
 void	wait_parent(t_data *data, int *pipe_fds)
 {
-	unsigned int i;
-	int	status;
-	int sig;
+	unsigned int	i;
+	int				sig;
+	int				status;
 
 	i = 0;
 	status = 0;
@@ -90,7 +90,7 @@ void	wait_parent(t_data *data, int *pipe_fds)
 }
 
 void	pipes_commands(t_data *data, t_command *command,
-					   unsigned int i)
+						unsigned int i)
 {
 	int	*pipe_fds;
 

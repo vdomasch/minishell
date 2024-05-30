@@ -133,7 +133,9 @@ bool	ft_export(t_data *data, int i, int j)
 		j = 0;
 		while (j >= 0 && data->cmd_list->v_cmd[i][j])
 		{
-			if (!ft_isalnum(data->cmd_list->v_cmd[i][j]) && data->cmd_list->v_cmd[i][j] != '_' && data->cmd_list->v_cmd[i][j] != '=')
+			if (!ft_isalnum(data->cmd_list->v_cmd[i][j])
+				&& data->cmd_list->v_cmd[i][j] != '_'
+				&& data->cmd_list->v_cmd[i][j] != '=')
 				j = -2;
 			j++;
 		}
@@ -143,7 +145,7 @@ bool	ft_export(t_data *data, int i, int j)
 			ft_putstr_fd(data->cmd_list->v_cmd[i++], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			set_return_value(1);
-			continue;
+			continue ;
 		}
 		if (!find_existing_var(data, data->cmd_list->v_cmd[i]))
 			return (false);
