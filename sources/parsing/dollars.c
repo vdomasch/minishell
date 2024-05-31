@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-static bool	check_env_var_name(char *msg, t_env *list, int i)
+bool	check_env_var_name(char *msg, t_env *list, int i)
 {
 	if (!ft_strncmp(msg + i, list->var, ft_strlen(list->var)))
 	{
@@ -23,33 +23,32 @@ static bool	check_env_var_name(char *msg, t_env *list, int i)
 	return (false);
 }
 
-static size_t	count_size(char *msg, t_env *list, int i, size_t count)
+bool	replace_ret_value(char *msg, char *result, int *j, int *i)
 {
-	while (msg[i])
+	int 	index;
+	int		return_value;
+	char	*chr_ret_value;
+
+	if (msg[*i] == '?')
 	{
-		if (msg[i] != '$' || is_in_quotes(msg, i) == 1
-			|| !ft_isalnum(msg[i + 1]) || msg[i + 1] == '_')
-			i++;
-		else
+		return_value = set_return_value(0);
+		set_return_value(return_value);
+		printf("!%d!\n", return_value);
+		chr_ret_value = ft_itoa(return_value);
+		if (!chr_ret_value)
 		{
-			i++;
-			list = env_first(list);
-			while (list)
-			{
-				if (check_env_var_name(msg, list, i))
-				{
-					count += ft_strlen(list->value);
-					break ;
-				}
-				list = list->next;
-			}
-			count += i - 1;
-			while (ft_isalnum(msg[i]) || msg[i] == '_')
-				i++;
-			count -= i;
+			set_return_value(2);
+			return (false);
 		}
+		index = 0;
+		while (chr_ret_value[index])
+			result[(*j)++] = chr_ret_value[index++];
+		result[(*j)] = '\0';
+		free(chr_ret_value);
+		(*i)++;
+		return (true);
 	}
-	return (count + i);
+	return (false);
 }
 
 static void	replace(t_data *data, char *result, int *i, int *j)
@@ -68,6 +67,8 @@ static void	replace(t_data *data, char *result, int *i, int *j)
 				result[(*j)++] = list->value[k++];
 			break ;
 		}
+		else if (replace_ret_value(data->message, result, j, i))
+			break;
 		if (list->next)
 			list = list->next;
 		else
@@ -87,7 +88,7 @@ static char	*fill_and_replace(t_data *data, char *message, char *result)
 	while (message[i])
 	{
 		if (message[i] != '$' || is_in_quotes(message, i) == 1
-			|| !ft_isalnum(message[i + 1]) || message[i + 1] == '_')
+			|| (message[i + 1] != '?' && !ft_isalnum(message[i + 1])))
 			result[j++] = message[i++];
 		else
 		{
@@ -103,6 +104,7 @@ char	*replace_variables(t_data *data, char *message, t_env *env)
 	size_t	len;
 
 	len = count_size(message, env, 0, 0);
+	printf("%zu\n", len);
 	result = malloc(sizeof(char) * (len + 1));
 	if (!result)
 		return (NULL);

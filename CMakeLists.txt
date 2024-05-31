@@ -81,6 +81,7 @@ add_executable(minishell
         sources/execution/builtins/ft_export_child.c
         sources/execution/heredoc_redirection.c
         sources/execution/builtins/ft_exit.c
-        sources/execution/builtins/ft_unset.c)
+        sources/execution/builtins/ft_unset.c
+        sources/parsing/dollars_size.c)
 
 target_link_libraries(minishell readline)

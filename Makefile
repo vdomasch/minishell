@@ -30,6 +30,7 @@ FILES				=	main.c										\
 							execution/builtins/ft_cd.c				\
 							execution/builtins/ft_unset.c			\
 							parsing/dollars.c						\
+							parsing/dollars_size.c					\
 							parsing/redirections.c					\
 							parsing/redirections_checks.c			\
 							parsing/quotes_utils.c					\

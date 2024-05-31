@@ -84,6 +84,7 @@ void		signal_set_child(void);
 /* ************************************************************************** */
 
 bool		are_quotes_closed(const char *str);
+bool	check_env_var_name(char *msg, t_env *list, int i);
 bool		create_cmd_list(t_data *data);
 bool		is_empty_pipe(const char *str);
 bool		is_ended_by_pipe(const char *str);
@@ -96,6 +97,7 @@ char		*replace_variables(t_data *data, char *message, t_env *env);
 char		**split_arguments(const char *s, char *set);
 void		free_cmd_list(t_command *cmd);
 size_t		count_pipes(const char *str);
+size_t	count_size(char *msg, t_env *list, int i, size_t count);
 
 /* ************************************************************************** */
 /*									EXECUTION								  */
