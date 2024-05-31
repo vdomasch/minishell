@@ -15,17 +15,17 @@
 bool	is_command_valid(const char *message)
 {
 	if (are_quotes_closed(message))
-		printf(ERR_QUOTE_NOT_CLOSED);
+		ft_putstr_fd(ERR_QUOTE_NOT_CLOSED, 2);
 	else if (is_invalid_char_in_quote(message))
-		printf(ERR_SPECIAL_CHAR);
+		ft_putstr_fd(ERR_SPECIAL_CHAR, 2);
 	else if (is_starting_by_pipe(message))
-		printf(ERR_PIPE_START);
+		ft_putstr_fd(ERR_PIPE_START, 2);
 	else if (is_ended_by_pipe(message))
-		printf(ERR_PIPE_END);
+		ft_putstr_fd(ERR_PIPE_END, 2);
 	else if (is_empty_pipe(message))
-		printf(ERR_EMPTY_PIPE);
+		ft_putstr_fd(ERR_EMPTY_PIPE, 2);
 	else if (!is_redirection_valid(message))
-		printf(ERR_INVALID_REDIRECTION);
+		ft_putstr_fd(ERR_INVALID_REDIRECTION, 2);
 	else
 		return (true);
 	ft_free((char *)message);
