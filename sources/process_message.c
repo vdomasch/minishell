@@ -91,7 +91,6 @@ bool	standardize_command(t_data *data, char *message, t_command *command)
 	data->message = replace_variables(data, message, data->env_list);
 	if (!data->message)
 		return (false);
-	printf("%s\n", data->message);
 	if (!is_command_valid(data->message))
 		return (false);
 	data->nb_pipes = count_pipes(data->message);

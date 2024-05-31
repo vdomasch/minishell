@@ -33,7 +33,6 @@ bool	replace_ret_value(char *msg, char *result, int *j, int *i)
 	{
 		return_value = set_return_value(0);
 		set_return_value(return_value);
-		printf("!%d!\n", return_value);
 		chr_ret_value = ft_itoa(return_value);
 		if (!chr_ret_value)
 		{
@@ -54,10 +53,12 @@ bool	replace_ret_value(char *msg, char *result, int *j, int *i)
 static void	replace(t_data *data, char *result, int *i, int *j)
 {
 	int		k;
+	bool	skip;
 	t_env	*list;
 
 	k = 0;
 	(*i)++;
+	skip = 0;
 	list = env_first(data->env_list);
 	while (list)
 	{
@@ -67,14 +68,14 @@ static void	replace(t_data *data, char *result, int *i, int *j)
 				result[(*j)++] = list->value[k++];
 			break ;
 		}
-		else if (replace_ret_value(data->message, result, j, i))
+		else if (replace_ret_value(data->message, result, j, i) && ++skip)
 			break;
 		if (list->next)
 			list = list->next;
 		else
 			break ;
 	}
-	while (ft_isalnum(data->message[*i]) || data->message[*i] == '_')
+	while (!skip && (ft_isalnum(data->message[*i]) || data->message[*i] == '_'))
 		(*i)++;
 }
 
@@ -104,7 +105,6 @@ char	*replace_variables(t_data *data, char *message, t_env *env)
 	size_t	len;
 
 	len = count_size(message, env, 0, 0);
-	printf("%zu\n", len);
 	result = malloc(sizeof(char) * (len + 1));
 	if (!result)
 		return (NULL);
