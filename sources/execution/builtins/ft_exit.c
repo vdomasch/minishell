@@ -20,11 +20,10 @@ void	ft_exit(t_data *data, t_command *cmd)
 	(void)cmd;
 	if (cmd->v_cmd[1])
 		tmp = ft_atoi(cmd->v_cmd[1]);
-	if (!tmp && cmd->v_cmd[1][0] != 0)
+	if (!tmp && cmd->v_cmd[1] && cmd->v_cmd[1][0] != 0)
 	{
 		ft_putstr_fd("exit: numeric argument required\n", 2);
-		set_return_value(1);
-		return ;
+		tmp = 2;
 	}
 	if (cmd->v_cmd[1] && cmd->v_cmd[2])
 	{
