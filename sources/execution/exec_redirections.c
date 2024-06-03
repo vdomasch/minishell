@@ -104,25 +104,35 @@ char	*next_redirection_name(t_command *cmd, int i)
 	return (redirection);
 }
 
-void	exec_redirections(t_command *command, unsigned int nb_pipes,
+int	exec_redirections(t_command *command, unsigned int nb_pipes,
 						int *pipe_fds, unsigned int pipe_id)
 {
 	int	i;
+	int j;
 
 	i = 0;
 	if (!is_there_chr(command->cmd, '>') && !is_there_chr(command->cmd, '<'))
-		return ;
+		return (0);
 	command->input_redirection = redirection(command, '<');
 	command->output_redirection = redirection(command, '>');
 	while (command->cmd[i])
 	{
-		if (command->cmd[i] == '>')
+		j = 0;
+		if (command->cmd[i] == '>' && !is_in_quotes(command->cmd, i))
+		{
 			in_out_redirection(command, STDOUT_FILENO, i++);
-		if (command->cmd[i] == '<')
+			while (ft_isspace(command->cmd[i + j]))
+				j++;
+			if (!ft_strncmp(command->output_redirection, &command->cmd[i + j],
+							ft_strlen(command->output_redirection) ))
+				return (1);
+		}
+		if (command->cmd[i] == '<' && !is_in_quotes(command->cmd, i))
 			in_out_redirection(command, STDIN_FILENO, i++);
 		i++;
 	}
 	(void)nb_pipes;
 	(void)pipe_fds;
 	(void)pipe_id;
+	return (0);
 }

@@ -28,25 +28,40 @@ static void	open_pipes(unsigned int nb_pipes, int *pipe_fds)
 	}
 }
 
+static void	print_errors(char *str, char *str2, char *str3, int error)
+{
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(str2, 2);
+	ft_putstr_fd(str3, 2);
+	set_return_value(error);
+}
+
 static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
-						unsigned int i)
+						  unsigned int i)
 {
 	signal_set_child();
-	exec_redirections(cmd, data->nb_pipes, pipe_fds, i);
-	if (cmd->next)
-		if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)
-			exit(1);
-	if (i != 0)
-		if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
-			exit(1);
+	if (exec_redirections(cmd, data->nb_pipes, pipe_fds, i) != 1)
+	{
+		if (cmd->next)
+			if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)
+				exit(1);
+		if (i != 0)
+			if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
+				exit(1);
+	}
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
 	if (exec(data, cmd, 0) == 1 && *cmd->v_cmd)
 	{
-		ft_putstr_fd(cmd->v_cmd[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
-		set_return_value(127);
+		if (errno == 13 && chdir(*cmd->v_cmd) == -1)
+			print_errors("minishell: ", cmd->v_cmd[0], ": Permission denied\n", 126);
+		else if (errno == 13)
+			print_errors("minishell: ", cmd->v_cmd[0], ": Is a directory\n", 126);
+		else if (**cmd->v_cmd == '/' || (**cmd->v_cmd == '.' && **cmd->v_cmd + 1 == '/'))
+			print_errors("minishell: ", cmd->v_cmd[0], ": No such file or directory\n", 127);
+		else
+			print_errors(NULL, cmd->v_cmd[0], ": command not found\n", 127);
 	}
 	free_cmd_list(data->cmd_list);
 	free_env(data->env_list, data->v_path);
@@ -78,16 +93,20 @@ void	wait_parent(t_data *data, int *pipe_fds)
 	status = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
-	if (waitpid(0, &status, 0) != -1 && WIFEXITED(status))
-		set_return_value(WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
+	while (waitpid(0, &status, 0) > 0)
 	{
-		sig = WTERMSIG(status);
-		if (sig == 3)
-			ft_putstr_fd("Quit (core dumped)\n", 2);
-		if (sig == 2)
-			printf("\r");
+		if (WIFEXITED(status))
+			set_return_value(WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+		{
+			sig = WTERMSIG(status);
+			if (sig == 3)
+				ft_putstr_fd("Quit (core dumped)\n", 2);
+			if (sig == 2)
+				printf("\r");
+		}
 	}
+
 }
 
 void	pipes_commands(t_data *data, t_command *command,

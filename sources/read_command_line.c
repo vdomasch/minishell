@@ -62,13 +62,13 @@ void	ft_readline(t_data *data)
 	{
 		pwd = ft_last_pwd();
 		if (!pwd)
-			rl = readline("$> ");
+			rl = readline("\001\033[31;5m\002$> \001\033[0m\002");
 		else
 			rl = readline(pwd);
 		ft_free(pwd);
 		if (!rl)
 		{
-			printf("\nexit\n");
+			printf("exit\n");
 			return ;
 		}
 		if (rl[0] != 0 && str_is_ascii(rl))

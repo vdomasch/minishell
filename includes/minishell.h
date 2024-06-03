@@ -105,7 +105,7 @@ size_t	count_size(char *msg, t_env *list, int i, size_t count);
 
 bool		exec_builtins(t_data *data, t_command *cmd);
 int			exec(t_data *data, t_command *cmd, int i);
-void		exec_redirections(t_command *command, unsigned int nb_pipes,
+int		exec_redirections(t_command *command, unsigned int nb_pipes,
 				int *pipe_fds, unsigned int pipe_id);
 void		heredoc_redirection(t_command *cmd, int pipe_fd, int i);
 void		in_out_redirection(t_command *command, int pipe_fd, int i);
