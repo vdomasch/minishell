@@ -28,16 +28,23 @@ static void	heredocument(t_command *cmd, char *eof, int fd)
 		ft_putchar_fd('\n', fd);
 		ft_free(line);
 	}
-	clear_history();
+	rl_clear_history();
 	(void)cmd;
 }
 
-static void	heredoc_child(t_command *cmd, char *eof, int *fd)
+static void	heredoc_child(t_data *data, t_command *cmd, char *eof, int *fd)
 {
 	signal(SIGQUIT, SIG_IGN);
 	close(fd[0]);
 	heredocument(cmd, eof, fd[1]);
 	close(fd[1]);
+	free(eof);
+	free_cmd_list(data->cmd_list);
+	free_env(data->env_list, data->v_path);
+	free_env(NULL, data->env);
+	rl_clear_history();
+	ft_free(data->message);
+	ft_free(data->pipe_fds);
 	exit(0);
 }
 
@@ -62,7 +69,7 @@ static void	heredoc_parent(t_command *cmd, char *eof, int *fd)
 	(void)cmd;
 }
 
-void	heredoc_redirection(t_command *cmd, int pipe_fd, int i)
+void	heredoc_redirection(t_data *data, t_command *cmd, int i)
 {
 	int		fd[2];
 	int		pid;
@@ -71,7 +78,6 @@ void	heredoc_redirection(t_command *cmd, int pipe_fd, int i)
 	pathname = next_redirection_name(cmd, i);
 	if (!pathname)
 		return ;
-	(void)pipe_fd;
 	if (pipe(fd) < 0)
 	{
 		printf("Pipe opening error\n");
@@ -79,9 +85,10 @@ void	heredoc_redirection(t_command *cmd, int pipe_fd, int i)
 	}
 	pid = fork();
 	if (pid == 0)
-		heredoc_child(cmd, pathname, fd);
+		heredoc_child(data, cmd, pathname, fd);
 	else if (pid < 0)
 		exit(EXIT_FAILURE);
 	else
 		heredoc_parent(cmd, pathname, fd);
+	free(pathname);
 }

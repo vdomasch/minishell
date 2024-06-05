@@ -41,8 +41,6 @@ int	last_redirection_size(char *cmd, char c, int *start)
 		return (0);
 	while (cmd[i] && ft_isspace(cmd[++i]))
 		;
-	if (cmd[i] == '\'' || cmd[i] == '"')
-		i++;
 	*start = i;
 	while (cmd[i])
 	{
@@ -50,9 +48,69 @@ int	last_redirection_size(char *cmd, char c, int *start)
 			break ;
 		i++;
 	}
-	if (cmd[i] == '\'' || cmd[i] == '"')
-		i--;
 	return (i - *start);
+}
+
+static int count_quotes(const char *str)
+{
+	int i;
+	int quotes;
+	int count;
+
+	i = 0;
+	quotes = 0;
+	count = 0;
+	while (str[i])
+	{
+		if ((str[i] == '\'' || str[i] == '"') && quotes == 0)
+		{
+			if (str[i] == '\'')
+				quotes--;
+			else
+				quotes++;
+			count++;
+		}
+		else if (((str[i] == '\'' && quotes == -1) || (str[i] == '"' && quotes == 1)))
+		{
+			quotes = 0;
+			count++;
+		}
+		i++;
+	}
+	return (count);
+}
+
+static char *copy_without_quotes(char *str)
+{
+	unsigned int	i;
+	unsigned int	j;
+	int				quotes;
+	char			*result;
+
+	result = malloc(sizeof(char) * (ft_strlen(str) - count_quotes(str) + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	j = 0;
+	quotes = 0;
+	while (str[i])
+	{
+		if ((str[i] == '\'' || str[i] == '"') && quotes == 0)
+		{
+			if (str[i] == '\'')
+				quotes--;
+			else
+				quotes++;
+		}
+		else if (((str[i] == '\'' && quotes == -1) || (str[i] == '"' && quotes == 1)))
+			quotes = 0;
+		else
+			result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	free(str);
+	return (result);
 }
 
 char	*redirection(t_command *cmd, char input_token)
@@ -77,6 +135,7 @@ char	*redirection(t_command *cmd, char input_token)
 		i++;
 	}
 	str[i] = '\0';
+	str = copy_without_quotes(str);
 	return (str);
 }
 
@@ -87,25 +146,35 @@ char	*next_redirection_name(t_command *cmd, int i)
 
 	while (cmd->cmd[i] && ft_isspace(cmd->cmd[i]))
 		i++;
-	if (cmd->cmd[i] == '\'' || cmd->cmd[i] == '"')
-		i++;
 	len = 0;
 	while (cmd->cmd[i + len] && (!ft_isspace(cmd->cmd[i + len])
 			|| is_in_quotes(cmd->cmd, i + len)))
 		len++;
-	if (cmd->cmd[i + len - 1] == '\'' || cmd->cmd[i + len - 1] == '"')
-		len--;
 	redirection = malloc(sizeof(char) * (len + 1));
 	if (!redirection)
 		return (NULL);
 	redirection[len] = '\0';
 	while (--len >= 0)
 		redirection[len] = cmd->cmd[i + len];
+	redirection = copy_without_quotes(redirection);
 	return (redirection);
 }
 
-int	exec_redirections(t_command *command, unsigned int nb_pipes,
-						int *pipe_fds, unsigned int pipe_id)
+bool	check_last_redirection(t_command *command, char *redirection, int i)
+{
+	char *pathname;
+
+	pathname = next_redirection_name(command, i);
+	if (!ft_strncmp(redirection, pathname, ft_strlen(pathname) + 1))
+	{
+		free(pathname);
+		return (true);
+	}
+	free(pathname);
+	return (false);
+}
+
+int	exec_redirections(t_data *data, t_command *command)
 {
 	int	i;
 	int j;
@@ -120,19 +189,17 @@ int	exec_redirections(t_command *command, unsigned int nb_pipes,
 		j = 0;
 		if (command->cmd[i] == '>' && !is_in_quotes(command->cmd, i))
 		{
-			in_out_redirection(command, STDOUT_FILENO, i++);
-			while (ft_isspace(command->cmd[i + j]))
-				j++;
-			if (!ft_strncmp(command->output_redirection, &command->cmd[i + j],
-							ft_strlen(command->output_redirection) ))
+			in_out_redirection(data, command, STDOUT_FILENO, i++);
+			if (check_last_redirection(command, command->output_redirection, i))
 				return (1);
 		}
 		if (command->cmd[i] == '<' && !is_in_quotes(command->cmd, i))
-			in_out_redirection(command, STDIN_FILENO, i++);
+		{
+			in_out_redirection(data, command, STDIN_FILENO, i++);
+			if (check_last_redirection(command, command->input_redirection, i) && !command->next)
+				return (1);
+		}
 		i++;
 	}
-	(void)nb_pipes;
-	(void)pipe_fds;
-	(void)pipe_id;
 	return (0);
 }

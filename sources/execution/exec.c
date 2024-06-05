@@ -22,7 +22,7 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 	else if (!ft_strncmp(cmd->v_cmd[0], "cd", 3))
 		ft_cd(data, cmd->v_cmd);
 	else if (!ft_strncmp(cmd->v_cmd[0], "export", 7))
-		ft_export(data, 1, 0);
+		ft_export(data, data->cmd_list->v_cmd, 1, 0);
 	else if (!ft_strncmp(cmd->v_cmd[0], "unset", 6))
 		ft_unset(data);
 	else
@@ -60,6 +60,8 @@ char	*add_absolute_relative_path(t_command *cmd)
 	char	*tmp;
 	char	*abs_path;
 
+	if (!*cmd->v_cmd)
+		return (NULL);
 	if (cmd->v_cmd[0][0] == '/')
 	{
 		tmp = ft_strdup(cmd->v_cmd[0]);

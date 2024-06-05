@@ -20,6 +20,7 @@ void	print_error_msg_cd(char *path)
 	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(command, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
+	set_return_value(1);
 }
 
 t_env	*find_element_env_list(t_env *list, char *str)
@@ -45,7 +46,6 @@ int	ch_env_pwd(t_data *data, char *path)
 	if (chdir(path))
 	{
 		print_error_msg_cd(path);
-		set_return_value(1);
 		return (false);
 	}
 	var_path = ft_strjoin("OLDPWD=", pwd->value);
@@ -55,7 +55,7 @@ int	ch_env_pwd(t_data *data, char *path)
 	ft_free(var_path);
 	var_path = ft_getcwd();
 	env_var_pwd = ft_strjoin("PWD=", var_path);
-	if (!var_path)
+	if (!var_path || !env_var_pwd)
 		return (false);
 	replace_existing_var(env_var_pwd, pwd, data);
 	ft_free(env_var_pwd);

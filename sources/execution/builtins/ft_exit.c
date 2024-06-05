@@ -36,7 +36,7 @@ void	ft_exit(t_data *data, t_command *cmd)
 	free_env(data->env_list, data->v_path);
 	if (data->env && *data->env && **data->env)
 		free_env(NULL, data->env);
-	clear_history();
+	rl_clear_history();
 	ft_free(data->message);
 	exit(tmp);
 }

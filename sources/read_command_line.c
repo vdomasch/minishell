@@ -60,6 +60,7 @@ void	ft_readline(t_data *data)
 
 	while (42)
 	{
+		signal_set();
 		pwd = ft_last_pwd();
 		if (!pwd)
 			rl = readline("\001\033[31;5m\002$> \001\033[0m\002");

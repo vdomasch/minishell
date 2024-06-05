@@ -25,7 +25,7 @@ bool	check_env_var_name(char *msg, t_env *list, int i)
 
 bool	replace_ret_value(char *msg, char *result, int *j, int *i)
 {
-	int 	index;
+	int		index;
 	int		return_value;
 	char	*chr_ret_value;
 
@@ -69,7 +69,7 @@ static void	replace(t_data *data, char *result, int *i, int *j)
 			break ;
 		}
 		else if (replace_ret_value(data->message, result, j, i) && ++skip)
-			break;
+			break ;
 		if (list->next)
 			list = list->next;
 		else

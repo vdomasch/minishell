@@ -60,7 +60,7 @@ typedef struct s_data
 	char			**env;
 	char			*message;
 	char			**v_path;
-	int				return_value;
+	int				*pipe_fds;
 	unsigned int	nb_pipes;
 }	t_data;
 
@@ -84,7 +84,7 @@ void		signal_set_child(void);
 /* ************************************************************************** */
 
 bool		are_quotes_closed(const char *str);
-bool	check_env_var_name(char *msg, t_env *list, int i);
+bool		check_env_var_name(char *msg, t_env *list, int i);
 bool		create_cmd_list(t_data *data);
 bool		is_empty_pipe(const char *str);
 bool		is_ended_by_pipe(const char *str);
@@ -97,7 +97,7 @@ char		*replace_variables(t_data *data, char *message, t_env *env);
 char		**split_arguments(const char *s, char *set);
 void		free_cmd_list(t_command *cmd);
 size_t		count_pipes(const char *str);
-size_t	count_size(char *msg, t_env *list, int i, size_t count);
+size_t		count_size(char *msg, t_env *list, int i, size_t count);
 
 /* ************************************************************************** */
 /*									EXECUTION								  */
@@ -105,10 +105,9 @@ size_t	count_size(char *msg, t_env *list, int i, size_t count);
 
 bool		exec_builtins(t_data *data, t_command *cmd);
 int			exec(t_data *data, t_command *cmd, int i);
-int		exec_redirections(t_command *command, unsigned int nb_pipes,
-				int *pipe_fds, unsigned int pipe_id);
-void		heredoc_redirection(t_command *cmd, int pipe_fd, int i);
-void		in_out_redirection(t_command *command, int pipe_fd, int i);
+int			exec_redirections(t_data *data, t_command *command);
+void		heredoc_redirection(t_data *data, t_command *cmd, int i);
+void		in_out_redirection(t_data *data, t_command *cmd, int p_fd, int i);
 char		*next_redirection_name(t_command *cmd, int i);
 void		pipes_commands(t_data *data, t_command *command, unsigned int i);
 
@@ -134,7 +133,7 @@ bool		ft_cd(t_data *data, char **v_cmd);
 void		ft_echo(t_data *data, char **v_cmd);
 void		ft_env(t_env *env_list);
 void		ft_exit(t_data *data, t_command *cmd);
-bool		ft_export(t_data *data, int i, int j);
+bool		ft_export(t_data *data, char **v_cmd, int i, int j);
 void		ft_export_child(t_env *env);
 bool		ft_pwd(void);
 bool		ft_unset(t_data *data);
