@@ -19,11 +19,11 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 	if (*data->cmd_list->v_cmd
 		&& !ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
 		ft_exit(data, cmd);
-	else if (!ft_strncmp(cmd->v_cmd[0], "cd", 3))
+	else if (!ft_strncmp(cmd->v_cmd[0], "cd", 3) && data->nb_pipes == 0)
 		ft_cd(data, cmd->v_cmd);
-	else if (!ft_strncmp(cmd->v_cmd[0], "export", 7))
+	else if (!ft_strncmp(cmd->v_cmd[0], "export", 7) && data->nb_pipes == 0)
 		ft_export(data, data->cmd_list->v_cmd, 1, 0);
-	else if (!ft_strncmp(cmd->v_cmd[0], "unset", 6))
+	else if (!ft_strncmp(cmd->v_cmd[0], "unset", 6) && data->nb_pipes == 0)
 		ft_unset(data);
 	else
 		return (false);
@@ -48,6 +48,8 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 		ft_env(data->env_list);
 	else if (!ft_strncmp(command->v_cmd[0], "export", 7) && !command->v_cmd[1])
 		ft_export_child(data->env_list);
+	else if (!ft_strncmp(command->v_cmd[0], "export", 7))
+		;
 	else if (!ft_strncmp(command->v_cmd[0], "unset", 6))
 		;
 	else
