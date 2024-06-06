@@ -12,7 +12,7 @@
 
 #include "../../../includes/minishell.h"
 
-char	**new_var_in_env(char *cmd, t_data *data)
+char	**new_var_in_env(char *cmd, t_data *data, bool *success)
 {
 	unsigned int	i;
 	char			**new_env;
@@ -22,7 +22,10 @@ char	**new_var_in_env(char *cmd, t_data *data)
 		;
 	new_env = malloc(sizeof(char *) * (i + 1));
 	if (!new_env)
+	{
+		*success = false;
 		return (data->env);
+	}
 	new_env[i] = NULL;
 	i = 0;
 	while (data->env[i])
@@ -43,27 +46,23 @@ char	**new_var_in_env(char *cmd, t_data *data)
 bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
 {
 	t_env	*new;
+	bool	success;
 
+	success = true;
 	new = env_lstnew(env_list);
 	if (!new)
 		return (false);
 	new->var = var;
 	new->value = allocate_value(cmd);
-	if (!new->value && is_there_chr(cmd, '=')
-		&& *ft_strrchr(cmd, '=') + 1 != '\0')
-	{
-		ft_free(new->var);
-		new->prev->next = NULL;
-		ft_free(new);
-		return (false);
-	}
-	data->env = new_var_in_env(cmd, data);
-	if (!data->env)
+	data->env = new_var_in_env(cmd, data, &success);
+	if ((!new->value && is_there_chr(cmd, '=')
+		&& *ft_strrchr(cmd, '=') + 1 != '\0') || (!success))
 	{
 		ft_free(new->var);
 		ft_free(new->value);
 		new->prev->next = NULL;
 		ft_free(new);
+		perror("minishell: malloc: ");
 		return (false);
 	}
 	return (true);
