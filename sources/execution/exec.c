@@ -108,7 +108,10 @@ int	exec(t_data *data, t_command *cmd, int i)
 			path = ft_strjoin(data->v_path[i], "/");
 			path = ft_strfreejoin(path, cmd->v_cmd[0]);
 			if (!path)
+			{
 				perror("Malloc failed: ");
+				return (1);
+			}
 		}
 		execve(path, cmd->v_cmd, data->env);
 		ft_free(path);

@@ -19,7 +19,10 @@ static void	append_redirection(t_command *cmd, int pipe_fd, int i)
 
 	pathname = next_redirection_name(cmd, i);
 	if (!pathname)
+	{
+		perror("minishell: malloc: ");
 		return ;
+	}
 	fd = open(pathname, O_CREAT | O_APPEND | O_WRONLY, 0600);
 	if (fd < 0)
 	{
@@ -43,7 +46,10 @@ static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
 
 	pathname = next_redirection_name(cmd, i);
 	if (!pathname)
+	{
+		perror("minishell: malloc: ");
 		return ;
+	}
 	fd = open(pathname, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (fd < 0)
 	{
@@ -67,7 +73,10 @@ static void	input_redirection(t_command *cmd, int pipe_fd, int i)
 
 	pathname = next_redirection_name(cmd, i);
 	if (!pathname)
+	{
+		perror("minishell: malloc: ");
 		return ;
+	}
 	fd = open(pathname, O_RDONLY, 0600);
 	if (fd < 0)
 	{

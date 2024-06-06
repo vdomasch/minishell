@@ -88,8 +88,11 @@ static char *copy_without_quotes(char *str)
 	char			*result;
 
 	result = malloc(sizeof(char) * (ft_strlen(str) - count_quotes(str) + 1));
-	if (!result)
+	if (!str)
+	{
+		perror("minishell: malloc: ");
 		return (NULL);
+	}
 	i = 0;
 	j = 0;
 	quotes = 0;
@@ -124,7 +127,10 @@ char	*redirection(t_command *cmd, char input_token)
 	str = malloc(sizeof(char)
 			* (last_redirection_size(cmd->cmd, input_token, &start) + 1));
 	if (!str)
+	{
+		perror("minishell: malloc: ");
 		return (NULL);
+	}
 	i = 0;
 	while (cmd->cmd[start])
 	{
@@ -167,6 +173,11 @@ bool	check_last_redirection(t_command *command, char *redirection, int i)
 	char *pathname;
 
 	pathname = next_redirection_name(command, i);
+	if (!pathname)
+	{
+		perror("minishell: malloc: ");
+		return (false);
+	}
 	if (!ft_strncmp(redirection, pathname, ft_strlen(pathname) + 1))
 	{
 		while (ft_isspace(command->cmd[i]))
