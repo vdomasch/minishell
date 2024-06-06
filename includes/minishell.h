@@ -84,6 +84,7 @@ void		signal_set_child(void);
 /* ************************************************************************** */
 
 bool		are_quotes_closed(const char *str);
+bool		char_sym(const char s, const char *charset);
 bool		check_env_var_name(char *msg, t_env *list, int i);
 bool		create_cmd_list(t_data *data);
 bool		is_empty_pipe(const char *str);
@@ -95,7 +96,10 @@ int			is_in_quotes(const char *str, int j);
 char		*clean_command(char *cmd);
 char		*replace_variables(t_data *data, char *message, t_env *env);
 char		**split_arguments(const char *s, char *set);
+char		*alloc(const char *s, const char *set, unsigned int current_word);
 void		free_cmd_list(t_command *cmd);
+void		copy_without_quotes(char *word, const char *s,
+				unsigned int start, unsigned int end);
 size_t		count_pipes(const char *str);
 size_t		count_size(char *msg, t_env *list, int i, size_t count);
 
@@ -103,6 +107,7 @@ size_t		count_size(char *msg, t_env *list, int i, size_t count);
 /*									EXECUTION								  */
 /* ************************************************************************** */
 
+void		child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i);
 bool		exec_builtins(t_data *data, t_command *cmd);
 int			exec(t_data *data, t_command *cmd, int i);
 int			exec_redirections(t_data *data, t_command *command);
@@ -146,6 +151,8 @@ int			set_return_value(unsigned char return_value);
 void		ft_free(void *ptr);
 char		*ft_free_strtrim(char *s1, const char *s2);
 char		*ft_getcwd(void);
+char		*str_without_quotes(char *str, unsigned int i,
+				unsigned int j, int qts);
 bool		is_there_chr(char *str, char c);
 bool		str_is_space(char *str);
 bool		str_is_ascii(char *str);

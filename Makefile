@@ -17,7 +17,9 @@ FILES				=	main.c										\
 							environment/env_array.c					\
 							environment/process_env.c				\
 							execution/exec.c						\
+							execution/exec_child.c					\
 							execution/exec_redirections.c			\
+							execution/exec_redirections_utils.c		\
 							execution/in_out_redirection.c			\
 							execution/heredoc_redirection.c			\
 							execution/pipes.c						\
@@ -36,7 +38,8 @@ FILES				=	main.c										\
 							parsing/quotes_utils.c					\
 							parsing/pipes_checks.c					\
 							parsing/command_utils.c					\
-							parsing/split_arguments.c
+							parsing/split_arguments.c				\
+							parsing/split_arguments_utils.c
 
 OBJS				=	$(FILES:%.c=$(OBJS_DIR)/%.o)
 

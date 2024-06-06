@@ -14,8 +14,8 @@
 
 char	**new_var_in_env(char *cmd, t_data *data, bool *success)
 {
-	unsigned int	i;
-	char			**new_env;
+	int		i;
+	char	**new_env;
 
 	i = 0;
 	while (data->env[i++])
@@ -27,12 +27,9 @@ char	**new_var_in_env(char *cmd, t_data *data, bool *success)
 		return (data->env);
 	}
 	new_env[i] = NULL;
-	i = 0;
-	while (data->env[i])
-	{
+	i = -1;
+	while (data->env[++i])
 		new_env[i] = data->env[i];
-		i++;
-	}
 	new_env[i] = ft_strdup(cmd);
 	if (!new_env[i])
 	{
@@ -56,7 +53,7 @@ bool	new_var_in_list(char *cmd, t_env *env_list, char *var, t_data *data)
 	new->value = allocate_value(cmd);
 	data->env = new_var_in_env(cmd, data, &success);
 	if ((!new->value && is_there_chr(cmd, '=')
-		&& *ft_strrchr(cmd, '=') + 1 != '\0') || (!success))
+			&& *ft_strrchr(cmd, '=') + 1 != '\0') || (!success))
 	{
 		ft_free(new->var);
 		ft_free(new->value);

@@ -86,6 +86,18 @@ char	*add_absolute_relative_path(t_command *cmd)
 	return (tmp);
 }
 
+static char	*path_alloc(t_data *data, t_command *cmd, int *test, int i)
+{
+	char	*path;
+
+	*test = 1;
+	path = ft_strjoin(data->v_path[i], "/");
+	path = ft_strfreejoin(path, cmd->v_cmd[0]);
+	if (!path)
+		perror("Malloc failed: ");
+	return (path);
+}
+
 int	exec(t_data *data, t_command *cmd, int i)
 {
 	char	*path;
@@ -103,16 +115,9 @@ int	exec(t_data *data, t_command *cmd, int i)
 		if (!cmd->v_cmd || !*cmd->v_cmd)
 			return (2);
 		if (!path && find_element_env_list(data->env_list, "PATH"))
-		{
-			test = 1;
-			path = ft_strjoin(data->v_path[i], "/");
-			path = ft_strfreejoin(path, cmd->v_cmd[0]);
-			if (!path)
-			{
-				perror("Malloc failed: ");
-				return (1);
-			}
-		}
+			path = path_alloc(data, cmd, &test, i);
+		if (!path)
+			return (1);
 		execve(path, cmd->v_cmd, data->env);
 		ft_free(path);
 		path = NULL;
