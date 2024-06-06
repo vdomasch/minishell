@@ -144,6 +144,8 @@ char	*next_redirection_name(t_command *cmd, int i)
 	int		len;
 	char	*redirection;
 
+	while (cmd->cmd[i] == '<' || cmd->cmd[i] == '>')
+		i++;
 	while (cmd->cmd[i] && ft_isspace(cmd->cmd[i]))
 		i++;
 	len = 0;
