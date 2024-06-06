@@ -124,7 +124,10 @@ void	pipes_commands(t_data *data, t_command *command,
 	{
 		data->pipe_fds = malloc(sizeof(int) * (data->nb_pipes * 2));
 		if (!data->pipe_fds)
+		{
+			perror("minishell: malloc: ");
 			return ;
+		}
 		open_pipes(data->nb_pipes, data->pipe_fds);
 	}
 	while (command)

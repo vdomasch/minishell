@@ -77,7 +77,10 @@ void	heredoc_redirection(t_data *data, t_command *cmd, int i)
 
 	pathname = next_redirection_name(cmd, i);
 	if (!pathname)
+	{
+		perror("minishell: malloc: ");
 		return ;
+	}
 	if (pipe(fd) < 0)
 	{
 		printf("Pipe opening error\n");
