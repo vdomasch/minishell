@@ -107,7 +107,10 @@ char	*replace_variables(t_data *data, char *message, t_env *env)
 	len = count_size(message, env, 0, 0);
 	result = malloc(sizeof(char) * (len + 1));
 	if (!result)
+	{
+		perror("minishell: malloc: ");
 		return (NULL);
+	}
 	result[len] = '\0';
 	result = fill_and_replace(data, message, result);
 	set_return_value(0);

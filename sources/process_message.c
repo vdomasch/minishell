@@ -69,6 +69,7 @@ bool	split_command(t_data *data, t_command *command)
 		{
 			ft_free(data->message);
 			free_cmd_list(command);
+			perror("minishell: malloc: ");
 			return (false);
 		}
 		command->v_cmd = split_arguments(cmd_clean, " \n\r\t\v\f");
@@ -77,6 +78,7 @@ bool	split_command(t_data *data, t_command *command)
 			ft_free(data->message);
 			ft_free(cmd_clean);
 			free_cmd_list(command);
+			perror("minishell: malloc: ");
 			return (false);
 		}
 		command = command->next;
@@ -104,6 +106,7 @@ bool	standardize_command(t_data *data, char *message, t_command *command)
 		{
 			ft_free(data->message);
 			free_cmd_list(data->cmd_list);
+			perror("minishell: malloc: ");
 			return (false);
 		}
 		command = command->next;

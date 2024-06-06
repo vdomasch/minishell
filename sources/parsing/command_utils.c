@@ -75,6 +75,7 @@ bool	create_cmd_list(t_data *data)
 		{
 			ft_free(data->message);
 			free_cmd_list(command);
+			perror("minishell: malloc: ");
 			return (false);
 		}
 		command = command->next;
