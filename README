@@ -1,17 +1,12 @@
-return_value:
-0
-1       -> export: invalid identifier   V
-2
-126     -> ... is a directory           ???
-127     -> command not found            V
-130     -> signal SIGINT                V
-131     -> signal SIGQUIT               V
+== BUGS
+exit | exit => pipe avec cmds qui generent des erreurs (cmd caca | cmd caca)
+expand dans heredoc seulement si heredoc_query n'est pas entre quote
+ne pas expand le heredoc_query pour ne pas quit le heredoc si on ecrit la valeur de la variable
 
-cat | << test
+cat << 34 << 123 << 123 >txt3.txt | cat << 32 << 12 << 123 > txt1.txt | cat <Makefile > final.txt
+Si ctrl D, tout est exit au lieu de juste un heredoc et toute les pipes leak;
 
-cat | echo      -> pb prompt
+Attention ne pas ouvrir plusieurs heredoc a la fois, tout traiter en avance ?
 
-./non.sh        -> n'execute pas le script
-
-cat | (redirection) ->segfault
-cat | <<test -> probleme de frappe et segfault en sortie
+cat <Makefile <testfile.txt <Makefile <testfile <fuck.txt > lala.txt >> loulou.txt | wc -l > 123.txt | echo MIAOU
+FD OUVERT
