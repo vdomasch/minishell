@@ -2,6 +2,7 @@
 exit | exit => pipe avec cmds qui generent des erreurs (cmd caca | cmd caca)
 expand dans heredoc seulement si heredoc_query n'est pas entre quote
 ne pas expand le heredoc_query pour ne pas quit le heredoc si on ecrit la valeur de la variable
+>>      expand heredoc fait mais expand + quote + heredoc [cat << $"USER"] to do
 
 cat << 34 << 123 << 123 >txt3.txt | cat << 32 << 12 << 123 > txt1.txt | cat <Makefile > final.txt
 Si ctrl D, tout est exit au lieu de juste un heredoc et toute les pipes leak;

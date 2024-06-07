@@ -87,6 +87,7 @@ bool		are_quotes_closed(const char *str);
 bool		char_sym(const char s, const char *charset);
 bool		check_env_var_name(char *msg, t_env *list, int i);
 bool		create_cmd_list(t_data *data);
+bool		is_dollar_heredoc(char *msg, int i);
 bool		is_empty_pipe(const char *str);
 bool		is_ended_by_pipe(const char *str);
 bool		is_invalid_char_in_quote(const char *str);
