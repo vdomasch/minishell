@@ -64,7 +64,7 @@ static void	heredoc_parent(t_data *data, t_command *cmd, char *eof, int *fd)
 	if (WIFEXITED(status))
 	{
 		if (WEXITSTATUS(status) == 1)
-			exit(free_all(data, NULL, 0,EXIT_FAILURE));
+			exit(free_all(data, NULL, 0, EXIT_FAILURE));
 		else
 			if (!ft_strncmp(cmd->input_redirection, eof, ft_strlen(eof) + 1))
 				dup2(fd[0], STDIN_FILENO);
