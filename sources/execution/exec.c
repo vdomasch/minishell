@@ -17,7 +17,7 @@ bool	exec_builtins(t_data *data, t_command *cmd)
 	if (!cmd->v_cmd || !*cmd->v_cmd)
 		return (false);
 	if (*data->cmd_list->v_cmd
-		&& !ft_strncmp(data->cmd_list->v_cmd[0], "exit", 5))
+		&& !ft_strncmp(cmd->v_cmd[0], "exit", 5) && data->nb_pipes == 0)
 		ft_exit(data, cmd);
 	else if (!ft_strncmp(cmd->v_cmd[0], "cd", 3) && data->nb_pipes == 0)
 		ft_cd(data, cmd->v_cmd);
@@ -37,9 +37,9 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 	if (!command->v_cmd || !*command->v_cmd)
 		return (false);
 	if (!ft_strncmp(command->v_cmd[0], "exit", 5))
-		;
+		ft_exit(data, command);
 	else if (!ft_strncmp(command->v_cmd[0], "cd", 3))
-		;
+		ft_cd(data, command->v_cmd);
 	else if (!ft_strncmp(command->v_cmd[0], "pwd", 4))
 		ft_pwd();
 	else if (!ft_strncmp(command->v_cmd[0], "echo", 5))
