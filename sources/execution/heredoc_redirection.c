@@ -48,7 +48,7 @@ static void	heredoc_child(t_data *data, t_command *cmd, char *eof, int *fd)
 	exit(0);
 }
 
-static void	heredoc_parent(t_command *cmd, char *eof, int *fd)
+static void	heredoc_parent(t_data *data, t_command *cmd, char *eof, int *fd)
 {
 	int	status;
 
@@ -59,7 +59,7 @@ static void	heredoc_parent(t_command *cmd, char *eof, int *fd)
 	if (WIFEXITED(status))
 	{
 		if (WEXITSTATUS(status) == 1)
-			exit(EXIT_FAILURE);
+			exit(free_all(data, NULL, EXIT_FAILURE));
 		else
 			if (!ft_strncmp(cmd->input_redirection, eof, ft_strlen(eof) + 1))
 				dup2(fd[0], STDIN_FILENO);
@@ -90,8 +90,8 @@ void	heredoc_redirection(t_data *data, t_command *cmd, int i)
 	if (pid == 0)
 		heredoc_child(data, cmd, pathname, fd);
 	else if (pid < 0)
-		exit(EXIT_FAILURE);
+		exit(free_all(data, pathname, EXIT_FAILURE));
 	else
-		heredoc_parent(cmd, pathname, fd);
+		heredoc_parent(data, cmd, pathname, fd);
 	free(pathname);
 }

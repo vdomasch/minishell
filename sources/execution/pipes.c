@@ -69,6 +69,7 @@ void	pipes_commands(t_data *data, t_command *command,
 	}
 	while (command)
 	{
+		set_return_value(0);
 		if (!exec_builtins(data, command))
 			child(data, command, data->pipe_fds, i);
 		command = command->next;

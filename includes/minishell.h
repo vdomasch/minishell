@@ -112,6 +112,7 @@ void		child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i);
 bool		exec_builtins(t_data *data, t_command *cmd);
 int			exec(t_data *data, t_command *cmd, int i);
 int			exec_redirections(t_data *data, t_command *cmd, int i);
+int			free_all(t_data *data, char *str, int ret);
 void		heredoc_redirection(t_data *data, t_command *cmd, int i);
 void		in_out_redirection(t_data *data, t_command *cmd, int p_fd, int i);
 char		*next_redirection_name(t_command *cmd, int i);

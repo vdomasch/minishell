@@ -93,7 +93,7 @@ static bool	check_last_redir_name(t_command *command, char *redirection,
 	if (!ft_strncmp(redirection, pathname, ft_strlen(pathname) + 1))
 	{
 		free(pathname);
-		if (is_there_chr(command->cmd + i, c))
+		if (is_there_chr(command->cmd + i + 1, c))
 			return (false);
 		while (ft_isspace(command->cmd[i]))
 			i++;
@@ -119,8 +119,7 @@ int	exec_redirections(t_data *data, t_command *cmd, int i)
 		if (cmd->cmd[i] == '>' && !is_in_quotes(cmd->cmd, i))
 		{
 			in_out_redirection(data, cmd, STDOUT_FILENO, i++);
-			if (check_last_redir_name(cmd, cmd->output_redirection, '>', i)
-				&& check_last_redirection(cmd->cmd + i + 1, '>'))
+			if (check_last_redir_name(cmd, cmd->output_redirection, '>', i))
 				return (1);
 		}
 		if (cmd->cmd[i] == '<' && !is_in_quotes(cmd->cmd, i))
