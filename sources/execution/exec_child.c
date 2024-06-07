@@ -40,7 +40,7 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 						unsigned int i)
 {
 	signal_set_child();
-	if (exec_redirections(data, cmd) != 1)
+	if (exec_redirections(data, cmd, 0) != 1)
 	{
 		if (cmd->next)
 			if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)

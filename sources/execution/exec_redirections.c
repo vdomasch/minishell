@@ -12,6 +12,20 @@
 
 #include "../../includes/minishell.h"
 
+bool	check_last_redirection(char *str, char c)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c && !is_in_quotes(str, i))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 static int	last_redirection_size(char *cmd, char c, int *start)
 {
 	int	i;
@@ -37,11 +51,10 @@ static int	last_redirection_size(char *cmd, char c, int *start)
 	return (i - *start);
 }
 
-static char	*redirection(t_command *cmd, char input_token)
+static char	*redirection(t_command *cmd, char input_token, int i)
 {
 	char	*str;
 	int		start;
-	int		i;
 
 	if (!is_there_chr(cmd->cmd, input_token))
 		return (NULL);
@@ -52,7 +65,6 @@ static char	*redirection(t_command *cmd, char input_token)
 		perror("minishell: malloc: ");
 		return (NULL);
 	}
-	i = 0;
 	while (cmd->cmd[start])
 	{
 		if (ft_isspace(cmd->cmd[start]) && !is_in_quotes(cmd->cmd, start))
@@ -62,11 +74,13 @@ static char	*redirection(t_command *cmd, char input_token)
 		i++;
 	}
 	str[i] = '\0';
-	str = str_without_quotes(str, 0, 0, 0);
+	if (is_there_chr(str, '"') || is_there_chr(str, '\''))
+		str = str_without_quotes(str);
 	return (str);
 }
 
-static bool	check_last_redirection(t_command *command, char *redirection, int i)
+static bool	check_last_redir_name(t_command *command, char *redirection,
+								char c, int i)
 {
 	char	*pathname;
 
@@ -78,42 +92,42 @@ static bool	check_last_redirection(t_command *command, char *redirection, int i)
 	}
 	if (!ft_strncmp(redirection, pathname, ft_strlen(pathname) + 1))
 	{
+		free(pathname);
+		if (is_there_chr(command->cmd + i, c))
+			return (false);
 		while (ft_isspace(command->cmd[i]))
 			i++;
-		i += ft_strlen(pathname);
+		i += ft_strlen(redirection) - 1;
 		while (command->cmd[++i])
 			if ((command->cmd[i] == '<' || command->cmd[i] == '>')
 				&& !is_in_quotes(command->cmd, i))
 				return (false);
-		free(pathname);
 		return (true);
 	}
 	free(pathname);
 	return (false);
 }
 
-int	exec_redirections(t_data *data, t_command *command)
+int	exec_redirections(t_data *data, t_command *cmd, int i)
 {
-	int	i;
-
-	i = 0;
-	if (!is_there_chr(command->cmd, '>') && !is_there_chr(command->cmd, '<'))
+	if (!is_there_chr(cmd->cmd, '>') && !is_there_chr(cmd->cmd, '<'))
 		return (0);
-	command->input_redirection = redirection(command, '<');
-	command->output_redirection = redirection(command, '>');
-	while (command->cmd[i])
+	cmd->input_redirection = redirection(cmd, '<', 0);
+	cmd->output_redirection = redirection(cmd, '>', 0);
+	while (cmd->cmd[i])
 	{
-		if (command->cmd[i] == '>' && !is_in_quotes(command->cmd, i))
+		if (cmd->cmd[i] == '>' && !is_in_quotes(cmd->cmd, i))
 		{
-			in_out_redirection(data, command, STDOUT_FILENO, i++);
-			if (check_last_redirection(command, command->output_redirection, i))
+			in_out_redirection(data, cmd, STDOUT_FILENO, i++);
+			if (check_last_redir_name(cmd, cmd->output_redirection, '>', i)
+				&& check_last_redirection(cmd->cmd + i + 1, '>'))
 				return (1);
 		}
-		if (command->cmd[i] == '<' && !is_in_quotes(command->cmd, i))
+		if (cmd->cmd[i] == '<' && !is_in_quotes(cmd->cmd, i))
 		{
-			in_out_redirection(data, command, STDIN_FILENO, i++);
-			if (check_last_redirection(command, command->input_redirection, i)
-				&& !command->next)
+			in_out_redirection(data, cmd, STDIN_FILENO, i++);
+			if (check_last_redir_name(cmd, cmd->input_redirection, '<', i)
+				&& !cmd->next && check_last_redirection(cmd->cmd + i + 1, '>'))
 				return (1);
 		}
 		i++;

@@ -31,9 +31,7 @@ char	*next_redirection_name(t_command *cmd, int i)
 	int		len;
 	char	*redirection;
 
-	while (cmd->cmd[i] == '<' || cmd->cmd[i] == '>')
-		i++;
-	while (cmd->cmd[i] && ft_isspace(cmd->cmd[i]))
+	while (cmd->cmd[i] == '<' || cmd->cmd[i] == '>' || ft_isspace(cmd->cmd[i]))
 		i++;
 	len = 0;
 	while (cmd->cmd[i + len] && (!ft_isspace(cmd->cmd[i + len])
@@ -45,7 +43,8 @@ char	*next_redirection_name(t_command *cmd, int i)
 	redirection[len] = '\0';
 	while (--len >= 0)
 		redirection[len] = cmd->cmd[i + len];
-	redirection = str_without_quotes(redirection, 0, 0, 0);
+	if (is_there_chr(redirection, '\'') || is_there_chr(redirection, '"'))
+		redirection = str_without_quotes(redirection);
 	return (redirection);
 }
 
@@ -78,23 +77,22 @@ static int	count_quotes(const char *str)
 	return (count);
 }
 
-char	*str_without_quotes(char *str, unsigned int i, unsigned int j, int qts)
+static void	copy_quoteless(char *result, char *str)
 {
-	char			*result;
+	unsigned int	i;
+	unsigned int	j;
+	int				qts;
 
-	result = malloc(sizeof(char) * (ft_strlen(str) - count_quotes(str) + 1));
-	if (!result)
-		perror("minishell: malloc: ");
-	if (!result)
-		return (NULL);
+	i = 0;
+	j = 0;
+	qts = 0;
 	while (str[i])
 	{
 		if ((str[i] == '\'' || str[i] == '"') && qts == 0)
 		{
+			qts++;
 			if (str[i] == '\'')
-				qts--;
-			else
-				qts++;
+				qts -= 2;
 		}
 		else if ((str[i] == '\'' && qts == -1) || (str[i] == '"' && qts == 1))
 			qts = 0;
@@ -103,6 +101,20 @@ char	*str_without_quotes(char *str, unsigned int i, unsigned int j, int qts)
 		i++;
 	}
 	result[j] = '\0';
+}
+
+char	*str_without_quotes(char *str)
+{
+	char			*result;
+
+	result = malloc(sizeof(char) * (ft_strlen(str) - count_quotes(str) + 1));
+	if (!result)
+	{
+		perror("minishell: malloc: ");
+		free(str);
+		return (NULL);
+	}
+	copy_quoteless(result, str);
 	free(str);
 	return (result);
 }

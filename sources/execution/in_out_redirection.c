@@ -30,7 +30,8 @@ static void	append_redirection(t_command *cmd, int pipe_fd, int i)
 		perror(pathname);
 		exit(1);
 	}
-	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname)))
+	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname))
+		&& check_last_redirection(cmd->cmd + i, '>'))
 	{
 		if (dup2(fd, pipe_fd) < 0)
 			exit (1);
@@ -57,7 +58,8 @@ static void	trunc_redirection(t_command *cmd, int pipe_fd, int i)
 		perror(pathname);
 		exit(1);
 	}
-	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname)))
+	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname))
+		&& check_last_redirection(cmd->cmd + i, '>'))
 	{
 		if (dup2(fd, pipe_fd) < 0)
 			exit (1);
@@ -84,7 +86,8 @@ static void	input_redirection(t_command *cmd, int pipe_fd, int i)
 		perror(pathname);
 		exit(1);
 	}
-	if (!ft_strncmp(pathname, cmd->input_redirection, ft_strlen(pathname)))
+	if (!ft_strncmp(pathname, cmd->input_redirection, ft_strlen(pathname))
+		&& check_last_redirection(cmd->cmd + i, '<'))
 	{
 		if (dup2(fd, pipe_fd) < 0)
 			exit(1);

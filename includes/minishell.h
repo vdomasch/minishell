@@ -107,10 +107,11 @@ size_t		count_size(char *msg, t_env *list, int i, size_t count);
 /*									EXECUTION								  */
 /* ************************************************************************** */
 
+bool		check_last_redirection(char *str, char c);
 void		child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i);
 bool		exec_builtins(t_data *data, t_command *cmd);
 int			exec(t_data *data, t_command *cmd, int i);
-int			exec_redirections(t_data *data, t_command *command);
+int			exec_redirections(t_data *data, t_command *cmd, int i);
 void		heredoc_redirection(t_data *data, t_command *cmd, int i);
 void		in_out_redirection(t_data *data, t_command *cmd, int p_fd, int i);
 char		*next_redirection_name(t_command *cmd, int i);
@@ -151,8 +152,7 @@ int			set_return_value(unsigned char return_value);
 void		ft_free(void *ptr);
 char		*ft_free_strtrim(char *s1, const char *s2);
 char		*ft_getcwd(void);
-char		*str_without_quotes(char *str, unsigned int i,
-				unsigned int j, int qts);
+char		*str_without_quotes(char *str);
 bool		is_there_chr(char *str, char c);
 bool		str_is_space(char *str);
 bool		str_is_ascii(char *str);
