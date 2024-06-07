@@ -89,11 +89,14 @@ static char	*fill_and_replace(t_data *data, char *message, char *result)
 	while (message[i])
 	{
 		if (message[i] != '$' || is_in_quotes(message, i) == 1
-			|| (message[i + 1] != '?' && !ft_isalnum(message[i + 1])))
+			|| (message[i + 1] != '?' && !ft_isalnum(message[i + 1]) && message[i + 1] != '\'' && message[i + 1] != '"') || is_dollar_heredoc(message, i))
 			result[j++] = message[i++];
 		else
 		{
-			replace(data, result, &i, &j);
+			if (message[i] == '\'' || message[i] == '"')
+				i++;
+			else
+				replace(data, result, &i, &j);
 		}
 	}
 	return (result);
@@ -113,6 +116,7 @@ char	*replace_variables(t_data *data, char *message, t_env *env)
 	}
 	result[len] = '\0';
 	result = fill_and_replace(data, message, result);
+	printf("result = !%s!\n", result);
 	set_return_value(0);
 	return (result);
 }

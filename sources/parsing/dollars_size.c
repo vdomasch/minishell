@@ -12,6 +12,17 @@
 
 #include "../../includes/minishell.h"
 
+bool	is_dollar_heredoc(char *msg, int i)
+{
+	while (i > 0 && (!ft_isspace(msg[i]) && msg[i] != '<'))
+		i--;
+	while (i > 0 && ft_isspace(msg[i]))
+		i--;
+	if (i > 0 && msg[i] == '<' && msg[i - 1] == '<')
+		return (true);
+	return (false);
+}
+
 bool	count_var_size(char *msg, t_env *list, int i, size_t *count)
 {
 	int		return_value;
@@ -43,12 +54,17 @@ size_t	count_size(char *msg, t_env *list, int i, size_t count)
 {
 	while (msg[i])
 	{
-		if (msg[i] != '$' || is_in_quotes(msg, i) == 1
-			|| (msg[i + 1] != '?' && !ft_isalnum(msg[i + 1])))
+		if (msg[i] != '$' || is_in_quotes(msg, i) == 1 || (msg[i + 1] != '?'
+			&& !ft_isalnum(msg[i + 1]) && msg[i + 1] != '\'' && msg[i + 1] != '"') || is_dollar_heredoc(msg, i))
 			i++;
 		else
 		{
 			i++;
+			if (msg[i] == '\'' || msg[i] == '"')
+			{
+				count--;
+				continue;
+			}
 			list = env_first(list);
 			while (list)
 			{
