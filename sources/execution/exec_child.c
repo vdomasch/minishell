@@ -44,22 +44,17 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 	{
 		if (cmd->next)
 			if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)
-				exit(1);
+				exit(free_all(data, NULL, 0, EXIT_FAILURE));
 		if (i != 0)
 			if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
-				exit(1);
+				exit(free_all(data, NULL, 0, EXIT_FAILURE));
 	}
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
 	if (exec(data, cmd, 0) == 1 && *cmd->v_cmd)
 		exec_errors(cmd);
-	free_cmd_list(data->cmd_list);
-	free_env(data->env_list, data->v_path);
-	free_env(NULL, data->env);
-	rl_clear_history();
-	ft_free(pipe_fds);
-	ft_free(data->message);
+	free_all(data, NULL, 0, 0);
 	exit(set_return_value(0));
 }
 

@@ -34,6 +34,11 @@ static void	heredocument(t_command *cmd, char *eof, int fd)
 
 static void	heredoc_child(t_data *data, t_command *cmd, char *eof, int *fd)
 {
+	unsigned int	i;
+
+	i = 0;
+	while (i < 2 * data->nb_pipes)
+		close(data->pipe_fds[i++]);
 	signal(SIGQUIT, SIG_IGN);
 	close(fd[0]);
 	heredocument(cmd, eof, fd[1]);
@@ -45,7 +50,7 @@ static void	heredoc_child(t_data *data, t_command *cmd, char *eof, int *fd)
 	rl_clear_history();
 	ft_free(data->message);
 	ft_free(data->pipe_fds);
-	exit(0);
+	exit(free_all(data, NULL, 0, 0));
 }
 
 static void	heredoc_parent(t_data *data, t_command *cmd, char *eof, int *fd)
@@ -59,7 +64,7 @@ static void	heredoc_parent(t_data *data, t_command *cmd, char *eof, int *fd)
 	if (WIFEXITED(status))
 	{
 		if (WEXITSTATUS(status) == 1)
-			exit(free_all(data, NULL, EXIT_FAILURE));
+			exit(free_all(data, NULL, 0,EXIT_FAILURE));
 		else
 			if (!ft_strncmp(cmd->input_redirection, eof, ft_strlen(eof) + 1))
 				dup2(fd[0], STDIN_FILENO);
@@ -90,7 +95,7 @@ void	heredoc_redirection(t_data *data, t_command *cmd, int i)
 	if (pid == 0)
 		heredoc_child(data, cmd, pathname, fd);
 	else if (pid < 0)
-		exit(free_all(data, pathname, EXIT_FAILURE));
+		exit(free_all(data, pathname, 0, EXIT_FAILURE));
 	else
 		heredoc_parent(data, cmd, pathname, fd);
 	free(pathname);
