@@ -62,6 +62,7 @@ typedef struct s_data
 	char			**v_path;
 	int				*pipe_fds;
 	unsigned int	nb_pipes;
+	int				stdin;
 }	t_data;
 
 /* ************************************************************************** */
@@ -118,6 +119,7 @@ void		heredoc_redirection(t_data *data, t_command *cmd, int i);
 void		in_out_redirection(t_data *data, t_command *cmd, int p_fd, int i);
 char		*next_redirection_name(t_command *cmd, int i);
 void		pipes_commands(t_data *data, t_command *command, unsigned int i);
+char		*redirection(t_command *cmd, char input_token, int i);
 
 /* ************************************************************************** */
 /*									ENVIRONMENT								  */

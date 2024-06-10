@@ -56,7 +56,7 @@ static void	heredoc_child(t_data *data, t_command *cmd, char *eof, int *fd)
 static void	heredoc_parent(t_data *data, t_command *cmd, char *eof, int *fd)
 {
 	int	status;
-	int i;
+	//int i;
 
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(0, &status, 0);
@@ -69,11 +69,10 @@ static void	heredoc_parent(t_data *data, t_command *cmd, char *eof, int *fd)
 		else
 			if (!ft_strncmp(cmd->input_redirection, eof, ft_strlen(eof) + 1))
 				dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
 	}
-	i = 3;
-	while (i <= 1023)
-		close(i++);
+	//i = 3;
+	//while (i <= 1023)			NEEDED FOR ONE HEREDOC REDIRECTION
+	//	close(i++);				ELSE MINISHELL EXIT
 	(void)eof;
 	(void)cmd;
 }

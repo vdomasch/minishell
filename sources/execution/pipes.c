@@ -58,6 +58,22 @@ static void	wait_parent(t_data *data, int *pipe_fds)
 	}
 }
 
+void	here_document(t_data *data, t_command *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (!is_there_chr(cmd->cmd, '>') && !is_there_chr(cmd->cmd, '<'))
+		return ;
+	cmd->input_redirection = redirection(cmd, '<', 0);
+	while (cmd->cmd[i])
+	{
+		if (cmd->cmd[i] == '<' && !is_in_quotes(cmd->cmd, i) && cmd->cmd[i + 1] == '<')
+			heredoc_redirection(data, cmd, i);
+		i++;
+	}
+}
+
 void	pipes_commands(t_data *data, t_command *command,
 						unsigned int i)
 {
@@ -76,8 +92,10 @@ void	pipes_commands(t_data *data, t_command *command,
 	{
 		set_return_value(0);
 		set_return_value(0);
+		here_document(data, command);
 		if (!exec_builtins(data, command))
 			child(data, command, data->pipe_fds, i);
+		dup2(data->stdin, STDIN_FILENO);
 		command = command->next;
 		i += 2;
 	}

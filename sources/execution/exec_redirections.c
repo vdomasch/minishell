@@ -51,7 +51,7 @@ static int	last_redirection_size(char *cmd, char c, int *start)
 	return (i - *start);
 }
 
-static char	*redirection(t_command *cmd, char input_token, int i)
+char	*redirection(t_command *cmd, char input_token, int i)
 {
 	char	*str;
 	int		start;
