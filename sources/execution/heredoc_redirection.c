@@ -50,7 +50,7 @@ static void	heredoc_child(t_data *data, t_command *cmd, char *eof, int *fd)
 	rl_clear_history();
 	ft_free(data->message);
 	ft_free(data->pipe_fds);
-	exit(free_all(data, NULL, 0, 0));
+	exit(0);
 }
 
 static void	heredoc_parent(t_data *data, t_command *cmd, char *eof, int *fd)

@@ -47,7 +47,10 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 				exit(free_all(data, NULL, 0, EXIT_FAILURE));
 		if (i != 0)
 			if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
+			{
+				perror("here");
 				exit(free_all(data, NULL, 0, EXIT_FAILURE));
+			}
 	}
 	i = 0;
 	while (i < 2 * data->nb_pipes)

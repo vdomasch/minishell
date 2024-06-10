@@ -29,9 +29,9 @@ static void	open_pipes(t_data *data, unsigned int nb_pipes, int *pipe_fds)
 		}
 		i++;
 	}
-	i = i * 2;
-	while (i > 0)
-		close(pipe_fds[--i]);
+	//i = i * 2;
+	//while (i > 0)
+	//	close(pipe_fds[--i]);
 }
 
 static void	wait_parent(t_data *data, int *pipe_fds)
