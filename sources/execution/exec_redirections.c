@@ -51,7 +51,7 @@ static int	last_redirection_size(char *cmd, char c, int *start)
 	return (i - *start);
 }
 
-static char	*redirection(t_command *cmd, char input_token, int i)
+char	*redirection(t_command *cmd, char input_token, int i)
 {
 	char	*str;
 	int		start;
@@ -119,7 +119,7 @@ int	exec_redirections(t_data *data, t_command *cmd, int i)
 		if (cmd->cmd[i] == '>' && !is_in_quotes(cmd->cmd, i))
 		{
 			in_out_redirection(data, cmd, STDOUT_FILENO, i++);
-			if (check_last_redir_name(cmd, cmd->output_redirection, '>', i))
+			if (check_last_redir_name(cmd, cmd->output_redirection, '>', i) && !cmd->prev)
 				return (1);
 		}
 		if (cmd->cmd[i] == '<' && !is_in_quotes(cmd->cmd, i))

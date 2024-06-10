@@ -17,7 +17,6 @@ void	ft_exit(t_data *data, t_command *cmd)
 	unsigned char	tmp;
 
 	tmp = 0;
-	(void)cmd;
 	if (cmd->v_cmd[1])
 		tmp = ft_atoi(cmd->v_cmd[1]);
 	if (!tmp && cmd->v_cmd[1] && cmd->v_cmd[1][0] != 0)
@@ -32,11 +31,6 @@ void	ft_exit(t_data *data, t_command *cmd)
 		return ;
 	}
 	printf("exit\n");
-	free_cmd_list(data->cmd_list);
-	free_env(data->env_list, data->v_path);
-	if (data->env && *data->env && **data->env)
-		free_env(NULL, data->env);
-	rl_clear_history();
-	ft_free(data->message);
+	free_all(data, NULL, 0);
 	exit(tmp);
 }

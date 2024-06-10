@@ -44,20 +44,17 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 	{
 		if (cmd->next)
 			if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)
-				exit(free_all(data, NULL, 0, EXIT_FAILURE));
+				exit(free_all(data, NULL, EXIT_FAILURE));
 		if (i != 0)
 			if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
-			{
-				perror("here");
-				exit(free_all(data, NULL, 0, EXIT_FAILURE));
-			}
+				exit(free_all(data, NULL, EXIT_FAILURE));
 	}
-	i = 0;
+	i = 1;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
 	if (exec(data, cmd, 0) == 1 && *cmd->v_cmd)
 		exec_errors(cmd);
-	free_all(data, NULL, 0, 0);
+	free_all(data, NULL, 0);
 	exit(set_return_value(0));
 }
 
@@ -74,5 +71,10 @@ void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 	if (pid == 0)
 		child_exec(data, cmd, pipe_fds, i);
 	else if (pid < 0)
+	{
+		i = 3;
+		while (i <= 1023)
+			close(i++);
 		exit(1);
+	}
 }

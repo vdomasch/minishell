@@ -36,13 +36,13 @@ static void	heredoc_child(t_data *data, t_command *cmd, char *eof, int *fd)
 {
 	unsigned int	i;
 
-	i = 0;
-	while (i < 2 * data->nb_pipes)
-		close(data->pipe_fds[i++]);
 	signal(SIGQUIT, SIG_IGN);
 	close(fd[0]);
 	heredocument(cmd, eof, fd[1]);
 	close(fd[1]);
+	i = 3;
+	while (i <= 1023)
+		close(i++);
 	free(eof);
 	free_cmd_list(data->cmd_list);
 	free_env(data->env_list, data->v_path);
@@ -56,6 +56,7 @@ static void	heredoc_child(t_data *data, t_command *cmd, char *eof, int *fd)
 static void	heredoc_parent(t_data *data, t_command *cmd, char *eof, int *fd)
 {
 	int	status;
+	//int i;
 
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(0, &status, 0);
@@ -64,12 +65,14 @@ static void	heredoc_parent(t_data *data, t_command *cmd, char *eof, int *fd)
 	if (WIFEXITED(status))
 	{
 		if (WEXITSTATUS(status) == 1)
-			exit(free_all(data, NULL, 0, EXIT_FAILURE));
+			exit(free_all(data, NULL, EXIT_FAILURE));
 		else
 			if (!ft_strncmp(cmd->input_redirection, eof, ft_strlen(eof) + 1))
 				dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
 	}
+	//i = 3;
+	//while (i <= 1023)			NEEDED FOR ONE HEREDOC REDIRECTION
+	//	close(i++);				ELSE MINISHELL EXIT
 	(void)eof;
 	(void)cmd;
 }
@@ -95,7 +98,7 @@ void	heredoc_redirection(t_data *data, t_command *cmd, int i)
 	if (pid == 0)
 		heredoc_child(data, cmd, pathname, fd);
 	else if (pid < 0)
-		exit(free_all(data, pathname, 0, EXIT_FAILURE));
+		exit(free_all(data, pathname, EXIT_FAILURE));
 	else
 		heredoc_parent(data, cmd, pathname, fd);
 	free(pathname);
