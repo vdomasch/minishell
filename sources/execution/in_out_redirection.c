@@ -12,10 +12,13 @@
 
 #include "../../includes/minishell.h"
 
-int	free_all(t_data *data, char *str, int fd, int ret)
+int	free_all(t_data *data, char *str, int ret)
 {
-	if (fd)
-		close(fd);
+	unsigned int i;
+
+	i = 3;
+	while (i <= 1023)
+		close(i++);
 	ft_free(str);
 	free_cmd_list(data->cmd_list);
 	free_env(data->env_list, data->v_path);
@@ -42,14 +45,12 @@ static void	append_redirection(t_data *data, t_command *cmd, int pipe_fd, int i)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		perror(pathname);
-		exit(free_all(data, pathname, 0, 1));
+		exit(free_all(data, pathname, 1));
 	}
 	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname))
 		&& check_last_redirection(cmd->cmd + i, '>'))
-	{
 		if (dup2(fd, pipe_fd) < 0)
-			exit (free_all(data, pathname, fd, 1));
-	}
+			exit (free_all(data, pathname, 1));
 	free(pathname);
 	close(fd);
 }
@@ -70,14 +71,12 @@ static void	trunc_redirection(t_data *data, t_command *cmd, int pipe_fd, int i)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		perror(pathname);
-		exit(free_all(data, pathname, 0, 1));
+		exit(free_all(data, pathname, 1));
 	}
 	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname))
 		&& check_last_redirection(cmd->cmd + i, '>'))
-	{
 		if (dup2(fd, pipe_fd) < 0)
-			exit (free_all(data, pathname, fd, 1));
-	}
+			exit (free_all(data, pathname, 1));
 	free(pathname);
 	close(fd);
 }
@@ -98,14 +97,12 @@ static void	input_redirection(t_data *data, t_command *cmd, int pipe_fd, int i)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		perror(pathname);
-		exit(free_all(data, pathname, 0, 1));
+		exit(free_all(data, pathname, 1));
 	}
 	if (!ft_strncmp(pathname, cmd->input_redirection, ft_strlen(pathname))
 		&& check_last_redirection(cmd->cmd + i, '<'))
-	{
 		if (dup2(fd, pipe_fd) < 0)
-			exit(free_all(data, pathname, fd, 1));
-	}
+			exit(free_all(data, pathname, 1));
 	free(pathname);
 	close(fd);
 }

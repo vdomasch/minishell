@@ -116,7 +116,6 @@ char	*replace_variables(t_data *data, char *message, t_env *env)
 	}
 	result[len] = '\0';
 	result = fill_and_replace(data, message, result);
-	printf("result = !%s!\n", result);
 	set_return_value(0);
 	return (result);
 }

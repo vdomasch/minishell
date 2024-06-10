@@ -22,16 +22,13 @@ static void	open_pipes(t_data *data, unsigned int nb_pipes, int *pipe_fds)
 		if (pipe(pipe_fds + (2 * i)) < 0)
 		{
 			perror("Pipe opening error:\n");
-			i = i * 2;
-			while (i > 0)
-				close(pipe_fds[--i]);
-			exit(free_all(data, NULL, 0, EXIT_FAILURE));
+			i = 3;
+			while (i <= 1023)
+				close(i++);
+			exit(free_all(data, NULL, EXIT_FAILURE));
 		}
 		i++;
 	}
-	//i = i * 2;
-	//while (i > 0)
-	//	close(pipe_fds[--i]);
 }
 
 static void	wait_parent(t_data *data, int *pipe_fds)
@@ -40,10 +37,12 @@ static void	wait_parent(t_data *data, int *pipe_fds)
 	int				sig;
 	int				status;
 
-	i = 3;
+	(void)data;
+	(void)pipe_fds;
 	status = 0;
-	while (i < 2 * data->nb_pipes)
-		close(pipe_fds[i++]);
+	i = 3;
+	while (i <= 1023)
+		close(i++);
 	while (waitpid(0, &status, 0) > 0)
 	{
 		if (WIFEXITED(status))
@@ -75,6 +74,7 @@ void	pipes_commands(t_data *data, t_command *command,
 	}
 	while (command)
 	{
+		set_return_value(0);
 		set_return_value(0);
 		if (!exec_builtins(data, command))
 			child(data, command, data->pipe_fds, i);
