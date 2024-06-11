@@ -14,7 +14,7 @@
 
 int	free_all(t_data *data, char *str, int ret)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	i = 3;
 	while (i <= 1023)
@@ -124,6 +124,8 @@ void	in_out_redirection(t_data *data, t_command *command, int pipe_fd, int i)
 		append_redirection(data, command, pipe_fd, i + 1);
 	else if (command->cmd[i - 1] == '>')
 		trunc_redirection(data, command, pipe_fd, i);
-	else if (command->cmd[i - 1] == '<' && command->cmd[i] != '<')
+	else if (command->cmd[i - 1] == '<' && command->cmd[i] == '<')
+		heredoc_redirection(data, command, i);
+	else if (command->cmd[i - 1] == '<')
 		input_redirection(data, command, pipe_fd, i);
 }

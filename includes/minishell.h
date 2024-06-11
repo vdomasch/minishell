@@ -29,12 +29,6 @@
 /*									STRUCT									  */
 /* ************************************************************************** */
 
-typedef struct s_heredoc
-{
-	char				*line;
-	struct s_heredoc	*next;
-}	t_heredoc;
-
 typedef struct s_env
 {
 	char			*var;
@@ -49,6 +43,7 @@ typedef struct s_command
 	char				*cmd;
 	char				*input_redirection;
 	char				*output_redirection;
+	int					heredoc_fd;
 	struct s_command	*next;
 	struct s_command	*prev;
 }	t_command;
@@ -56,6 +51,7 @@ typedef struct s_command
 typedef struct s_data
 {
 	t_command		*cmd_list;
+//	char 			*test;
 	t_env			*env_list;
 	char			**env;
 	char			*message;
@@ -116,6 +112,7 @@ int			exec(t_data *data, t_command *cmd, int i);
 int			exec_redirections(t_data *data, t_command *cmd, int i);
 int			free_all(t_data *data, char *str, int ret);
 void		heredoc_redirection(t_data *data, t_command *cmd, int i);
+void		heredoc_init(t_data *data, t_command *cmd, int i);
 void		in_out_redirection(t_data *data, t_command *cmd, int p_fd, int i);
 char		*next_redirection_name(t_command *cmd, int i);
 void		pipes_commands(t_data *data, t_command *command, unsigned int i);

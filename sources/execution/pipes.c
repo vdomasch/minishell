@@ -33,16 +33,15 @@ static void	open_pipes(t_data *data, unsigned int nb_pipes, int *pipe_fds)
 
 static void	wait_parent(t_data *data, int *pipe_fds)
 {
-	unsigned int	i;
 	int				sig;
 	int				status;
-
+	//unsigned int	i;
 	(void)data;
 	(void)pipe_fds;
 	status = 0;
-	i = 3;
-	while (i <= 1023)
-		close(i++);
+	//i = 3;
+	//while (i <= 1023)
+	//	close(i++);
 	while (waitpid(0, &status, 0) > 0)
 	{
 		if (WIFEXITED(status))
@@ -56,6 +55,8 @@ static void	wait_parent(t_data *data, int *pipe_fds)
 				printf("\r");
 		}
 	}
+	if (access("tmp.txt", 1))
+		unlink("tmp.txt");
 }
 
 void	here_document(t_data *data, t_command *cmd)
@@ -68,8 +69,9 @@ void	here_document(t_data *data, t_command *cmd)
 	cmd->input_redirection = redirection(cmd, '<', 0);
 	while (cmd->cmd[i])
 	{
-		if (cmd->cmd[i] == '<' && !is_in_quotes(cmd->cmd, i) && cmd->cmd[i + 1] == '<')
-			heredoc_redirection(data, cmd, i);
+		if (cmd->cmd[i] == '<' && !is_in_quotes(cmd->cmd, i)
+			&& cmd->cmd[i + 1] == '<')
+			heredoc_init(data, cmd, i);
 		i++;
 	}
 }
