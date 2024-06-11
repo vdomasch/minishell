@@ -16,6 +16,8 @@ static bool	echo_option(char *str)
 {
 	int	i;
 
+	if (str && !*str)
+		return (false);
 	i = 0;
 	if (!str)
 		return (false);
