@@ -79,28 +79,26 @@ static void	replace(t_data *data, char *result, int *i, int *j)
 		(*i)++;
 }
 
-static char	*fill_and_replace(t_data *data, char *message, char *result)
+static char	*fill_and_replace(t_data *data, char *msg, char *result)
 {
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-	while (message[i])
+	while (msg[i])
 	{
-		if (message[i] != '$' || is_in_quotes(message, i) == 1
-			|| (message[i + 1] != '?' && !ft_isalnum(message[i + 1])
-			&& message[i + 1] != '\'' && message[i + 1] != '"' && message[i + 1] != '_')
-			|| is_dollar_heredoc(message, i))
-			result[j++] = message[i++];
+		if (is_expandable(msg, i))
+			result[j++] = msg[i++];
 		else
 		{
-			if (message[i] == '\'' || message[i] == '"')
+			if (msg[i] == '\'' || msg[i] == '"')
 				i++;
 			else
 			{
-				if ((i > 0 && message[i - 1] && message[i + 1] && message[i - 1] == '\"' && message[i] == '$' && message[i + 1] == '\"') || (message[i] == '$' && !is_in_quotes(message, i) && message[i + 1] == '"'))
-					result[j++] = message[i++];
+				if ((i > 0 && msg[i - 1] && msg[i + 1] && msg[i - 1] == '\"'
+						&& msg[i] == '$' && msg[i + 1] == '\"'))
+					result[j++] = msg[i++];
 				else
 					replace(data, result, &i, &j);
 			}
