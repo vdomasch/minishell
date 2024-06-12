@@ -87,6 +87,7 @@ bool		create_cmd_list(t_data *data);
 bool		is_dollar_heredoc(char *msg, int i);
 bool		is_empty_pipe(const char *str);
 bool		is_ended_by_pipe(const char *str);
+bool		is_expandable(char *msg, int i);
 bool		is_invalid_char_in_quote(const char *str);
 bool		is_redirection_valid(const char *str);
 bool		is_starting_by_pipe(const char *str);
