@@ -49,7 +49,7 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 			if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
 				exit(free_all(data, NULL, EXIT_FAILURE));
 	}
-	i = 1;
+	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
 	if (exec(data, cmd, 0) == 1 && *cmd->v_cmd)
