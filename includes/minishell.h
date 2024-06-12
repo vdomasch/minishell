@@ -51,7 +51,6 @@ typedef struct s_command
 typedef struct s_data
 {
 	t_command		*cmd_list;
-//	char 			*test;
 	t_env			*env_list;
 	char			**env;
 	char			*message;
@@ -75,6 +74,7 @@ int			process_message(t_data *data, char *message);
 
 void		signal_set(void);
 void		signal_set_child(void);
+void		signal_heredoc(int sig);
 
 /* ************************************************************************** */
 /*									PARSING									  */
@@ -151,6 +151,7 @@ bool		ft_unset(t_data *data);
 
 int			set_return_value(unsigned char return_value);
 void		ft_free(void *ptr);
+void		save_free_data(t_data *data, char *str, int status);
 char		*ft_free_strtrim(char *s1, const char *s2);
 char		*ft_getcwd(void);
 char		*str_without_quotes(char *str);

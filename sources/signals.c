@@ -13,6 +13,34 @@
 #include "../includes/minishell.h"
 #include <termios.h>
 
+void	save_free_data(t_data *data, char *str, int status)
+{
+	static t_data	*data_save;
+	static char		*str_save;
+
+	if (status)
+	{
+		data_save = data;
+		str_save = str;
+	}
+	else
+		free_all(data_save, str_save, 0);
+}
+
+void	signal_heredoc(int sig)
+{
+	int	fd;
+
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		fd = open(".tmp.txt", O_TRUNC);
+		close(fd);
+		save_free_data(NULL, NULL, 0);
+		exit(130);
+	}
+}
+
 static void	signal_handler(int sig)
 {
 	if (sig == SIGINT)

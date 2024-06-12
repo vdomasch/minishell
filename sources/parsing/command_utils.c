@@ -30,12 +30,9 @@ void	free_cmd_list(t_command *cmd)
 	while (cmd)
 	{
 		tmp = cmd->prev;
-		if (cmd->cmd)
-			ft_free(cmd->cmd);
-		if (cmd->input_redirection)
-			ft_free(cmd->input_redirection);
-		if (cmd->output_redirection)
-			ft_free(cmd->output_redirection);
+		ft_free(cmd->cmd);
+		ft_free(cmd->input_redirection);
+		ft_free(cmd->output_redirection);
 		if (cmd->v_cmd)
 		{
 			i = 0;

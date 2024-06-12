@@ -31,16 +31,15 @@ static void	open_pipes(t_data *data, unsigned int nb_pipes, int *pipe_fds)
 	}
 }
 
-static void	wait_parent(t_data *data, int *pipe_fds)
+static void	wait_parent(void)
 {
 	int				sig;
 	int				status;
 	unsigned int	i;
-	(void)data;
-	(void)pipe_fds;
+
 	status = 0;
 	i = 3;
-	while (i <= 1023)
+	while (i <= 100)
 		close(i++);
 	while (waitpid(0, &status, 0) > 0)
 	{
@@ -52,28 +51,60 @@ static void	wait_parent(t_data *data, int *pipe_fds)
 			if (sig == 3)
 				ft_putstr_fd("Quit (core dumped)\n", 2);
 			if (sig == 2)
-				printf("\r");
+				printf("\n");
+			set_return_value(sig + 128);
 		}
 	}
-	if (access("tmp.txt", 1))
-		unlink("tmp.txt");
+	if (access(".tmp.txt", 1))
+		unlink(".tmp.txt");
 }
 
-void	here_document(t_data *data, t_command *cmd)
+static int	heredoc_fork(t_data *data, t_command *cmd, int i)
+{
+	int	pid;
+	int	status;
+
+	signal(SIGINT, &signal_heredoc);
+	pid = fork();
+	if (pid == 0)
+		heredoc_init(data, cmd, i);
+	else if (pid < 0)
+		perror("minishell");
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		if (waitpid(pid, &status, 0) > 0)
+		{
+			if (WIFEXITED(status))
+			{
+				i = WEXITSTATUS(status);
+				set_return_value(i);
+			}
+			signal_set();
+		}
+	}
+	return (i);
+}
+
+int	here_document(t_data *data, t_command *cmd)
 {
 	int	i;
+	int	return_value;
 
 	i = 0;
 	if (!is_there_chr(cmd->cmd, '>') && !is_there_chr(cmd->cmd, '<'))
-		return ;
+		return (0);
 	cmd->input_redirection = redirection(cmd, '<', 0);
 	while (cmd->cmd[i])
 	{
 		if (cmd->cmd[i] == '<' && !is_in_quotes(cmd->cmd, i)
 			&& cmd->cmd[i + 1] == '<')
-			heredoc_init(data, cmd, i);
+			return_value = heredoc_fork(data, cmd, i);
 		i++;
 	}
+	ft_free(cmd->input_redirection);
+	cmd->input_redirection = NULL;
+	return (return_value);
 }
 
 void	pipes_commands(t_data *data, t_command *command,
@@ -93,14 +124,14 @@ void	pipes_commands(t_data *data, t_command *command,
 	while (command)
 	{
 		set_return_value(0);
-		set_return_value(0);
-		here_document(data, command);
+		if (here_document(data, command))
+			break ;
 		if (!exec_builtins(data, command))
 			child(data, command, data->pipe_fds, i);
 		dup2(data->stdin, STDIN_FILENO);
 		command = command->next;
 		i += 2;
 	}
-	wait_parent(data, data->pipe_fds);
+	wait_parent();
 	ft_free(data->pipe_fds);
 }
