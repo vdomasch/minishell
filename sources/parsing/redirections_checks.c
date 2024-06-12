@@ -69,7 +69,7 @@ bool	is_ending_by_redirection(const char *str)
 	while (str[i])
 		i++;
 	i--;
-	while (str[i])
+	while (i >= 0 && str[i])
 	{
 		if (str[i] == '>' || str[i] == '<')
 			return (true);

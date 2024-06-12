@@ -52,20 +52,24 @@ bool	count_var_size(char *msg, t_env *list, int i, size_t *count)
 
 size_t	count_size(char *msg, t_env *list, int i, size_t count)
 {
+	t_env *save;
+
+	save = list;
 	while (msg[i])
 	{
 		if (msg[i] != '$' || is_in_quotes(msg, i) == 1 || (msg[i + 1] != '?'
-			&& !ft_isalnum(msg[i + 1]) && msg[i + 1] != '\'' && msg[i + 1] != '"') || is_dollar_heredoc(msg, i))
+			&& !ft_isalnum(msg[i + 1]) && msg[i + 1] != '\'' && msg[i + 1] != '"' && msg[i + 1] != '_') || is_dollar_heredoc(msg, i))
 			i++;
 		else
 		{
 			i++;
 			if (msg[i] == '\'' || msg[i] == '"')
 			{
-				count--;
+				if (msg[i - 1] != '$')
+					count--;
 				continue;
 			}
-			list = env_first(list);
+			list = save;
 			while (list)
 			{
 				if (count_var_size(msg, list, i, &count))

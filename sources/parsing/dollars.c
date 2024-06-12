@@ -89,14 +89,21 @@ static char	*fill_and_replace(t_data *data, char *message, char *result)
 	while (message[i])
 	{
 		if (message[i] != '$' || is_in_quotes(message, i) == 1
-			|| (message[i + 1] != '?' && !ft_isalnum(message[i + 1]) && message[i + 1] != '\'' && message[i + 1] != '"') || is_dollar_heredoc(message, i))
+			|| (message[i + 1] != '?' && !ft_isalnum(message[i + 1])
+			&& message[i + 1] != '\'' && message[i + 1] != '"' && message[i + 1] != '_')
+			|| is_dollar_heredoc(message, i))
 			result[j++] = message[i++];
 		else
 		{
 			if (message[i] == '\'' || message[i] == '"')
 				i++;
 			else
-				replace(data, result, &i, &j);
+			{
+				if ((i > 0 && message[i - 1] && message[i + 1] && message[i - 1] == '\"' && message[i] == '$' && message[i + 1] == '\"') || (message[i] == '$' && !is_in_quotes(message, i) && message[i + 1] == '"'))
+					result[j++] = message[i++];
+				else
+					replace(data, result, &i, &j);
+			}
 		}
 	}
 	return (result);

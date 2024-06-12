@@ -14,3 +14,8 @@ Attention ne pas ouvrir plusieurs heredoc a la fois, tout traiter en avance ?
 
 cat <Makefile <testfile.txt <Makefile <testfile <fuck.txt > lala.txt >> loulou.txt | wc -l > 123.txt | echo MIAOU   V
 FD OUVERT
+
+
+echo $? $oui $USER $_ $$ '$USER' '$_' ouiu $? '$?'
+
+oui non oui non oui non oui non oui non oui non
