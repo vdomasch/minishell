@@ -35,13 +35,13 @@ static void	wait_parent(t_data *data, int *pipe_fds)
 {
 	int				sig;
 	int				status;
-	//unsigned int	i;
+	unsigned int	i;
 	(void)data;
 	(void)pipe_fds;
 	status = 0;
-	//i = 3;
-	//while (i <= 1023)
-	//	close(i++);
+	i = 3;
+	while (i <= 1023)
+		close(i++);
 	while (waitpid(0, &status, 0) > 0)
 	{
 		if (WIFEXITED(status))
