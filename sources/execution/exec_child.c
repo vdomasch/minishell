@@ -40,15 +40,13 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 						unsigned int i)
 {
 	signal_set_child();
-	if (exec_redirections(data, cmd, 0) != 1)
-	{
-		if (cmd->next)
-			if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)
-				exit(free_all(data, NULL, EXIT_FAILURE));
-		if (i != 0)
-			if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
-				exit(free_all(data, NULL, EXIT_FAILURE));
-	}
+	if (cmd->next)
+		if (dup2(pipe_fds[i + 1], STDOUT_FILENO) < 0)
+			exit(free_all(data, NULL, EXIT_FAILURE));
+	if (i != 0)
+		if (dup2(pipe_fds[i - 2], STDIN_FILENO) < 0)
+			exit(free_all(data, NULL, EXIT_FAILURE));
+	exec_redirections(data, cmd, 0);
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
@@ -72,7 +70,5 @@ void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 	if (pid == 0)
 		child_exec(data, cmd, pipe_fds, i);
 	else if (pid < 0)
-	{
 		exit(free_all(data, NULL, 1));
-	}
 }

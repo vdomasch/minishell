@@ -79,58 +79,18 @@ char	*redirection(t_command *cmd, char input_token, int i)
 	return (str);
 }
 
-static bool	check_last_redir_name(t_command *command, char *redirection,
-								char c, int i)
-{
-	char	*pathname;
-
-	pathname = next_redirection_name(command, i);
-	if (!pathname)
-	{
-		perror("minishell: malloc: ");
-		return (false);
-	}
-	if (!ft_strncmp(redirection, pathname, ft_strlen(pathname) + 1))
-	{
-		free(pathname);
-		if (is_there_chr(command->cmd + i + 1, c))
-			return (false);
-		while (ft_isspace(command->cmd[i]))
-			i++;
-		i += ft_strlen(redirection) - 1;
-		while (command->cmd[++i])
-			if ((command->cmd[i] == '<' || command->cmd[i] == '>')
-				&& !is_in_quotes(command->cmd, i))
-				return (false);
-		return (true);
-	}
-	free(pathname);
-	return (false);
-}
-
-int	exec_redirections(t_data *data, t_command *cmd, int i)
+void	exec_redirections(t_data *data, t_command *cmd, int i)
 {
 	if (!is_there_chr(cmd->cmd, '>') && !is_there_chr(cmd->cmd, '<'))
-		return (0);
+		return ;
 	cmd->input_redirection = redirection(cmd, '<', 0);
 	cmd->output_redirection = redirection(cmd, '>', 0);
 	while (cmd->cmd[i])
 	{
 		if (cmd->cmd[i] == '>' && !is_in_quotes(cmd->cmd, i))
-		{
 			in_out_redirection(data, cmd, STDOUT_FILENO, i++);
-			if (check_last_redir_name(cmd,
-					cmd->output_redirection, '>', i) && !cmd->prev)
-				return (1);
-		}
 		if (cmd->cmd[i] == '<' && !is_in_quotes(cmd->cmd, i))
-		{
 			in_out_redirection(data, cmd, STDIN_FILENO, i++);
-			if (check_last_redir_name(cmd, cmd->input_redirection, '<', i)
-				&& !cmd->next && check_last_redirection(cmd->cmd + i + 1, '>'))
-				return (1);
-		}
 		i++;
 	}
-	return (0);
 }

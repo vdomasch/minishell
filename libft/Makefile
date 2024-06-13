@@ -63,7 +63,7 @@ HEAD		:=	libft.h
 
 #HEAD_D		:=	
 
-CFLAGS		:=	-Wall -Wextra -Werror -g3
+CFLAGS		:=	-Wall -Wextra -Werror
 
 NAME		:=	libft.a
 
@@ -87,7 +87,7 @@ NAME		:=	libft.a
 
 all			:	$(NAME)
 
-$(NAME)		:	$(OBJS_D) $(OBJS) $(HEAD)
+$(NAME)		:	$(OBJS_D) $(OBJS) $(HEAD) Makefile
 				ar rcs $(NAME) $(OBJS)
 
 $(OBJS)		:	$(OBJS_D)%.o: $(SRCS_D)%.c $(HEAD)

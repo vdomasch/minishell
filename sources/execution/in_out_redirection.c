@@ -33,88 +33,86 @@ int	free_all(t_data *data, char *str, int ret)
 static void	append_redirection(t_data *data, t_command *cmd, int pipe_fd, int i)
 {
 	int		fd;
-	char	*pathname;
+	char	*path;
 
-	pathname = next_redirection_name(cmd, i);
-	if (!pathname)
+	path = next_redirection_name(cmd, i);
+	if (!path)
 	{
 		perror("minishell: malloc: ");
 		exit(2);
 	}
-	fd = open(pathname, O_CREAT | O_APPEND | O_WRONLY, 0600);
+	fd = open(path, O_CREAT | O_APPEND | O_WRONLY, 0600);
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		perror(pathname);
+		perror(path);
 		if (cmd->next)
-			exit(free_all(data, pathname, 0));
-		else
-			exit(free_all(data, pathname, 1));
+			exit(free_all(data, path, 0));
+		exit(free_all(data, path, 1));
 	}
-	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname))
+	if (!ft_strncmp(path, cmd->output_redirection, ft_strlen(path))
 		&& check_last_redirection(cmd->cmd + i, '>'))
 		if (dup2(fd, pipe_fd) < 0)
-			exit (free_all(data, pathname, 1));
-	free(pathname);
+			exit (free_all(data, path, 1));
+	free(path);
 	close(fd);
 }
 
 static void	trunc_redirection(t_data *data, t_command *cmd, int pipe_fd, int i)
 {
 	int		fd;
-	char	*pathname;
+	char	*path;
 
-	pathname = next_redirection_name(cmd, i);
-	if (!pathname)
+	path = next_redirection_name(cmd, i);
+	if (!path)
 	{
 		perror("minishell: malloc: ");
 		exit(2);
 	}
-	fd = open(pathname, O_CREAT | O_TRUNC | O_WRONLY, 0600);
+	fd = open(path, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		perror(pathname);
+		perror(path);
 		if (cmd->next)
-			exit(free_all(data, pathname, 0));
-		else
-			exit(free_all(data, pathname, 1));
+			exit(free_all(data, path, 0));
+		exit(free_all(data, path, 1));
 	}
-	if (!ft_strncmp(pathname, cmd->output_redirection, ft_strlen(pathname))
+	if (!ft_strncmp(path, cmd->output_redirection, ft_strlen(path))
 		&& check_last_redirection(cmd->cmd + i, '>'))
 		if (dup2(fd, pipe_fd) < 0)
-			exit (free_all(data, pathname, 1));
-	free(pathname);
-	//close(fd);
+			exit (free_all(data, path, 1));
+	free(path);
+	close(fd);
 }
 
 static void	input_redirection(t_data *data, t_command *cmd, int pipe_fd, int i)
 {
 	int		fd;
-	char	*pathname;
+	char	*path;
 
-	pathname = next_redirection_name(cmd, i);
-	if (!pathname)
+	(void)pipe_fd;
+	path = next_redirection_name(cmd, i);
+	if (!path)
 	{
 		perror("minishell: malloc: ");
 		exit(2);
 	}
-	fd = open(pathname, O_RDONLY, 0600);
+	fd = open(path, O_RDONLY);
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		perror(pathname);
+		perror(path);
 		if (cmd->next)
-			exit(free_all(data, pathname, 0));
-		else
-			exit(free_all(data, pathname, 1));
+			exit(free_all(data, path, 0));
+		exit(free_all(data, path, 1));
 	}
-	if (!ft_strncmp(pathname, cmd->input_redirection, ft_strlen(pathname))
+	if (!ft_strncmp(path, cmd->input_redirection, ft_strlen(path))
 		&& check_last_redirection(cmd->cmd + i, '<'))
-		if (dup2(fd, pipe_fd) < 0)
-			exit(free_all(data, pathname, 1));
-	free(pathname);
-	//close(fd);
+		if (dup2(fd, STDIN_FILENO) < 0)
+			exit(free_all(data, path, 1));
+	free(path);
+	close(fd);
 }
 
 void	in_out_redirection(t_data *data, t_command *command, int pipe_fd, int i)

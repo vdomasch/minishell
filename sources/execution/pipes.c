@@ -89,9 +89,10 @@ static int	heredoc_fork(t_data *data, t_command *cmd, int i)
 int	here_document(t_data *data, t_command *cmd)
 {
 	int	i;
-	int	return_value = 0;
+	int	return_value;
 
 	i = 0;
+	return_value = 0;
 	if (!is_there_chr(cmd->cmd, '>') && !is_there_chr(cmd->cmd, '<'))
 		return (0);
 	cmd->input_redirection = redirection(cmd, '<', 0);
