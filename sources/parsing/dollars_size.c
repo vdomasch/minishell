@@ -12,6 +12,14 @@
 
 #include "../../includes/minishell.h"
 
+bool	is_expandable(char *msg, int i)
+{
+	return (msg[i] != '$' || is_in_quotes(msg, i) == 1
+		|| (msg[i + 1] != '?' && !ft_isalnum(msg[i + 1]) && msg[i + 1] != '\''
+			&& msg[i + 1] != '"' && msg[i + 1] != '_')
+		|| is_dollar_heredoc(msg, i));
+}
+
 bool	is_dollar_heredoc(char *msg, int i)
 {
 	while (i > 0 && (!ft_isspace(msg[i]) && msg[i] != '<'))
@@ -50,32 +58,33 @@ bool	count_var_size(char *msg, t_env *list, int i, size_t *count)
 	return (false);
 }
 
+void	value_size(t_env *list, char *msg, int *i, size_t *count)
+{
+	while (list)
+	{
+		if (count_var_size(msg, list, *i, count))
+			break ;
+		list = list->next;
+	}
+}
+
 size_t	count_size(char *msg, t_env *list, int i, size_t count)
 {
-	t_env *save;
-
-	save = list;
 	while (msg[i])
 	{
-		if (msg[i] != '$' || is_in_quotes(msg, i) == 1 || (msg[i + 1] != '?'
-			&& !ft_isalnum(msg[i + 1]) && msg[i + 1] != '\'' && msg[i + 1] != '"' && msg[i + 1] != '_') || is_dollar_heredoc(msg, i))
+		if (is_expandable(msg, i))
 			i++;
 		else
 		{
 			i++;
 			if (msg[i] == '\'' || msg[i] == '"')
 			{
-				if (msg[i - 1] != '$')
+				if (msg[i - 1] != '$' || (msg[i - 1] == '$'
+						&& !is_in_quotes(msg, i - 1)))
 					count--;
-				continue;
+				continue ;
 			}
-			list = save;
-			while (list)
-			{
-				if (count_var_size(msg, list, i, &count))
-					break ;
-				list = list->next;
-			}
+			value_size(list, msg, &i, &count);
 			count += i - 1;
 			while (ft_isalnum(msg[i]) || msg[i] == '_')
 				i++;
