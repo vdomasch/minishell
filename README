@@ -19,3 +19,6 @@ FD OUVERT
 echo $? $oui $USER $_ $$ '$USER' '$_' ouiu $? '$?'
 
 oui non oui non oui non oui non oui non oui non
+
+
+cat Makefile | cat > out  => exit minishell after 2 exec

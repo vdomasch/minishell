@@ -123,6 +123,8 @@ int	process_message(t_data *data, char *message)
 	if (!standardize_command(data, message, NULL))
 		return (4);
 	pipes_commands(data, data->cmd_list, 0);
+	if (access(".tmp.txt", 1))
+		unlink(".tmp.txt");
 	free_cmd_list(data->cmd_list);
 	ft_free(data->message);
 	return (0);

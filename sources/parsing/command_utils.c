@@ -30,6 +30,7 @@ void	free_cmd_list(t_command *cmd)
 	while (cmd)
 	{
 		tmp = cmd->prev;
+	//	close(cmd->heredoc_fd);
 		ft_free(cmd->cmd);
 		ft_free(cmd->input_redirection);
 		ft_free(cmd->output_redirection);

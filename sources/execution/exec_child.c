@@ -52,6 +52,7 @@ static void	child_exec(t_data *data, t_command *cmd, int *pipe_fds,
 	i = 0;
 	while (i < 2 * data->nb_pipes)
 		close(pipe_fds[i++]);
+	close(data->stdin);
 	if (exec(data, cmd, 0) == 1 && *cmd->v_cmd)
 		exec_errors(cmd);
 	free_all(data, NULL, 0);
@@ -72,9 +73,6 @@ void	child(t_data *data, t_command *cmd, int *pipe_fds, unsigned int i)
 		child_exec(data, cmd, pipe_fds, i);
 	else if (pid < 0)
 	{
-		i = 3;
-		while (i <= 1023)
-			close(i++);
-		exit(1);
+		exit(free_all(data, NULL, 1));
 	}
 }

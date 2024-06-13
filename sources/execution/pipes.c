@@ -15,6 +15,7 @@
 static void	open_pipes(t_data *data, unsigned int nb_pipes, int *pipe_fds)
 {
 	unsigned int	i;
+	unsigned int	tmp;
 
 	i = 0;
 	while (i < nb_pipes)
@@ -22,25 +23,25 @@ static void	open_pipes(t_data *data, unsigned int nb_pipes, int *pipe_fds)
 		if (pipe(pipe_fds + (2 * i)) < 0)
 		{
 			perror("Pipe opening error:\n");
-			i = 3;
-			while (i <= 1023)
-				close(i++);
+			tmp = 0;
+			while (tmp < i)
+				close(pipe_fds[tmp++]);
 			exit(free_all(data, NULL, EXIT_FAILURE));
 		}
 		i++;
 	}
 }
 
-static void	wait_parent(void)
+static void	wait_parent(t_data *data)
 {
 	int				sig;
 	int				status;
 	unsigned int	i;
 
 	status = 0;
-	i = 3;
-	while (i <= 100)
-		close(i++);
+	i = 0;
+	while (i < 2 * data->nb_pipes)
+		close(data->pipe_fds[i++]);
 	while (waitpid(0, &status, 0) > 0)
 	{
 		if (WIFEXITED(status))
@@ -52,11 +53,10 @@ static void	wait_parent(void)
 				ft_putstr_fd("Quit (core dumped)\n", 2);
 			if (sig == 2)
 				printf("\n");
-			set_return_value(sig + 128);
+			if (sig == 2 || sig == 3)
+				set_return_value(sig + 128);
 		}
 	}
-	if (access(".tmp.txt", 1))
-		unlink(".tmp.txt");
 }
 
 static int	heredoc_fork(t_data *data, t_command *cmd, int i)
@@ -89,7 +89,7 @@ static int	heredoc_fork(t_data *data, t_command *cmd, int i)
 int	here_document(t_data *data, t_command *cmd)
 {
 	int	i;
-	int	return_value;
+	int	return_value = 0;
 
 	i = 0;
 	if (!is_there_chr(cmd->cmd, '>') && !is_there_chr(cmd->cmd, '<'))
@@ -132,6 +132,6 @@ void	pipes_commands(t_data *data, t_command *command,
 		command = command->next;
 		i += 2;
 	}
-	wait_parent();
+	wait_parent(data);
 	ft_free(data->pipe_fds);
 }

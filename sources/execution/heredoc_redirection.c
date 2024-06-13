@@ -121,9 +121,9 @@ void	heredoc_redirection(t_data *data, t_command *cmd, int i)
 	}
 	free(eof);
 	close(cmd->heredoc_fd);
-	i = 3;
-	while (i <= 1023)
-		close(i++);
+	//i = 3;
+	//while (i <= 1023)
+	//	close(i++);
 }
 
 static void	heredoc_rl(t_data *data, t_command *cmd, char *eof)

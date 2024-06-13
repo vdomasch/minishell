@@ -28,10 +28,12 @@ int	main(int argc, char **argv, char **env)
 	{
 		perror("minishell: ");
 		free_env(data.env_list, NULL);
+		close (data.stdin);
 		return (ENOMEM);
 	}
 	ft_readline(&data);
 	rl_clear_history();
+	close (data.stdin);
 	free_env(data.env_list, data.v_path);
 	if (data.env && *data.env && **data.env)
 		free_env(NULL, data.env);
