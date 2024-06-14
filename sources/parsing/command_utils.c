@@ -31,6 +31,8 @@ void	free_cmd_list(t_command *cmd)
 	{
 		tmp = cmd->prev;
 		ft_free(cmd->cmd);
+		if (cmd->heredoc_fd > 2)
+			close(cmd->heredoc_fd);
 		ft_free(cmd->input_redirection);
 		ft_free(cmd->output_redirection);
 		if (cmd->v_cmd)

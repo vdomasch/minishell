@@ -101,6 +101,8 @@ int	here_document(t_data *data, t_command *cmd)
 		if (cmd->cmd[i] == '<' && !is_in_quotes(cmd->cmd, i)
 			&& cmd->cmd[i + 1] == '<')
 			return_value = heredoc_fork(data, cmd, i);
+		if (return_value == 130)
+			break;
 		i++;
 	}
 	ft_free(cmd->input_redirection);
