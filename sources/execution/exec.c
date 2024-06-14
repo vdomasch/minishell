@@ -43,15 +43,15 @@ static bool	exec_builtins_child(t_data *data, t_command *command)
 	else if (!ft_strncmp(command->v_cmd[0], "pwd", 4))
 		ft_pwd();
 	else if (!ft_strncmp(command->v_cmd[0], "echo", 5))
-		ft_echo(data, command->v_cmd);
+		ft_echo(command->v_cmd);
 	else if (!ft_strncmp(command->v_cmd[0], "env", 4))
 		ft_env(data->env_list);
 	else if (!ft_strncmp(command->v_cmd[0], "export", 7) && !command->v_cmd[1])
 		ft_export_child(data->env_list);
 	else if (!ft_strncmp(command->v_cmd[0], "export", 7))
-		;
+		ft_export(data, data->cmd_list->v_cmd, 1, 0);
 	else if (!ft_strncmp(command->v_cmd[0], "unset", 6))
-		;
+		ft_unset(data);
 	else
 		return (false);
 	return (true);

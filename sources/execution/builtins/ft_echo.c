@@ -30,7 +30,7 @@ static bool	echo_option(char *str)
 	return (true);
 }
 
-void	ft_echo(t_data *data, char **v_cmd)
+void	ft_echo(char **v_cmd)
 {
 	int	i;
 
@@ -48,5 +48,4 @@ void	ft_echo(t_data *data, char **v_cmd)
 	}
 	if (!echo_option(v_cmd[1]))
 		printf("\n");
-	(void)data;
 }

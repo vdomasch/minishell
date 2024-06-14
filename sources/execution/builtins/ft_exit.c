@@ -30,7 +30,8 @@ void	ft_exit(t_data *data, t_command *cmd)
 		set_return_value(1);
 		return ;
 	}
-	printf("exit\n");
+	if (tmp != 2)
+		printf("exit\n");
 	free_all(data, NULL, 0);
 	exit(tmp);
 }
